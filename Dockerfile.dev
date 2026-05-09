@@ -1,0 +1,15 @@
+FROM node:20-alpine
+WORKDIR /app
+RUN apk add --no-cache libc6-compat bash curl unzip && \
+    curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+COPY package.json bun.lockb ./
+COPY prisma ./prisma
+RUN bun install
+COPY . .
+ARG STACK=dev
+COPY .env.${STACK} .env.production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+EXPOSE 3000
+CMD ["bun", "run", "dev"]

@@ -1,0 +1,102 @@
+generator client {
+    provider   = "prisma-client"
+    output     = "../src/generated/prisma"
+    engineType = "client"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum Intent {
+    WISMO
+    OTHER
+}
+
+enum EmailStatus {
+    REPLIED
+    FAILED
+    IGNORED
+    PENDING
+}
+
+enum Tone {
+    NEUTRAL
+    FRIENDLY
+    FORMAL
+}
+
+enum SubscriptionStatus {
+    PENDING
+    ACTIVE
+    CANCELLED
+    DECLINED
+    EXPIRED
+    FROZEN
+}
+
+model Shop {
+    id             String   @id @default(uuid())
+    shopDomain     String   @unique
+    accessToken    String
+    scopes         String
+    installedAt    DateTime @default(now())
+    uninstalledAt  DateTime?
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    subscriptionId     String?
+    subscriptionStatus SubscriptionStatus?
+    trialEndsOn        DateTime?
+    currentPeriodEnd   DateTime?
+
+    settings  Settings?
+    emailLogs EmailLog[]
+}
+
+model Settings {
+    id              String  @id @default(uuid())
+    shopId          String  @unique
+    autoReplyEnabled Boolean @default(true)
+    responseDelaySeconds Int @default(0)
+    language        String  @default("en")
+    greeting        String  @default("Hello,")
+    signature       String  @default("Thank you for your patience.")
+    tone            Tone    @default(NEUTRAL)
+    supportEmail    String?
+
+    smtpHost        String?
+    smtpPort        Int?
+    smtpSecure      Boolean @default(true)
+    smtpUser        String?
+    smtpPassEnc     String?
+    smtpFromName    String?
+    smtpFromAddress String?
+
+    inboundAddress  String? @unique
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+}
+
+model EmailLog {
+    id           String      @id @default(uuid())
+    shopId       String
+    senderEmail  String
+    subject      String
+    body         String
+    intent       Intent
+    orderId      String?
+    orderName    String?
+    status       EmailStatus @default(PENDING)
+    errorMessage String?
+    repliedAt    DateTime?
+    receivedAt   DateTime    @default(now())
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
+    shop         Shop        @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+    @@index([shopId, receivedAt])
+    @@index([shopId, status])
+}

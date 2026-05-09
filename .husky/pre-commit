@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+# Format + lint only the staged files (fast).
+bunx lint-staged || exit 1
+
+# Type-check and tests run on the whole repo since cross-file errors and
+# WISMO regressions can hide in unstaged code paths. Both finish in seconds.
+bun run type-check || exit 1
+bun run test || exit 1

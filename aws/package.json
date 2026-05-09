@@ -1,0 +1,20 @@
+{
+    "name": "valyn-infra",
+    "type": "module",
+    "version": "1.0.0",
+    "devDependencies": {
+        "@types/glob": "^8.1.0",
+        "@types/mime": "^3.0.4",
+        "@types/node": "^18.0.0",
+        "ts-node": "^10.0.0",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@pulumi/aws": "^6.0.0",
+        "@pulumi/command": "^1.0.0",
+        "@pulumi/pulumi": "^3.0.0",
+        "dotenv": "^16.0.0",
+        "glob": "^13.0.6",
+        "mime": "^4.1.0"
+    }
+}
