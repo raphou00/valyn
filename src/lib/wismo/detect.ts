@@ -34,5 +34,6 @@ export const extractOrderName = (
     return null;
 };
 
-export const isSupportedLanguage = (s: string | null | undefined): s is Language =>
-    s === "en" || s === "fr" || s === "de";
+export const isSupportedLanguage = (
+    s: string | null | undefined
+): s is Language => s === "en" || s === "fr" || s === "de";

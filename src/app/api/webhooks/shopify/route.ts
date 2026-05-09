@@ -24,7 +24,10 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "bad hmac" }, { status: 401 });
     }
     if (!topic || !shopDomain) {
-        return NextResponse.json({ message: "missing headers" }, { status: 400 });
+        return NextResponse.json(
+            { message: "missing headers" },
+            { status: 400 }
+        );
     }
 
     switch (topic) {
@@ -54,14 +57,13 @@ export async function POST(req: NextRequest) {
                         subscriptionId: sub.admin_graphql_api_id,
                     },
                     data: {
-                        subscriptionStatus:
-                            sub.status as
-                                | "PENDING"
-                                | "ACTIVE"
-                                | "CANCELLED"
-                                | "DECLINED"
-                                | "EXPIRED"
-                                | "FROZEN",
+                        subscriptionStatus: sub.status as
+                            | "PENDING"
+                            | "ACTIVE"
+                            | "CANCELLED"
+                            | "DECLINED"
+                            | "EXPIRED"
+                            | "FROZEN",
                         currentPeriodEnd:
                             sub.current_period_end ?
                                 new Date(sub.current_period_end)

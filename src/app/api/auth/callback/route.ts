@@ -36,23 +36,20 @@ const registerWebhooks = async (shop: string, accessToken: string) => {
 
     await Promise.all(
         MANDATORY_WEBHOOKS.map((topic) =>
-            fetch(
-                `https://${shop}/admin/api/2024-10/webhooks.json`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Shopify-Access-Token": accessToken,
+            fetch(`https://${shop}/admin/api/2024-10/webhooks.json`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Shopify-Access-Token": accessToken,
+                },
+                body: JSON.stringify({
+                    webhook: {
+                        topic,
+                        address: callbackUrl,
+                        format: "json",
                     },
-                    body: JSON.stringify({
-                        webhook: {
-                            topic,
-                            address: callbackUrl,
-                            format: "json",
-                        },
-                    }),
-                }
-            )
+                }),
+            })
         )
     );
 };
@@ -65,27 +62,30 @@ export async function GET(req: NextRequest) {
     const cookieState = req.cookies.get("shopify_oauth_state")?.value;
 
     if (!isValidShop(shop) || !code || !state) {
-        return NextResponse.json({ message: "invalid request" }, { status: 400 });
+        return NextResponse.json(
+            { message: "invalid request" },
+            { status: 400 }
+        );
     }
     if (!cookieState || cookieState !== state) {
-        return NextResponse.json({ message: "state mismatch" }, { status: 403 });
+        return NextResponse.json(
+            { message: "state mismatch" },
+            { status: 403 }
+        );
     }
     if (!verifyOAuthHmac(params)) {
         return NextResponse.json({ message: "bad hmac" }, { status: 403 });
     }
 
-    const tokenRes = await fetch(
-        `https://${shop}/admin/oauth/access_token`,
-        {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                client_id: env.SHOPIFY_API_KEY,
-                client_secret: env.SHOPIFY_API_SECRET,
-                code,
-            }),
-        }
-    );
+    const tokenRes = await fetch(`https://${shop}/admin/oauth/access_token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            client_id: env.SHOPIFY_API_KEY,
+            client_secret: env.SHOPIFY_API_SECRET,
+            code,
+        }),
+    });
 
     if (!tokenRes.ok) {
         return NextResponse.json(

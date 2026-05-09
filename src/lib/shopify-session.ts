@@ -47,7 +47,8 @@ export const verifySessionToken = (token: string): Claims => {
     const now = Math.floor(Date.now() / 1000);
     if (claims.exp <= now) throw new SessionTokenError("expired");
     if (claims.nbf > now) throw new SessionTokenError("not yet valid");
-    if (claims.aud !== env.SHOPIFY_API_KEY) throw new SessionTokenError("bad aud");
+    if (claims.aud !== env.SHOPIFY_API_KEY)
+        throw new SessionTokenError("bad aud");
 
     const issHost = new URL(claims.iss).host;
     const destHost = new URL(claims.dest).host;

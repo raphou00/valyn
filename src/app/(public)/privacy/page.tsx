@@ -6,9 +6,9 @@ const Page = () => {
             <h1>Privacy Policy</h1>
             <p>
                 <em>
-                    Last updated: REPLACE_DATE. This is a starter draft —
-                    have it reviewed by counsel before submitting to the
-                    Shopify App Store.
+                    Last updated: REPLACE_DATE. This is a starter draft — have
+                    it reviewed by counsel before submitting to the Shopify App
+                    Store.
                 </em>
             </p>
 
@@ -22,11 +22,10 @@ const Page = () => {
             <h2>Data we collect</h2>
             <ul>
                 <li>
-                    <strong>Shop data</strong> from the Shopify Admin API:
-                    shop domain, OAuth access token, granted scopes, order
-                    metadata (id, name, fulfillment status, tracking
-                    information) requested only when a relevant inbound
-                    email arrives.
+                    <strong>Shop data</strong> from the Shopify Admin API: shop
+                    domain, OAuth access token, granted scopes, order metadata
+                    (id, name, fulfillment status, tracking information)
+                    requested only when a relevant inbound email arrives.
                 </li>
                 <li>
                     <strong>Inbound email data</strong>: the sender address,
@@ -34,9 +33,9 @@ const Page = () => {
                     merchants to our intake address.
                 </li>
                 <li>
-                    <strong>Settings</strong>: SMTP credentials (encrypted
-                    at rest with AES-256-GCM), greeting/signature text,
-                    language and tone preferences.
+                    <strong>Settings</strong>: SMTP credentials (encrypted at
+                    rest with AES-256-GCM), greeting/signature text, language
+                    and tone preferences.
                 </li>
             </ul>
 
@@ -53,8 +52,8 @@ const Page = () => {
             <h2>Data retention</h2>
             <ul>
                 <li>
-                    Raw inbound MIME files are retained in S3 for 30 days
-                    then automatically expired.
+                    Raw inbound MIME files are retained in S3 for 30 days then
+                    automatically expired.
                 </li>
                 <li>
                     Email logs are retained for the lifetime of the
@@ -66,8 +65,8 @@ const Page = () => {
                     associated data is deleted at that point.
                 </li>
                 <li>
-                    Customer-specific data is deleted on receipt of the
-                    Shopify <code>customers/redact</code> webhook.
+                    Customer-specific data is deleted on receipt of the Shopify{" "}
+                    <code>customers/redact</code> webhook.
                 </li>
             </ul>
 
@@ -81,9 +80,7 @@ const Page = () => {
             <h2>Contact</h2>
             <p>
                 Questions or data requests:{" "}
-                <a href="mailto:REPLACE_SUPPORT_EMAIL">
-                    REPLACE_SUPPORT_EMAIL
-                </a>
+                <a href="mailto:REPLACE_SUPPORT_EMAIL">REPLACE_SUPPORT_EMAIL</a>
                 .
             </p>
         </article>

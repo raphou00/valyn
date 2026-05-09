@@ -7,10 +7,7 @@ export async function GET(req: NextRequest) {
     const shop = req.nextUrl.searchParams.get("shop");
 
     if (!isValidShop(shop)) {
-        return NextResponse.json(
-            { message: "invalid shop" },
-            { status: 400 }
-        );
+        return NextResponse.json({ message: "invalid shop" }, { status: 400 });
     }
 
     const state = randomBytes(16).toString("hex");

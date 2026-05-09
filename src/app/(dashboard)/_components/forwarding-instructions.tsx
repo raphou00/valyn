@@ -48,21 +48,24 @@ const ForwardingInstructions: React.FC<Props> = ({ inboundAddress }) => {
     const panels: React.ReactNode[] = [
         <List type="number" key="gmail">
             <List.Item>
-                In Gmail, open <strong>Settings → See all settings →
-                Forwarding and POP/IMAP</strong>.
+                In Gmail, open{" "}
+                <strong>
+                    Settings → See all settings → Forwarding and POP/IMAP
+                </strong>
+                .
             </List.Item>
             <List.Item>
                 Click <strong>Add a forwarding address</strong> and paste the
                 address above.
             </List.Item>
             <List.Item>
-                Open the verification email Gmail sends — it lands in your
-                Email log here. Copy the confirmation link and visit it.
+                Open the verification email Gmail sends — it lands in your Email
+                log here. Copy the confirmation link and visit it.
             </List.Item>
             <List.Item>
                 Back in Gmail, choose{" "}
-                <strong>Forward a copy of incoming mail to</strong> →
-                select your forwarding address.
+                <strong>Forward a copy of incoming mail to</strong> → select
+                your forwarding address.
             </List.Item>
         </List>,
         <List type="number" key="outlook">
@@ -73,8 +76,8 @@ const ForwardingInstructions: React.FC<Props> = ({ inboundAddress }) => {
                 Enable forwarding and paste the address above.
             </List.Item>
             <List.Item>
-                Check <strong>Keep a copy of forwarded messages</strong> so
-                your support archive stays intact.
+                Check <strong>Keep a copy of forwarded messages</strong> so your
+                support archive stays intact.
             </List.Item>
         </List>,
         <List type="number" key="helpscout">
@@ -93,8 +96,8 @@ const ForwardingInstructions: React.FC<Props> = ({ inboundAddress }) => {
                 forward rule for the address above.
             </List.Item>
             <List.Item>
-                Make sure the original sender&apos;s address is preserved in
-                the <code>From:</code> header — Valyn replies to that address.
+                Make sure the original sender&apos;s address is preserved in the{" "}
+                <code>From:</code> header — Valyn replies to that address.
             </List.Item>
             <List.Item>
                 Need help?{" "}
@@ -109,7 +112,11 @@ const ForwardingInstructions: React.FC<Props> = ({ inboundAddress }) => {
                 <Text as="h3" variant="headingSm">
                     Forwarding address
                 </Text>
-                <InlineStack gap="200" align="space-between" blockAlign="center">
+                <InlineStack
+                    gap="200"
+                    align="space-between"
+                    blockAlign="center"
+                >
                     <Text as="p" variant="headingMd">
                         {inboundAddress}
                     </Text>
@@ -118,7 +125,11 @@ const ForwardingInstructions: React.FC<Props> = ({ inboundAddress }) => {
                     </Button>
                 </InlineStack>
                 <Box paddingBlockStart="200">
-                    <Tabs tabs={tabs} selected={selected} onSelect={setSelected}>
+                    <Tabs
+                        tabs={tabs}
+                        selected={selected}
+                        onSelect={setSelected}
+                    >
                         <Box paddingBlockStart="300">{panels[selected]}</Box>
                     </Tabs>
                 </Box>

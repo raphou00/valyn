@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-    detectIntent,
-    extractOrderName,
-    isSupportedLanguage,
-} from "./detect";
+import { detectIntent, extractOrderName, isSupportedLanguage } from "./detect";
 
 describe("detectIntent", () => {
     it.each([

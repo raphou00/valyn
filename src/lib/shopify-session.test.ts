@@ -7,7 +7,11 @@ const KEY = "test-api-key";
 const SHOP = "test-shop.myshopify.com";
 
 const b64url = (buf: Buffer | string): string =>
-    Buffer.from(buf).toString("base64").replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
+    Buffer.from(buf)
+        .toString("base64")
+        .replace(/=+$/, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
 
 const sign = (
     claims: Record<string, unknown>,
@@ -67,12 +71,16 @@ describe("verifySessionToken", () => {
     });
 
     it("rejects expired tokens", () => {
-        const token = sign(validClaims({ exp: Math.floor(Date.now() / 1000) - 10 }));
+        const token = sign(
+            validClaims({ exp: Math.floor(Date.now() / 1000) - 10 })
+        );
         expect(() => verifySessionToken(token)).toThrow(/expired/);
     });
 
     it("rejects not-yet-valid tokens", () => {
-        const token = sign(validClaims({ nbf: Math.floor(Date.now() / 1000) + 60 }));
+        const token = sign(
+            validClaims({ nbf: Math.floor(Date.now() / 1000) + 60 })
+        );
         expect(() => verifySessionToken(token)).toThrow(/not yet valid/);
     });
 

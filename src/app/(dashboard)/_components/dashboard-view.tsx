@@ -85,8 +85,9 @@ const StatCard: React.FC<{ label: string; value: number }> = ({
 const DashboardView: React.FC = () => {
     const authedFetch = useAuthedFetch();
     const [stats, setStats] = useState<Stats | null>(null);
-    const [subscription, setSubscription] =
-        useState<SubscriptionState | null>(null);
+    const [subscription, setSubscription] = useState<SubscriptionState | null>(
+        null
+    );
     const [logs, setLogs] = useState<LogsResponse | null>(null);
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -132,14 +133,18 @@ const DashboardView: React.FC = () => {
                 </Banner>
             )}
 
-            {subscription && (
-                <BillingBanner status={subscription.status} />
-            )}
+            {subscription && <BillingBanner status={subscription.status} />}
 
             <InlineGrid columns={{ xs: 2, md: 4 }} gap="400">
-                <StatCard label="Total emails processed" value={stats?.total ?? 0} />
+                <StatCard
+                    label="Total emails processed"
+                    value={stats?.total ?? 0}
+                />
                 <StatCard label="WISMO detected" value={stats?.wismo ?? 0} />
-                <StatCard label="Auto-replies sent" value={stats?.replied ?? 0} />
+                <StatCard
+                    label="Auto-replies sent"
+                    value={stats?.replied ?? 0}
+                />
                 <StatCard label="Failed lookups" value={stats?.failed ?? 0} />
             </InlineGrid>
 
@@ -154,7 +159,10 @@ const DashboardView: React.FC = () => {
                     {loading && !logs ?
                         <InlineStack align="center" blockAlign="center">
                             <div style={{ padding: 32 }}>
-                                <Spinner accessibilityLabel="Loading" size="large" />
+                                <Spinner
+                                    accessibilityLabel="Loading"
+                                    size="large"
+                                />
                             </div>
                         </InlineStack>
                     : logs && logs.logs.length === 0 ?
@@ -188,7 +196,10 @@ const DashboardView: React.FC = () => {
                                     <tr key={row.id} style={tr}>
                                         <td style={td}>
                                             <BlockStack gap="050">
-                                                <Text as="span" variant="bodyMd">
+                                                <Text
+                                                    as="span"
+                                                    variant="bodyMd"
+                                                >
                                                     {row.senderEmail || "—"}
                                                 </Text>
                                                 <Text
@@ -196,7 +207,8 @@ const DashboardView: React.FC = () => {
                                                     variant="bodySm"
                                                     tone="subdued"
                                                 >
-                                                    {row.subject || "(no subject)"}
+                                                    {row.subject ||
+                                                        "(no subject)"}
                                                 </Text>
                                             </BlockStack>
                                         </td>
@@ -211,10 +223,16 @@ const DashboardView: React.FC = () => {
                                                 {row.intent}
                                             </Badge>
                                         </td>
-                                        <td style={td}>{row.orderName ?? "—"}</td>
+                                        <td style={td}>
+                                            {row.orderName ?? "—"}
+                                        </td>
                                         <td style={td}>
                                             <BlockStack gap="050">
-                                                <Badge tone={STATUS_TONE[row.status]}>
+                                                <Badge
+                                                    tone={
+                                                        STATUS_TONE[row.status]
+                                                    }
+                                                >
                                                     {row.status}
                                                 </Badge>
                                                 {row.errorMessage && (
@@ -247,7 +265,9 @@ const DashboardView: React.FC = () => {
                             <InlineStack align="center">
                                 <Pagination
                                     hasPrevious={page > 0}
-                                    onPrevious={() => setPage((p) => Math.max(0, p - 1))}
+                                    onPrevious={() =>
+                                        setPage((p) => Math.max(0, p - 1))
+                                    }
                                     hasNext={logs.hasMore}
                                     onNext={() => setPage((p) => p + 1)}
                                     label={`Page ${page + 1}`}

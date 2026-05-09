@@ -109,7 +109,7 @@ Expect 1–2 review rounds, ~2–3 weeks turnaround.
 - Logs are JSON to stdout (`src/lib/logger.ts`). Render's log search can
   filter by `msg`, `shopId`, `level`.
 - Inbound MIME files live in S3 for 30 days then auto-expire.
-- `pulumi up` PUTs the *complete* env-var set to Render — anything not in
+- `pulumi up` PUTs the _complete_ env-var set to Render — anything not in
   `aws/render/env-sync.ts` gets removed. Add new vars there, never via
   the Render dashboard.
 - The WISMO pipeline waits synchronously inside the SNS HTTP request.

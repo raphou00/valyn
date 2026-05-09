@@ -78,11 +78,25 @@ const de: ReplyStrings = {
 const dictionaries: Record<Language, ReplyStrings> = { en, fr, de };
 
 export const t = (language: string): ReplyStrings =>
-    dictionaries[(language as Language) in dictionaries ? (language as Language) : "en"];
+    dictionaries[
+        (language as Language) in dictionaries ? (language as Language) : "en"
+    ];
 
 // WISMO detection keywords per spec §3, expanded by language.
 export const WISMO_KEYWORDS: Record<Language, string[]> = {
     en: ["where is my order", "tracking", "delivery", "shipped", "shipping"],
-    fr: ["où est ma commande", "ou est ma commande", "suivi", "colis", "livraison", "commande"],
-    de: ["wo ist meine bestellung", "sendungsverfolgung", "lieferung", "versand"],
+    fr: [
+        "où est ma commande",
+        "ou est ma commande",
+        "suivi",
+        "colis",
+        "livraison",
+        "commande",
+    ],
+    de: [
+        "wo ist meine bestellung",
+        "sendungsverfolgung",
+        "lieferung",
+        "versand",
+    ],
 };

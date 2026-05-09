@@ -2,10 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { decrypt } from "@/lib/crypto";
 import { verifySmtpConnection } from "@/lib/email";
 import logger from "@/lib/logger";
-import {
-    getShopFromRequest,
-    SessionTokenError,
-} from "@/lib/shopify-session";
+import { getShopFromRequest, SessionTokenError } from "@/lib/shopify-session";
 
 // Smoke-tests the SMTP credentials saved in Settings without sending an email.
 // nodemailer.verify() opens the connection + authenticates, then closes.

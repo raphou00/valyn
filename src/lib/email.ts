@@ -42,7 +42,9 @@ const sendEmail = async (
 
 export default sendEmail;
 
-export const verifySmtpConnection = async (smtp: ShopSmtpConfig): Promise<void> => {
+export const verifySmtpConnection = async (
+    smtp: ShopSmtpConfig
+): Promise<void> => {
     const transporter = nodemailer.createTransport({
         host: smtp.host,
         port: smtp.port,

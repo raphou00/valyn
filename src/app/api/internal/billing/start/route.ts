@@ -1,10 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import db from "@/lib/db";
 import { createAppSubscription } from "@/lib/billing";
-import {
-    getShopFromRequest,
-    SessionTokenError,
-} from "@/lib/shopify-session";
+import { getShopFromRequest, SessionTokenError } from "@/lib/shopify-session";
 
 export async function POST(req: NextRequest) {
     let shop;

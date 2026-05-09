@@ -5,7 +5,7 @@ const API_VERSION = "2024-10";
 
 type GqlResponse<T> = { data?: T; errors?: { message: string }[] };
 
-const adminGql = async <T,>(
+const adminGql = async <T>(
     shopDomain: string,
     accessToken: string,
     query: string,
@@ -116,9 +116,7 @@ export const fetchAppSubscription = async (
     subscriptionGid: string
 ): Promise<FetchedSubscription | null> => {
     const data = await adminGql<{
-        node:
-            | (FetchedSubscription & { __typename: "AppSubscription" })
-            | null;
+        node: (FetchedSubscription & { __typename: "AppSubscription" }) | null;
     }>(
         shopDomain,
         accessToken,

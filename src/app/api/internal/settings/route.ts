@@ -2,10 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import db from "@/lib/db";
 import { encrypt } from "@/lib/crypto";
-import {
-    getShopFromRequest,
-    SessionTokenError,
-} from "@/lib/shopify-session";
+import { getShopFromRequest, SessionTokenError } from "@/lib/shopify-session";
 
 const PatchBody = z.object({
     autoReplyEnabled: z.boolean().optional(),

@@ -65,12 +65,21 @@ const BillingBanner: React.FC<Props> = ({ status }) => {
                 Includes a 14-day free trial.
             </p>
             <div style={{ marginTop: 12 }}>
-                <Button onClick={onSubscribe} loading={loading} variant="primary">
+                <Button
+                    onClick={onSubscribe}
+                    loading={loading}
+                    variant="primary"
+                >
                     {status === "PENDING" ? "Resume approval" : "Subscribe"}
                 </Button>
             </div>
             {error && (
-                <p style={{ marginTop: 8, color: "var(--p-color-text-critical)" }}>
+                <p
+                    style={{
+                        marginTop: 8,
+                        color: "var(--p-color-text-critical)",
+                    }}
+                >
                     {error}
                 </p>
             )}

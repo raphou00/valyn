@@ -55,9 +55,10 @@ const SettingsForm: React.FC = () => {
     const [saved, setSaved] = useState(false);
     const [s, setS] = useState<SettingsDTO | null>(null);
     const [smtpPass, setSmtpPass] = useState("");
-    const [smtpTest, setSmtpTest] = useState<
-        { ok: boolean; message?: string } | null
-    >(null);
+    const [smtpTest, setSmtpTest] = useState<{
+        ok: boolean;
+        message?: string;
+    } | null>(null);
     const [smtpTesting, setSmtpTesting] = useState(false);
 
     useEffect(() => {
@@ -94,7 +95,10 @@ const SettingsForm: React.FC = () => {
             const res = await authedFetch("/api/internal/smtp/test", {
                 method: "POST",
             });
-            const data = (await res.json()) as { ok: boolean; message?: string };
+            const data = (await res.json()) as {
+                ok: boolean;
+                message?: string;
+            };
             setSmtpTest(data);
         } catch (e) {
             setSmtpTest({ ok: false, message: (e as Error).message });
@@ -328,7 +332,9 @@ const SettingsForm: React.FC = () => {
                                     }
                                     onDismiss={() => setSmtpTest(null)}
                                 >
-                                    {smtpTest.message && <p>{smtpTest.message}</p>}
+                                    {smtpTest.message && (
+                                        <p>{smtpTest.message}</p>
+                                    )}
                                 </Banner>
                             )}
                         </FormLayout>

@@ -44,7 +44,9 @@ export async function GET(req: NextRequest) {
             data: {
                 subscriptionStatus: sub.status,
                 currentPeriodEnd:
-                    sub.currentPeriodEnd ? new Date(sub.currentPeriodEnd) : null,
+                    sub.currentPeriodEnd ?
+                        new Date(sub.currentPeriodEnd)
+                    :   null,
                 trialEndsOn:
                     sub.trialDays > 0 && sub.createdAt ?
                         new Date(

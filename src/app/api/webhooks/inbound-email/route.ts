@@ -40,7 +40,10 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: false, reason: "no key" });
     }
 
-    const parsed = await fetchAndParseEmail(env.INBOUND_EMAIL_BUCKET, objectKey);
+    const parsed = await fetchAndParseEmail(
+        env.INBOUND_EMAIL_BUCKET,
+        objectKey
+    );
 
     const recipients = sesEvent.receipt?.recipients ?? [];
     const shopId = recipients

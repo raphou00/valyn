@@ -4,7 +4,7 @@ const API_VERSION = "2024-10";
 
 type GqlResponse<T> = { data?: T; errors?: { message: string }[] };
 
-const adminGql = async <T,>(
+const adminGql = async <T>(
     shopDomain: string,
     accessToken: string,
     query: string,
@@ -81,9 +81,7 @@ const normalize = (o: RawOrder): WismoOrder => {
         fulfillmentStatus: o.displayFulfillmentStatus,
         financialStatus: o.displayFinancialStatus,
         tracking:
-            t ?
-                { number: t.number, url: t.url, company: t.company }
-            :   null,
+            t ? { number: t.number, url: t.url, company: t.company } : null,
     };
 };
 
