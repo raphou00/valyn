@@ -1,9 +1,6 @@
 encryptionsalt: v1:YcHWazyF+68=:v1:GIGiMhVQFOT0P90l:cpph+ul+QZwQW3bDMhkoysJzo3Czow==
 config:
     aws:region: us-east-1
-    inbound:domain: inbound.example.com
-    inbound:zoneName: example.com
-    inbound:webhookUrl: https://example.com/api/webhooks/inbound-email
-# Everything else (Shopify keys, Render API key, Render service id,
-# DATABASE_URL, SMTP_CREDS_KEY, APP_URL) is read from the repo-root .env by
-# aws/index.ts via dotenv. Local-only deploys.
+    inbound:domain: inbound.getvalyn.com
+    inbound:zoneName: getvalyn.com
+    inbound:webhookUrl: https://getvalyn.com/api/webhooks/inbound-email

@@ -129,12 +129,30 @@ export const processInboundEmail = async (
     const subject = parsed.subject ?? "";
     const bodyText = parsed.text ?? "";
     const sender = senderAddress(parsed);
+    const inboundMessageId = parsed.messageId ?? null;
+
+    // Idempotency: SNS retries on 5xx + the same SES delivery can be
+    // re-published. Bail if we've already processed this Message-ID.
+    if (inboundMessageId) {
+        const existing = await db.emailLog.findUnique({
+            where: { inboundMessageId },
+            select: { id: true },
+        });
+        if (existing) {
+            logger.info("inbound: duplicate skipped", {
+                shopId,
+                inboundMessageId,
+            });
+            return;
+        }
+    }
 
     const intent = detectIntent(subject, bodyText);
 
     const log = await db.emailLog.create({
         data: {
             shopId: shop.id,
+            inboundMessageId,
             senderEmail: sender,
             subject,
             body: bodyText,
@@ -210,25 +228,25 @@ export const processInboundEmail = async (
         identified.multipleRecent
     );
 
-    const tr = t(language);
     const greeting = shop.settings.greeting;
     const signature = shop.settings.signature;
     const preview = body.split("\n")[0] ?? "";
 
     try {
-        const refs = parsed.messageId ? [parsed.messageId] : undefined;
+        const headers =
+            inboundMessageId ?
+                {
+                    "In-Reply-To": inboundMessageId,
+                    References: inboundMessageId,
+                }
+            :   undefined;
         await sendEmail(
             smtp,
             sender,
             replySubject,
             `${greeting}\n\n${body}\n\n${signature}`,
             createElement(WismoReply, { preview, greeting, body, signature }),
-            refs ?
-                {
-                    "In-Reply-To": parsed.messageId!,
-                    References: refs.join(" "),
-                }
-            :   undefined
+            headers
         );
 
         await db.emailLog.update({
@@ -240,7 +258,6 @@ export const processInboundEmail = async (
                 repliedAt: new Date(),
             },
         });
-        void tr;
     } catch (err) {
         await db.emailLog.update({
             where: { id: log.id },

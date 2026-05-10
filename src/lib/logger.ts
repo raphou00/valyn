@@ -1,4 +1,4 @@
-// One-line JSON to stdout/stderr so Render's log search can filter by field.
+// One-line JSON to stdout/stderr so Vercel's log search can filter by field.
 // Use in route handlers and the WISMO pipeline. Replace bare console.* calls.
 
 type Level = "info" | "warn" | "error";

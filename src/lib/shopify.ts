@@ -1,6 +1,7 @@
 import "@shopify/shopify-api/adapters/node";
 import { shopifyApi, ApiVersion } from "@shopify/shopify-api";
 import env from "./env";
+export { SHOP_REGEX, isValidShop } from "./shopify-domain";
 
 const shopify = shopifyApi({
     apiKey: env.SHOPIFY_API_KEY,
@@ -12,8 +13,3 @@ const shopify = shopifyApi({
 });
 
 export default shopify;
-
-export const SHOP_REGEX = /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/i;
-
-export const isValidShop = (shop: string | null | undefined): shop is string =>
-    typeof shop === "string" && SHOP_REGEX.test(shop);

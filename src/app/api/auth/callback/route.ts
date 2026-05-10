@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import db from "@/lib/db";
 import env from "@/lib/env";
-import { isValidShop } from "@/lib/shopify";
+import logger from "@/lib/logger";
+import { isValidShop } from "@/lib/shopify-domain";
 
 const verifyOAuthHmac = (params: URLSearchParams): boolean => {
     const provided = params.get("hmac");
@@ -23,36 +24,53 @@ const verifyOAuthHmac = (params: URLSearchParams): boolean => {
     return a.length === b.length && timingSafeEqual(a, b);
 };
 
-const MANDATORY_WEBHOOKS = [
-    "app/uninstalled",
-    "app_subscriptions/update",
-    "customers/data_request",
-    "customers/redact",
-    "shop/redact",
-];
+// app/uninstalled and app_subscriptions/update are app-level webhooks we
+// register at install. The GDPR mandatory webhooks (customers/data_request,
+// customers/redact, shop/redact) are configured ONCE in the Partners
+// dashboard and fired by Shopify across all shops — don't re-register here.
+const APP_WEBHOOKS = ["app/uninstalled", "app_subscriptions/update"];
 
-const registerWebhooks = async (shop: string, accessToken: string) => {
+const registerWebhook = async (
+    shop: string,
+    accessToken: string,
+    topic: string
+) => {
     const callbackUrl = `${env.SHOPIFY_APP_URL}/api/webhooks/shopify`;
-
-    await Promise.all(
-        MANDATORY_WEBHOOKS.map((topic) =>
-            fetch(`https://${shop}/admin/api/2024-10/webhooks.json`, {
+    try {
+        const res = await fetch(
+            `https://${shop}/admin/api/2024-10/webhooks.json`,
+            {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-Shopify-Access-Token": accessToken,
                 },
                 body: JSON.stringify({
-                    webhook: {
-                        topic,
-                        address: callbackUrl,
-                        format: "json",
-                    },
+                    webhook: { topic, address: callbackUrl, format: "json" },
                 }),
-            })
-        )
-    );
+            }
+        );
+        // Re-installs return 422 "Address for this topic has already been
+        // taken" — that's success in our world. Log other failures and move
+        // on; the app should not block install on registration glitches.
+        if (!res.ok && res.status !== 422) {
+            logger.warn("webhook registration failed", {
+                shop,
+                topic,
+                status: res.status,
+            });
+        }
+    } catch (err) {
+        logger.warn("webhook registration threw", {
+            shop,
+            topic,
+            error: (err as Error).message,
+        });
+    }
 };
+
+const registerWebhooks = (shop: string, accessToken: string) =>
+    Promise.all(APP_WEBHOOKS.map((t) => registerWebhook(shop, accessToken, t)));
 
 export async function GET(req: NextRequest) {
     const params = req.nextUrl.searchParams;
@@ -114,13 +132,13 @@ export async function GET(req: NextRequest) {
         },
     });
 
-    // Per-shop inbound address. Set after the Shop row exists so we have the id.
-    if (!shopRow.id) throw new Error("shop upsert failed");
-    await db.settings.update({
+    // Per-shop inbound address. Use upsert in case the Shop existed without
+    // Settings (rare, but possible after schema migrations).
+    const inboundAddress = `wismo+${shopRow.id}@${env.INBOUND_EMAIL_DOMAIN}`;
+    await db.settings.upsert({
         where: { shopId: shopRow.id },
-        data: {
-            inboundAddress: `wismo+${shopRow.id}@${env.INBOUND_EMAIL_DOMAIN}`,
-        },
+        create: { shopId: shopRow.id, inboundAddress },
+        update: { inboundAddress },
     });
 
     await registerWebhooks(shop, access_token);

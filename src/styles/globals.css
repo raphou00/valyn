@@ -1,6 +1,19 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+    themes: light --default;
+}
 
 html,
 body {
     height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #f8fafc;
+}
+
+::selection {
+    background: #bfdbfe;
+    color: #0f172a;
 }

@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import type { NextRequest } from "next/server";
 import db from "./db";
 import env from "./env";
-import { isValidShop } from "./shopify";
+import { isValidShop } from "./shopify-domain";
 
 // Shopify session tokens (App Bridge `idToken()`) are HS256 JWTs signed with
 // the app's API secret. Spec: https://shopify.dev/docs/apps/auth/session-tokens

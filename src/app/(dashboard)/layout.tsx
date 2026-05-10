@@ -10,7 +10,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <AppProvider i18n={enTranslations}>
             <NavMenu>
-                <Link href="/" rel="home">
+                <Link href="/dashboard" rel="home">
                     Dashboard
                 </Link>
                 <Link href="/settings">Settings</Link>

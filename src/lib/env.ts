@@ -26,7 +26,6 @@ export default createEnv({
 
         SMTP_CREDS_KEY: z.string().min(1),
     },
-    client: {},
     runtimeEnv: {
         NODE_ENV: process.env.NODE_ENV,
         APP_URL: process.env.APP_URL,

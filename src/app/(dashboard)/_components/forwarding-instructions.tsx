@@ -101,7 +101,7 @@ const ForwardingInstructions: React.FC<Props> = ({ inboundAddress }) => {
             </List.Item>
             <List.Item>
                 Need help?{" "}
-                <Link url="mailto:support@example.com">Email support</Link>.
+                <Link url="mailto:support@getvalyn.com">Email support</Link>.
             </List.Item>
         </List>,
     ];
