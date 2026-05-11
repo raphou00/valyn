@@ -18,8 +18,8 @@
         "db:push": "prisma db push",
         "db:studio": "prisma studio",
         "db:seed": "prisma db seed",
-        "deploy": "pulumi login s3://valyn-pulumi-state && pulumi up",
-        "destroy": "pulumi login s3://valyn-pulumi-state && pulumi down",
+        "deploy": "cd aws && pulumi login s3://valyn-pulumi-state && pulumi up",
+        "destroy": "cd aws && pulumi login s3://valyn-pulumi-state && pulumi down",
         "clean": "rm -rf .next/ .open-next/ node_modules/ bun.lockb tsconfig.tsbuildinfo next-env.d.ts"
     },
     "dependencies": {
@@ -34,6 +34,8 @@
         "@shopify/polaris": "^13.9.5",
         "@shopify/shopify-api": "^13.0.0",
         "@t3-oss/env-nextjs": "^0.13.11",
+        "@vercel/analytics": "^2.0.1",
+        "@vercel/speed-insights": "^2.0.0",
         "axios": "^1.13.5",
         "caniuse-lite": "^1.0.30001770",
         "clsx": "^2.1.1",

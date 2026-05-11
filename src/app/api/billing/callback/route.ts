@@ -1,8 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import db from "@/lib/db";
 import env from "@/lib/env";
-import { isValidShop } from "@/lib/shopify";
+import { isValidShop } from "@/lib/shopify-domain";
 import { fetchAppSubscription } from "@/lib/billing";
+import { isPlanKey } from "@/config/billing";
 
 export async function GET(req: NextRequest) {
     const params = req.nextUrl.searchParams;
@@ -38,11 +39,15 @@ export async function GET(req: NextRequest) {
         shop.subscriptionId
     );
 
+    const planFromQuery = params.get("plan");
+    const planKey = isPlanKey(planFromQuery) ? planFromQuery : shop.planKey;
+
     if (sub) {
         await db.shop.update({
             where: { id: shop.id },
             data: {
                 subscriptionStatus: sub.status,
+                planKey,
                 currentPeriodEnd:
                     sub.currentPeriodEnd ?
                         new Date(sub.currentPeriodEnd)

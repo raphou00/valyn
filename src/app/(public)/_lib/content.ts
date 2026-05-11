@@ -566,7 +566,7 @@ export const legalSections: Record<
             {
                 title: "Payment terms",
                 paragraphs: [
-                    "Subscription billing is handled by Shopify. The launch plan is USD 19 per month with a 14-day free trial unless the Shopify listing states otherwise.",
+                    "Subscription billing is handled by Shopify. Starter is USD 19 per month, Pro is USD 49 per month, each with a 7-day free trial unless the Shopify listing states otherwise.",
                 ],
             },
             {

@@ -3,110 +3,251 @@ import Link from "next/link";
 import {
     Container,
     FinalCta,
-    PageHero,
+    PageHead,
+    PublicFooter,
+    PublicHeader,
     Section,
-    SectionIntro,
+    SectionHead,
 } from "../_components/site-shell";
-import { marketingMetadata } from "../_lib/metadata";
+import { Check } from "../_components/icons";
+import { INSTALL_HREF, marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Pricing - Valyn Shopify Order Support Automation",
+    title: "Pricing — Valyn",
     description:
-        "Simple Valyn pricing for Shopify merchants. Includes a 14-day free trial, no setup call, and cancel anytime billing through Shopify.",
+        "Two plans for Valyn — Starter $19/mo and Pro $49/mo. 7-day free trial, cancel anytime.",
     path: "/pricing",
 });
 
-const included = [
-    "WISMO automation",
-    "Email processing",
-    "Shopify order lookup",
-    "Reply templates",
-    "Multi-language replies",
-    "Dashboard logs",
-    "SMTP sending through your own provider",
+type Plan = {
+    name: string;
+    price: string;
+    desc: string;
+    feats: { text: string; emphasis?: string }[];
+    featured?: boolean;
+};
+
+const plans: Plan[] = [
+    {
+        name: "Starter",
+        price: "$19",
+        desc: "For small stores getting started with automation.",
+        feats: [
+            { emphasis: "Up to 500", text: "processed emails/month" },
+            { text: "WISMO detection (English only)" },
+            { text: "Shopify order lookup & auto-reply" },
+            { text: "Order matching by email or order number" },
+            { text: "Fallback reply when order is not found" },
+            { text: "1 reply template + basic signature" },
+            { text: "Email processing logs (7 days retention)" },
+            { text: "Standard email support" },
+        ],
+    },
+    {
+        name: "Pro",
+        price: "$49",
+        desc: "For growing stores handling larger support volume.",
+        feats: [
+            { emphasis: "Up to 3,000", text: "processed emails/month" },
+            { text: "WISMO detection in EN, FR, DE" },
+            { text: "Multiple reply templates" },
+            { text: "Reply tone control (friendly / neutral / formal)" },
+            { text: "Custom signatures" },
+            { text: "Email processing logs (90 days retention)" },
+            { text: "One-click retry for failed replies" },
+            { text: "Pause automation & manual review mode" },
+            { text: "Priority email support" },
+        ],
+        featured: true,
+    },
 ];
+
+const comparisonRows: [string, string, string][] = [
+    ["Processed emails / month", "500", "3,000"],
+    ["WISMO detection", "✓", "✓"],
+    ["Shopify order lookup", "✓", "✓"],
+    ["Languages", "EN", "EN, FR, DE"],
+    ["Reply templates", "1", "Multiple"],
+    ["Reply tone control", "—", "✓"],
+    ["Custom signature", "Basic", "Custom"],
+    ["Log retention", "7 days", "90 days"],
+    ["One-click retry", "—", "✓"],
+    ["Manual review mode", "—", "✓"],
+    ["Pause automation", "✓", "✓"],
+    ["Support", "Email", "Priority email"],
+];
+
+const faqs = [
+    {
+        q: "What counts as a “processed email”?",
+        a: "Every email Valyn receives counts as one — whether it's classified as WISMO, marked as non-WISMO, or sent back for manual review. Replies don't count separately. Notifications you receive from Shopify itself don't count.",
+        open: true,
+    },
+    {
+        q: "What happens if I exceed my plan limit?",
+        a: "Nothing breaks. We'll notify you in the dashboard so you can upgrade or wait for the next billing cycle. Overage isn't silently throttled.",
+    },
+    {
+        q: "Is there a free plan?",
+        a: "Every plan comes with a 7-day free trial. We don't offer a perpetual free tier — running inbound mail infrastructure costs money, and we'd rather charge fairly than nickel-and-dime you with usage limits.",
+    },
+    {
+        q: "How do I cancel?",
+        a: "Uninstall Valyn from your Shopify admin. Billing stops immediately. Your data is retained for 30 days in case you want to come back, then permanently deleted.",
+    },
+    {
+        q: "Can I switch between plans?",
+        a: "Yes — upgrade or downgrade any time from the embedded billing panel. Pro-rated through Shopify.",
+    },
+];
+
+const renderCell = (text: string) =>
+    text === "✓" ?
+        <span className="check">✓</span>
+    : text === "—" ?
+        <span className="dash">—</span>
+    :   text;
 
 const Page = () => (
     <>
-        <PageHero
+        <PublicHeader active="pricing" />
+
+        <PageHead
             eyebrow="Pricing"
-            title="Simple pricing for focused order support automation."
-            description="Start with the launch plan, test it during the free trial, and cancel anytime from Shopify."
+            title={
+                <>
+                    One job, done well.
+                    <br />
+                    Two plans, no surprises.
+                </>
+            }
+            description="7-day free trial on every plan. No credit card required to install. Cancel anytime from your Shopify admin."
         />
-        <Section className="bg-base-200">
+
+        <Section style={{ paddingTop: 48 }}>
             <Container>
-                <SectionIntro title="One launch plan. No setup call required." />
-                <div className="mx-auto max-w-2xl">
-                    <div className="card border-2 border-primary bg-base-100 shadow-xl">
-                        <div className="card-body">
-                            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                                <div>
-                                    <div className="badge badge-primary">
-                                        14-day free trial
-                                    </div>
-                                    <h2 className="mt-4 text-3xl font-bold text-slate-950">
-                                        Pro
-                                    </h2>
-                                    <p className="mt-2 text-slate-600">
-                                        For Shopify stores that want to reduce
-                                        repetitive tracking emails.
-                                    </p>
+                <div
+                    className="pricing-grid"
+                    style={{
+                        gridTemplateColumns: "repeat(2, 1fr)",
+                        maxWidth: 880,
+                        margin: "0 auto",
+                    }}
+                >
+                    {plans.map((plan) => (
+                        <div
+                            className={`plan${plan.featured ? " featured" : ""}`}
+                            key={plan.name}
+                        >
+                            {plan.featured && (
+                                <span className="badge">Most popular</span>
+                            )}
+                            <div>
+                                <h3>{plan.name}</h3>
+                                <div className="price" style={{ marginTop: 8 }}>
+                                    {plan.price}
+                                    <span>/month</span>
                                 </div>
-                                <div className="text-left sm:text-right">
-                                    <p className="text-4xl font-bold text-slate-950">
-                                        $19
-                                    </p>
-                                    <p className="text-sm text-slate-500">
-                                        per month
-                                    </p>
-                                </div>
+                                <p className="desc" style={{ marginTop: 8 }}>
+                                    {plan.desc}
+                                </p>
                             </div>
-                            <div className="divider" />
-                            <ul className="grid gap-3">
-                                {included.map((item) => (
-                                    <li
-                                        className="flex items-center gap-3"
-                                        key={item}
-                                    >
-                                        <span className="badge badge-success badge-sm" />
-                                        <span>{item}</span>
+                            <ul>
+                                {plan.feats.map((f, i) => (
+                                    <li key={i}>
+                                        <Check />
+                                        <div>
+                                            {f.emphasis && (
+                                                <strong>{f.emphasis} </strong>
+                                            )}
+                                            {f.text}
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
-                            <div className="card-actions mt-6">
-                                <Link
-                                    className="btn btn-primary btn-block"
-                                    href="/#install"
-                                >
-                                    Install on Shopify
-                                </Link>
-                            </div>
+                            <Link
+                                href={INSTALL_HREF}
+                                className={
+                                    plan.featured ?
+                                        "btn btn-green"
+                                    :   "btn btn-ghost"
+                                }
+                            >
+                                Start free trial
+                            </Link>
                         </div>
-                    </div>
+                    ))}
                 </div>
+                <p
+                    style={{
+                        textAlign: "center",
+                        marginTop: 32,
+                        color: "var(--muted)",
+                        fontSize: 14,
+                    }}
+                >
+                    Both plans billed monthly through Shopify. Switch tiers
+                    any time from your Valyn dashboard.
+                </p>
             </Container>
         </Section>
-        <Section className="bg-base-100">
+
+        <Section bg="soft">
             <Container>
-                <div className="grid gap-4 md:grid-cols-3">
-                    {[
-                        "Free trial included",
-                        "No setup call required",
-                        "Cancel anytime",
-                    ].map((note) => (
-                        <div
-                            className="rounded-box border border-base-300 bg-base-100 p-6 text-center shadow-sm"
-                            key={note}
-                        >
-                            <p className="font-semibold text-slate-800">
-                                {note}
-                            </p>
-                        </div>
+                <SectionHead
+                    eyebrow="Full comparison"
+                    title="What's in each plan."
+                />
+                <table className="compare-table">
+                    <thead>
+                        <tr>
+                            <th style={{ width: "40%" }}>Feature</th>
+                            <th>Starter</th>
+                            <th className="col-us">Pro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {comparisonRows.map((row) => (
+                            <tr key={row[0]}>
+                                <td className="feature">{row[0]}</td>
+                                <td>{renderCell(row[1])}</td>
+                                <td>{renderCell(row[2])}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </Container>
+        </Section>
+
+        <Section>
+            <Container narrow>
+                <SectionHead
+                    eyebrow="Pricing questions"
+                    title="Honest answers."
+                />
+                <div className="faq">
+                    {faqs.map((item) => (
+                        <details key={item.q} open={item.open}>
+                            <summary>
+                                {item.q}
+                                <span className="ico" />
+                            </summary>
+                            <div className="answer">{item.a}</div>
+                        </details>
                     ))}
                 </div>
             </Container>
         </Section>
-        <FinalCta />
+
+        <FinalCta
+            title="7 days, no card, no commitment."
+            description="Install Valyn, forward one email, see it work. If it doesn't fit, uninstall and you owe nothing."
+            primaryLabel="Install on Shopify"
+            secondaryHref="/demo"
+            secondaryLabel="View demo first"
+        />
+
+        <PublicFooter />
     </>
 );
 

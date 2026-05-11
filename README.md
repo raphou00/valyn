@@ -107,7 +107,7 @@ One-time setup outside Pulumi:
 - [ ] Tagline ≤100 chars.
 - [ ] Description ≤500 chars.
 - [ ] Pricing in the listing must match `src/config/billing.ts`
-      (currently $19/mo USD, 14-day trial).
+      (currently Starter $19/mo and Pro $49/mo USD, 7-day trial).
 
 ### Pre-submission smoke test
 
@@ -128,7 +128,7 @@ One-time setup outside Pulumi:
 
 - [ ] **Request SES production access** in the AWS console (sandbox
       limits inbound to verified addresses).
-      *Outbound* SES is not used — replies go via merchant SMTP — but
+      _Outbound_ SES is not used — replies go via merchant SMTP — but
       you still need production for inbound to accept mail from any
       sender.
 - [ ] Verify `inbound.getvalyn.com` MX records resolve to

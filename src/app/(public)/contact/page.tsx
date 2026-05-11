@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import {
     Container,
     FinalCta,
-    PageHero,
+    PageHead,
+    PublicFooter,
+    PublicHeader,
     Section,
 } from "../_components/site-shell";
-import { SUPPORT_EMAIL, marketingMetadata } from "../_lib/metadata";
+import { marketingMetadata, SUPPORT_EMAIL } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
     title: "Contact Valyn",
@@ -16,90 +18,169 @@ export const metadata: Metadata = marketingMetadata({
 
 const Page = () => (
     <>
-        <PageHero
+        <PublicHeader />
+        <PageHead
             eyebrow="Contact"
             title="Talk to Valyn support."
             description="Questions about installation, setup, billing, privacy, or Shopify App Store review support can start here."
         />
-        <Section className="bg-base-200">
+        <Section bg="soft">
             <Container>
-                <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-                    <div className="space-y-5">
-                        <div className="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
-                            <h2 className="text-2xl font-bold text-slate-950">
-                                Support email
-                            </h2>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "0.8fr 1.2fr",
+                        gap: 32,
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 18,
+                        }}
+                    >
+                        <div className="card">
+                            <h3>Support email</h3>
                             <a
-                                className="link link-primary mt-3 inline-block"
                                 href={`mailto:${SUPPORT_EMAIL}`}
+                                style={{
+                                    marginTop: 12,
+                                    display: "inline-block",
+                                    color: "var(--green-deep)",
+                                    fontWeight: 540,
+                                }}
                             >
                                 {SUPPORT_EMAIL}
                             </a>
                         </div>
-                        <div className="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
-                            <h2 className="text-2xl font-bold text-slate-950">
-                                Response expectations
-                            </h2>
-                            <p className="mt-3 text-slate-700">
+                        <div className="card">
+                            <h3>Response expectations</h3>
+                            <p style={{ marginTop: 12 }}>
                                 Merchant support requests are reviewed during
                                 business hours. Urgent privacy or security
                                 questions should use the support email above.
                             </p>
                         </div>
-                        <div className="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
-                            <h2 className="text-2xl font-bold text-slate-950">
-                                Company and legal identity
-                            </h2>
-                            <p className="mt-3 text-slate-700">
-                                Company legal details should be finalized before
-                                public launch and Shopify App Store submission.
+                        <div className="card">
+                            <h3>Company &amp; legal identity</h3>
+                            <p style={{ marginTop: 12 }}>
+                                Company legal details should be finalized
+                                before public launch and Shopify App Store
+                                submission.
                             </p>
                         </div>
                     </div>
                     <form
                         action={`mailto:${SUPPORT_EMAIL}`}
-                        className="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm"
-                        encType="text/plain"
                         method="post"
+                        encType="text/plain"
+                        className="card"
                     >
-                        <h2 className="text-2xl font-bold text-slate-950">
-                            Contact form
-                        </h2>
-                        <div className="mt-6 grid gap-4">
-                            <label className="form-control">
-                                <span className="label-text">Name</span>
+                        <h3>Contact form</h3>
+                        <div
+                            style={{
+                                marginTop: 18,
+                                display: "grid",
+                                gap: 14,
+                            }}
+                        >
+                            <label
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 6,
+                                    fontSize: 14,
+                                    color: "var(--ink-2)",
+                                }}
+                            >
+                                <span>Name</span>
                                 <input
-                                    className="input input-bordered"
                                     name="name"
                                     required
+                                    style={{
+                                        padding: "10px 12px",
+                                        border: "1px solid var(--line)",
+                                        borderRadius: 8,
+                                        fontFamily: "inherit",
+                                        fontSize: 14,
+                                    }}
                                 />
                             </label>
-                            <label className="form-control">
-                                <span className="label-text">Email</span>
+                            <label
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 6,
+                                    fontSize: 14,
+                                    color: "var(--ink-2)",
+                                }}
+                            >
+                                <span>Email</span>
                                 <input
-                                    className="input input-bordered"
                                     name="email"
-                                    required
                                     type="email"
+                                    required
+                                    style={{
+                                        padding: "10px 12px",
+                                        border: "1px solid var(--line)",
+                                        borderRadius: 8,
+                                        fontFamily: "inherit",
+                                        fontSize: 14,
+                                    }}
                                 />
                             </label>
-                            <label className="form-control">
-                                <span className="label-text">Store URL</span>
+                            <label
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 6,
+                                    fontSize: 14,
+                                    color: "var(--ink-2)",
+                                }}
+                            >
+                                <span>Store URL</span>
                                 <input
-                                    className="input input-bordered"
                                     name="store"
                                     placeholder="your-store.myshopify.com"
+                                    style={{
+                                        padding: "10px 12px",
+                                        border: "1px solid var(--line)",
+                                        borderRadius: 8,
+                                        fontFamily: "inherit",
+                                        fontSize: 14,
+                                    }}
                                 />
                             </label>
-                            <label className="form-control">
-                                <span className="label-text">Message</span>
+                            <label
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 6,
+                                    fontSize: 14,
+                                    color: "var(--ink-2)",
+                                }}
+                            >
+                                <span>Message</span>
                                 <textarea
-                                    className="textarea textarea-bordered min-h-36"
                                     name="message"
                                     required
+                                    rows={6}
+                                    style={{
+                                        padding: "10px 12px",
+                                        border: "1px solid var(--line)",
+                                        borderRadius: 8,
+                                        fontFamily: "inherit",
+                                        fontSize: 14,
+                                        resize: "vertical",
+                                    }}
                                 />
                             </label>
-                            <button className="btn btn-primary" type="submit">
+                            <button
+                                type="submit"
+                                className="btn btn-green"
+                                style={{ justifyContent: "center" }}
+                            >
                                 Send message
                             </button>
                         </div>
@@ -108,6 +189,7 @@ const Page = () => (
             </Container>
         </Section>
         <FinalCta />
+        <PublicFooter />
     </>
 );
 

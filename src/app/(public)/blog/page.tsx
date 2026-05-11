@@ -2,16 +2,18 @@ import type { Metadata } from "next";
 import {
     Container,
     FinalCta,
-    PageHero,
+    PageHead,
+    PublicFooter,
+    PublicHeader,
     Section,
-    SectionIntro,
+    SectionHead,
 } from "../_components/site-shell";
 import { ListingGrid } from "../_components/content-page";
 import { blogPosts } from "../_lib/content";
 import { marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Valyn Blog - Shopify Support Automation Guides",
+    title: "Valyn Blog — Shopify support automation guides",
     description:
         "Guides on WISMO, Shopify support automation, order tracking emails, and customer support app selection.",
     path: "/blog",
@@ -20,18 +22,20 @@ export const metadata: Metadata = marketingMetadata({
 
 const Page = () => (
     <>
-        <PageHero
+        <PublicHeader />
+        <PageHead
             eyebrow="Blog"
             title="Practical guides for reducing Shopify support workload."
             description="Learn how to reduce repetitive tickets, improve tracking communication, and automate order-support emails carefully."
         />
-        <Section className="bg-base-200">
+        <Section bg="soft">
             <Container>
-                <SectionIntro title="Latest articles" />
+                <SectionHead title="Latest articles" />
                 <ListingGrid items={blogPosts} />
             </Container>
         </Section>
         <FinalCta />
+        <PublicFooter />
     </>
 );
 

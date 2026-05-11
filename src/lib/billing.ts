@@ -1,5 +1,5 @@
 import env from "./env";
-import { PLAN, isTestCharge } from "@/config/billing";
+import { PLANS, isTestCharge, type PlanKey } from "@/config/billing";
 
 const API_VERSION = "2024-10";
 
@@ -40,9 +40,13 @@ type CreateResult = {
 
 export const createAppSubscription = async (
     shopDomain: string,
-    accessToken: string
+    accessToken: string,
+    planKey: PlanKey
 ): Promise<{ confirmationUrl: string; subscriptionId: string }> => {
-    const returnUrl = `${env.SHOPIFY_APP_URL}/api/billing/callback?shop=${encodeURIComponent(shopDomain)}`;
+    const plan = PLANS[planKey];
+    // Include the chosen plan key in returnUrl so the callback can persist it
+    // before redirecting back into the embedded admin.
+    const returnUrl = `${env.SHOPIFY_APP_URL}/api/billing/callback?shop=${encodeURIComponent(shopDomain)}&plan=${planKey}`;
 
     const data = await adminGql<CreateResult>(
         shopDomain,
@@ -67,19 +71,19 @@ export const createAppSubscription = async (
             }
         }`,
         {
-            name: PLAN.name,
+            name: plan.name,
             returnUrl,
-            trialDays: PLAN.trialDays,
+            trialDays: plan.trialDays,
             test: isTestCharge,
             lineItems: [
                 {
                     plan: {
                         appRecurringPricingDetails: {
                             price: {
-                                amount: PLAN.amount,
-                                currencyCode: PLAN.currency,
+                                amount: plan.amount,
+                                currencyCode: plan.currency,
                             },
-                            interval: PLAN.interval,
+                            interval: plan.interval,
                         },
                     },
                 },

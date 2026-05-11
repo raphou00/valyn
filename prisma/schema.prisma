@@ -47,6 +47,7 @@ model Shop {
 
     subscriptionId     String?
     subscriptionStatus SubscriptionStatus?
+    planKey            String?
     trialEndsOn        DateTime?
     currentPeriodEnd   DateTime?
 

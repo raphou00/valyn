@@ -45,3 +45,4 @@ lambda/dist/
 
 # open-next build output
 .open-next
+.env*.local

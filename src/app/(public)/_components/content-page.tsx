@@ -2,9 +2,10 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import {
     Container,
-    FeatureCard,
     FinalCta,
-    PageHero,
+    PageHead,
+    PublicFooter,
+    PublicHeader,
     Section,
 } from "./site-shell";
 
@@ -14,32 +15,83 @@ export type TextSection = {
     bullets?: string[];
 };
 
+const slugify = (s: string) =>
+    s
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+
 export const ContentSections = ({ sections }: { sections: TextSection[] }) => (
-    <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
-        <article className="space-y-10">
+    <div
+        style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 280px",
+            gap: 40,
+        }}
+        className="content-layout"
+    >
+        <article style={{ maxWidth: 760 }}>
             {sections.map((section) => (
                 <section
-                    className="scroll-mt-24"
-                    id={section.title
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, "-")
-                        .replace(/(^-|-$)/g, "")}
                     key={section.title}
+                    id={slugify(section.title)}
+                    style={{ marginBottom: 36, scrollMarginTop: 96 }}
                 >
-                    <h2 className="text-2xl font-bold text-slate-950">
+                    <h2
+                        style={{
+                            fontSize: 28,
+                            marginBottom: 14,
+                            color: "var(--ink)",
+                        }}
+                    >
                         {section.title}
                     </h2>
-                    <div className="mt-4 space-y-4 text-lg leading-8 text-slate-700">
-                        {section.paragraphs?.map((paragraph) => (
-                            <p key={paragraph}>{paragraph}</p>
-                        ))}
-                    </div>
+                    {section.paragraphs?.map((p, i) => (
+                        <p
+                            key={i}
+                            style={{
+                                fontSize: 17,
+                                lineHeight: 1.65,
+                                color: "var(--ink-2)",
+                                marginTop: 12,
+                            }}
+                        >
+                            {p}
+                        </p>
+                    ))}
                     {section.bullets && (
-                        <ul className="mt-5 grid gap-3 text-slate-700">
-                            {section.bullets.map((bullet) => (
-                                <li className="flex gap-3" key={bullet}>
-                                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" />
-                                    <span>{bullet}</span>
+                        <ul
+                            style={{
+                                listStyle: "none",
+                                padding: 0,
+                                margin: "16px 0 0",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 10,
+                            }}
+                        >
+                            {section.bullets.map((b) => (
+                                <li
+                                    key={b}
+                                    style={{
+                                        display: "flex",
+                                        gap: 10,
+                                        alignItems: "flex-start",
+                                        fontSize: 16,
+                                        color: "var(--ink-2)",
+                                    }}
+                                >
+                                    <span
+                                        style={{
+                                            marginTop: 8,
+                                            width: 6,
+                                            height: 6,
+                                            borderRadius: "50%",
+                                            background: "var(--green)",
+                                            flexShrink: 0,
+                                        }}
+                                    />
+                                    <span>{b}</span>
                                 </li>
                             ))}
                         </ul>
@@ -47,20 +99,40 @@ export const ContentSections = ({ sections }: { sections: TextSection[] }) => (
                 </section>
             ))}
         </article>
-        <aside className="hidden lg:block">
-            <div className="sticky top-28 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                <p className="text-sm font-semibold uppercase text-primary">
+        <aside style={{ position: "relative" }}>
+            <div
+                style={{
+                    position: "sticky",
+                    top: 100,
+                    background: "var(--bg-soft)",
+                    borderRadius: 12,
+                    padding: 22,
+                }}
+            >
+                <p
+                    style={{
+                        fontSize: 12,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.06em",
+                        color: "var(--muted)",
+                        fontWeight: 540,
+                        marginBottom: 12,
+                    }}
+                >
                     On this page
                 </p>
-                <nav className="mt-3 grid gap-2 text-sm">
+                <nav
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 8,
+                    }}
+                >
                     {sections.map((section) => (
                         <a
-                            className="link-hover text-slate-600"
-                            href={`#${section.title
-                                .toLowerCase()
-                                .replace(/[^a-z0-9]+/g, "-")
-                                .replace(/(^-|-$)/g, "")}`}
                             key={section.title}
+                            href={`#${slugify(section.title)}`}
+                            style={{ fontSize: 14, color: "var(--ink-2)" }}
                         >
                             {section.title}
                         </a>
@@ -87,14 +159,16 @@ export const GenericContentPage = ({
     cta?: boolean;
 }) => (
     <>
-        <PageHero eyebrow={eyebrow} title={title} description={description} />
-        <Section className="bg-base-200">
+        <PublicHeader />
+        <PageHead eyebrow={eyebrow} title={title} description={description} />
+        <Section bg="soft">
             <Container>
                 <ContentSections sections={sections} />
                 {children}
             </Container>
         </Section>
         {cta && <FinalCta />}
+        <PublicFooter />
     </>
 );
 
@@ -106,15 +180,26 @@ export type ListingItem = {
 };
 
 export const ListingGrid = ({ items }: { items: ListingItem[] }) => (
-    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid-3">
         {items.map((item) => (
-            <Link className="group" href={item.href} key={item.href}>
-                <FeatureCard title={item.title} badge={item.badge}>
-                    <p>{item.description}</p>
-                    <p className="mt-4 font-semibold text-primary group-hover:underline">
-                        Learn more
-                    </p>
-                </FeatureCard>
+            <Link className="card" href={item.href} key={item.href}>
+                {item.badge && (
+                    <span className="kicker" style={{ marginBottom: 10 }}>
+                        {item.badge}
+                    </span>
+                )}
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <p
+                    style={{
+                        marginTop: 14,
+                        fontWeight: 540,
+                        fontSize: 14,
+                        color: "var(--green-deep)",
+                    }}
+                >
+                    Read →
+                </p>
             </Link>
         ))}
     </div>
@@ -125,25 +210,15 @@ export const FaqList = ({
 }: {
     items: { question: string; answer: string }[];
 }) => (
-    <div className="mx-auto max-w-4xl space-y-3">
-        {items.map((item, index) => (
-            <div
-                className="collapse collapse-arrow border border-base-300 bg-base-100"
-                key={item.question}
-            >
-                <input
-                    aria-label={item.question}
-                    defaultChecked={index === 0}
-                    name="faq"
-                    type="radio"
-                />
-                <div className="collapse-title text-lg font-semibold text-slate-950">
+    <div className="faq" style={{ maxWidth: 760, margin: "0 auto" }}>
+        {items.map((item, i) => (
+            <details key={item.question} open={i === 0}>
+                <summary>
                     {item.question}
-                </div>
-                <div className="collapse-content text-slate-700">
-                    <p>{item.answer}</p>
-                </div>
-            </div>
+                    <span className="ico" />
+                </summary>
+                <div className="answer">{item.answer}</div>
+            </details>
         ))}
     </div>
 );

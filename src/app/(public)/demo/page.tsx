@@ -1,81 +1,98 @@
 import type { Metadata } from "next";
 import {
     Container,
-    DashboardMockup,
     FinalCta,
-    PageHero,
+    PageHead,
+    PublicFooter,
+    PublicHeader,
     Section,
-    SectionIntro,
+    SectionHead,
 } from "../_components/site-shell";
+import DemoStage from "../_components/demo-stage";
+import { Mailbox, Search, Send } from "../_components/icons";
 import { marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Demo - See Valyn Reply to a Shopify WISMO Email",
+    title: "Demo — See Valyn handle a real WISMO email",
     description:
-        "See how Valyn detects a Where is my order email, matches a Shopify order, generates a reply, and logs the result.",
+        "See how Valyn detects a Shopify order tracking email, looks up the order, and replies in under 5 seconds.",
     path: "/demo",
 });
 
-const demoSteps = [
-    "Example customer email",
-    "Detected intent",
-    "Shopify order matched",
-    "Automatic reply generated",
-    "Merchant log created",
-];
-
 const Page = () => (
     <>
-        <PageHero
-            eyebrow="Demo"
-            title="See how a repetitive tracking email becomes an automatic reply."
-            description="This demo shows the product behavior without requiring installation."
+        <PublicHeader active="demo" />
+
+        <PageHead
+            eyebrow="Live demo"
+            title={
+                <>
+                    Watch Valyn handle one email,
+                    <br />
+                    start to finish.
+                </>
+            }
+            description="No signup. No install. Step through the real pipeline a Shopify merchant sees — from forwarded customer email to delivered reply."
         />
-        <Section className="bg-base-200">
+
+        <Section>
             <Container>
-                <SectionIntro title="Demo flow" />
-                <ul className="steps steps-vertical w-full lg:steps-horizontal">
-                    {demoSteps.map((step) => (
-                        <li className="step step-primary" key={step}>
-                            {step}
-                        </li>
-                    ))}
-                </ul>
+                <DemoStage />
             </Container>
         </Section>
-        <Section className="bg-base-100">
+
+        <Section bg="soft" style={{ paddingTop: 0 }}>
             <Container>
-                <div className="grid gap-6 lg:grid-cols-2">
-                    <div className="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
-                        <div className="badge badge-info">Customer email</div>
-                        <h2 className="mt-4 text-2xl font-bold text-slate-950">
-                            Where is my order?
-                        </h2>
-                        <p className="mt-4 text-lg leading-8 text-slate-700">
-                            Hi, I ordered last week and still have not received
-                            my package. My order number is #1042.
+                <SectionHead
+                    eyebrow="Under the hood"
+                    title="What happens between forward and reply."
+                />
+                <div className="grid-3">
+                    <div className="card">
+                        <div className="ico-box">
+                            <Mailbox />
+                        </div>
+                        <h3>SES inbound</h3>
+                        <p>
+                            Your forwarding address is an AWS SES route.
+                            Inbound MIME lands in S3, an SNS topic kicks off
+                            the pipeline.
                         </p>
                     </div>
-                    <div className="rounded-box border border-base-300 bg-slate-950 p-6 text-white shadow-sm">
-                        <div className="badge badge-success">
-                            Generated reply
+                    <div className="card">
+                        <div className="ico-box">
+                            <Search />
                         </div>
-                        <h2 className="mt-4 text-2xl font-bold">Re: #1042</h2>
-                        <p className="mt-4 text-lg leading-8 text-slate-200">
-                            Hi Sarah, your order #1042 is currently in transit.
-                            You can track it here: tracking link.
+                        <h3>Detect &amp; identify</h3>
+                        <p>
+                            Keyword classifier tags WISMO. Order lookup hits
+                            Shopify Admin GraphQL with order-number → email
+                            → recent-order priority.
+                        </p>
+                    </div>
+                    <div className="card">
+                        <div className="ico-box">
+                            <Send />
+                        </div>
+                        <h3>Reply via your SMTP</h3>
+                        <p>
+                            nodemailer signs and sends from your domain.
+                            Reply is logged with full envelope and links back
+                            to the source email.
                         </p>
                     </div>
                 </div>
             </Container>
         </Section>
-        <Section className="bg-base-200">
-            <Container>
-                <SectionIntro title="The merchant sees a log entry, not a black box." />
-                <DashboardMockup />
-            </Container>
-        </Section>
-        <FinalCta />
+
+        <FinalCta
+            title="Want this running on your store?"
+            description="Install Valyn and have your first auto-reply going out in under 5 minutes."
+            secondaryHref="/pricing"
+            secondaryLabel="See pricing"
+        />
+
+        <PublicFooter />
     </>
 );
 
