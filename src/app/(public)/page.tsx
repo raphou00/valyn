@@ -1,14 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+    cardClass,
+    checkItemClass,
+    cn,
     Container,
     DashboardMockup,
+    faqAnswerClass,
+    faqDetailsClass,
+    faqIconClass,
+    faqSummaryClass,
+    featuredPlanClass,
+    iconBoxClass,
     InstallPanel,
+    planClass,
     PrimaryActions,
     PublicFooter,
     PublicHeader,
     Section,
     SectionHead,
+    warningIconBoxClass,
 } from "./_components/site-shell";
 import EmailDemo from "./_components/email-demo";
 import {
@@ -190,39 +201,39 @@ const Page = () => (
         <PublicHeader />
 
         {/* Hero */}
-        <section className="hero">
-            <div className="wrap">
-                <div className="hero-grid">
+        <section className="relative overflow-hidden bg-gradient-to-b from-base-200 to-base-100 py-16 sm:py-20 lg:py-28">
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_520px]">
                     <div>
-                        <span className="eyebrow">
-                            <span className="dot" />
+                        <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                            <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_18%,transparent)]" />
                             Shopify support automation
                         </span>
-                        <h1 style={{ marginTop: 22 }}>
+                        <h1 className="mt-5 text-4xl font-semibold leading-tight text-base-content sm:text-5xl lg:text-6xl">
                             Automate{" "}
-                            <span className="accent">
+                            <span className="text-primary">
                                 &ldquo;Where is my order?&rdquo;
                             </span>{" "}
                             support for Shopify.
                         </h1>
-                        <p className="lede" style={{ marginTop: 24 }}>
+                        <p className="mt-6 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl">
                             Valyn detects customer emails about orders, finds
                             the matching Shopify order, and replies
                             automatically with accurate tracking information —
                             in under 5 seconds.
                         </p>
                         <PrimaryActions />
-                        <div className="hero-trust">
-                            <span>
-                                <Check />
+                        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-base-content/70">
+                            <span className="inline-flex items-center gap-1.5">
+                                <Check className="size-4 text-primary" />
                                 7-day free trial
                             </span>
-                            <span>
-                                <Check />
+                            <span className="inline-flex items-center gap-1.5">
+                                <Check className="size-4 text-primary" />
                                 Installs in under 2 minutes
                             </span>
-                            <span>
-                                <Check />
+                            <span className="inline-flex items-center gap-1.5">
+                                <Check className="size-4 text-primary" />
                                 Read-only Shopify access
                             </span>
                         </div>
@@ -233,21 +244,20 @@ const Page = () => (
         </section>
 
         {/* Trust strip */}
-        <section className="bg-soft" style={{ padding: "32px 0" }}>
+        <section className="bg-base-200 py-8">
             <Container>
-                <div
-                    className="stat-strip"
-                    style={{
-                        background: "#fff",
-                        borderRadius: "var(--radius-lg)",
-                        border: "1px solid var(--line)",
-                        margin: 0,
-                    }}
-                >
+                <div className="grid overflow-hidden rounded-box border border-base-300 bg-base-100 sm:grid-cols-2 lg:grid-cols-4">
                     {trustStats.map((s) => (
-                        <div className="item" key={s.l}>
-                            <div className="v">{s.v}</div>
-                            <div className="l">{s.l}</div>
+                        <div
+                            className="border-b border-base-300 p-5 last:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b-0"
+                            key={s.l}
+                        >
+                            <div className="text-2xl font-semibold text-base-content">
+                                {s.v}
+                            </div>
+                            <div className="mt-1 text-sm text-base-content/70">
+                                {s.l}
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -257,59 +267,34 @@ const Page = () => (
         {/* Problem */}
         <Section>
             <Container>
-                <div className="feat-row" style={{ alignItems: "flex-start" }}>
+                <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
                     <div>
-                        <span className="kicker">The problem</span>
-                        <h2 style={{ marginTop: 16 }}>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">The problem</span>
+                        <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
                             Your support inbox shouldn&apos;t be full of
                             tracking questions.
                         </h2>
-                        <p className="lede" style={{ marginTop: 20 }}>
+                        <p className="mt-5 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl">
                             Every Shopify merchant has the same conversation, 40
                             times a week. The same question, the same tracking
                             link, the same polite reply. It&apos;s repetitive,
                             it&apos;s slow, and it scales linearly with orders.
                         </p>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 14,
-                        }}
-                    >
+                    <div className="grid gap-3.5">
                         {problems.map((p) => (
                             <div
-                                className="card"
+                                className="flex items-start gap-4 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm"
                                 key={p.title}
-                                style={{
-                                    padding: 22,
-                                    display: "flex",
-                                    gap: 16,
-                                    alignItems: "flex-start",
-                                }}
                             >
-                                <div
-                                    className="ico-box"
-                                    style={{
-                                        margin: 0,
-                                        flexShrink: 0,
-                                        background: "#fef4d1",
-                                        color: "#8a5a08",
-                                    }}
-                                >
+                                <div className={warningIconBoxClass}>
                                     {p.icon}
                                 </div>
                                 <div>
-                                    <h4 style={{ marginBottom: 4 }}>
+                                    <h4 className="mb-1 font-semibold text-base-content">
                                         {p.title}
                                     </h4>
-                                    <p
-                                        style={{
-                                            color: "var(--muted)",
-                                            fontSize: 14,
-                                        }}
-                                    >
+                                    <p className="text-sm leading-6 text-base-content/70">
                                         {p.body}
                                     </p>
                                 </div>
@@ -328,12 +313,21 @@ const Page = () => (
                     title="Valyn handles repetitive order support automatically."
                     description="Four steps, no rules engine to configure, no helpdesk to migrate to."
                 />
-                <div className="steps">
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
                     {steps.map((s) => (
-                        <div className="step active" key={s.n}>
-                            <div className="num">{s.n}</div>
-                            <h4>{s.title}</h4>
-                            <p>{s.body}</p>
+                        <div
+                            className="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm"
+                            key={s.n}
+                        >
+                            <div className="mb-4 inline-flex size-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-content">
+                                {s.n}
+                            </div>
+                            <h4 className="font-semibold text-base-content">
+                                {s.title}
+                            </h4>
+                            <p className="mt-2 text-sm leading-6 text-base-content/70">
+                                {s.body}
+                            </p>
                         </div>
                     ))}
                 </div>
@@ -348,10 +342,10 @@ const Page = () => (
                     title="Built for one job. Built well."
                     description="No AI hype, no helpdesk bloat. Just the smallest tool that solves WISMO end-to-end."
                 />
-                <div className="grid-4">
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {features.map((f) => (
-                        <div className="card" key={f.title}>
-                            <div className="ico-box">{f.icon}</div>
+                        <div className={cardClass} key={f.title}>
+                            <div className={iconBoxClass}>{f.icon}</div>
                             <h3>{f.title}</h3>
                             <p>{f.body}</p>
                         </div>
@@ -379,9 +373,9 @@ const Page = () => (
                     eyebrow="Who it's for"
                     title="Made for Shopify merchants who'd rather be doing anything else."
                 />
-                <div className="grid-3">
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                     {useCases.map((u) => (
-                        <div className="card" key={u.title}>
+                        <div className={cardClass} key={u.title}>
                             <h3>{u.title}</h3>
                             <p>{u.body}</p>
                         </div>
@@ -398,26 +392,35 @@ const Page = () => (
                     title="Honest pricing. 7-day trial."
                     description="Two plans. Pick the one that fits your inbox volume. 7-day free trial on both."
                 />
-                <div className="pricing-grid">
+                <div className="grid gap-5 lg:grid-cols-2">
                     {plans.map((plan) => (
                         <div
-                            className={`plan${plan.featured ? " featured" : ""}`}
+                            className={cn(
+                                planClass,
+                                plan.featured && featuredPlanClass
+                            )}
                             key={plan.name}
                         >
                             {plan.featured && (
-                                <span className="badge">Most popular</span>
+                                <span className="w-fit rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
+                                    Most popular
+                                </span>
                             )}
                             <div>
-                                <h3>{plan.name}</h3>
-                                <div className="price" style={{ marginTop: 8 }}>
+                                <h3 className="text-2xl font-semibold text-base-content">
+                                    {plan.name}
+                                </h3>
+                                <div className="mt-2 text-4xl font-semibold text-base-content">
                                     {plan.price}
-                                    <span>/month</span>
+                                    <span className="ml-1 text-base font-normal text-base-content/60">
+                                        /month
+                                    </span>
                                 </div>
                             </div>
-                            <p className="desc">{plan.desc}</p>
-                            <ul>
+                            <p className="text-base-content/70">{plan.desc}</p>
+                            <ul className="grid gap-3">
                                 {plan.feats.map((f) => (
-                                    <li key={f}>
+                                    <li className={checkItemClass} key={f}>
                                         <Check />
                                         {f}
                                     </li>
@@ -426,7 +429,7 @@ const Page = () => (
                             <Link
                                 href="/pricing"
                                 className={
-                                    plan.featured ? "btn btn-green" : (
+                                    plan.featured ? "btn btn-primary" : (
                                         "btn btn-ghost"
                                     )
                                 }
@@ -443,52 +446,42 @@ const Page = () => (
         <Section>
             <Container>
                 <div
-                    className="feat-row"
-                    style={{
-                        gridTemplateColumns: "1fr 1.4fr",
-                        alignItems: "flex-start",
-                    }}
+                    className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-start"
                 >
                     <div>
-                        <span className="kicker">Trust & security</span>
-                        <h2 style={{ marginTop: 16 }}>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">Trust & security</span>
+                        <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
                             Designed with merchant trust in mind.
                         </h2>
-                        <p className="lede" style={{ marginTop: 20 }}>
+                        <p className="mt-5 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl">
                             We ask Shopify for the minimum permissions needed
                             and nothing more. Valyn never modifies your store —
                             it reads order data so it can reply accurately.
                         </p>
-                        <div className="tag-row" style={{ marginTop: 24 }}>
-                            <span className="tag">
-                                <span className="dot" />
+                        <div className="mt-6 flex flex-wrap gap-2">
+                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
+                                <span className="size-1.5 rounded-full bg-primary" />
                                 Read-only order access
                             </span>
-                            <span className="tag">
-                                <span className="dot" />
+                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
+                                <span className="size-1.5 rounded-full bg-primary" />
                                 GDPR ready
                             </span>
-                            <span className="tag">
-                                <span className="dot" />
+                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
+                                <span className="size-1.5 rounded-full bg-primary" />
                                 SES & AWS hosted
                             </span>
-                            <span className="tag">
-                                <span className="dot" />
+                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
+                                <span className="size-1.5 rounded-full bg-primary" />
                                 Encrypted SMTP creds
                             </span>
                         </div>
                     </div>
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 1fr",
-                            gap: 14,
-                        }}
-                    >
+                    <div className="grid gap-3.5 sm:grid-cols-2">
                         {securityCards.map((c) => (
-                            <div className="card" key={c.title}>
+                            <div className={cardClass} key={c.title}>
                                 <h4>{c.title}</h4>
-                                <p style={{ marginTop: 8 }}>{c.body}</p>
+                                <p>{c.body}</p>
                             </div>
                         ))}
                     </div>
@@ -503,18 +496,22 @@ const Page = () => (
                     eyebrow="Common questions"
                     title="The short version."
                 />
-                <div className="faq">
+                <div className="grid gap-3">
                     {homeFaq.map((item) => (
-                        <details key={item.q} open={item.open}>
-                            <summary>
+                        <details
+                            className={faqDetailsClass}
+                            key={item.q}
+                            open={item.open}
+                        >
+                            <summary className={faqSummaryClass}>
                                 {item.q}
-                                <span className="ico" />
+                                <span className={faqIconClass} />
                             </summary>
-                            <div className="answer">{item.a}</div>
+                            <div className={faqAnswerClass}>{item.a}</div>
                         </details>
                     ))}
                 </div>
-                <div style={{ textAlign: "center", marginTop: 36 }}>
+                <div className="mt-9 text-center">
                     <Link href="/faq" className="btn btn-ghost">
                         All questions →
                     </Link>

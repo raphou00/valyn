@@ -20,114 +20,92 @@ const EmailDemo = () => {
     }, []);
 
     return (
-        <div className="demo-card" aria-hidden="true">
-            <div className="demo-header">
-                <div className="dots">
-                    <span />
-                    <span />
-                    <span />
+        <div
+            className="relative overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-xl"
+            aria-hidden="true"
+        >
+            <div className="flex items-center gap-2 border-b border-base-300 bg-base-200 px-4 py-3 text-xs text-base-content/70">
+                <div className="flex gap-1.5">
+                    <span className="size-2.5 rounded-full bg-base-content/20" />
+                    <span className="size-2.5 rounded-full bg-base-content/20" />
+                    <span className="size-2.5 rounded-full bg-base-content/20" />
                 </div>
-                <span style={{ marginLeft: 6 }}>support@yourstore.com</span>
-                <span
-                    style={{
-                        marginLeft: "auto",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        color: "#0d9b48",
-                    }}
-                >
-                    <span
-                        style={{
-                            width: 6,
-                            height: 6,
-                            borderRadius: "50%",
-                            background: "#21d760",
-                            boxShadow: "0 0 0 4px rgba(33,215,96,0.16)",
-                        }}
-                    />
+                <span className="ml-1.5">support@yourstore.com</span>
+                <span className="ml-auto inline-flex items-center gap-1.5 text-primary">
+                    <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_16%,transparent)]" />
                     Live
                 </span>
             </div>
-            <div className="demo-body">
-                <div className="email in">
-                    <div className="meta">
-                        <div className="from">
+            <div className="grid gap-4 p-4 sm:p-5">
+                <div className="rounded-box border border-base-300 bg-base-100 p-4">
+                    <div className="mb-2 flex items-start justify-between gap-3 text-xs text-base-content/70">
+                        <div className="font-semibold text-base-content">
                             Sarah Patel{" "}
-                            <span className="addr">
+                            <span className="font-normal text-base-content/60">
                                 &lt;sarah.p@gmail.com&gt;
                             </span>
                         </div>
-                        <div className="time">14:02</div>
+                        <div className="">
+                            14:02
+                        </div>
                     </div>
-                    <div className="subject">Where is my order?</div>
-                    <div className="body">
+                    <div className="mb-3 font-semibold text-base-content">
+                        Where is my order?
+                    </div>
+                    <div className="text-sm leading-6 text-base-content/75">
                         Hi, I ordered last week and still haven&apos;t received
                         my package. My order number is #1042. Can you check?
                     </div>
                 </div>
 
-                <div className="flow-arrow">
-                    <span className="tag">
-                        <span className="pulse" />
+                <div className="flex items-center gap-3 px-2 text-base-content/70">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
+                        <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_16%,transparent)] animate-pulse" />
                         {STEPS[step]}
                     </span>
-                    <span className="line" />
-                    <span className="mono" style={{ fontSize: 11 }}>
+                    <span className="h-px flex-1 bg-base-300" />
+                    <span className=" text-[11px]">
                         {((step + 1) * 0.9).toFixed(1)}s
                     </span>
                 </div>
 
-                <div className="email out">
-                    <div className="meta">
-                        <div className="from">
+                <div className="rounded-box border border-primary/30 bg-primary/10 p-4">
+                    <div className="mb-2 flex items-start justify-between gap-3 text-xs text-base-content/70">
+                        <div className="font-semibold text-base-content">
                             Valyn{" "}
-                            <span className="addr">
+                            <span className="font-normal text-base-content/60">
                                 on behalf of yourstore.com
                             </span>
                         </div>
-                        <div className="time">14:02</div>
+                        <div className="">
+                            14:02
+                        </div>
                     </div>
-                    <div className="subject">Re: Where is my order?</div>
-                    <div className="body">
+                    <div className="mb-3 font-semibold text-base-content">
+                        Re: Where is my order?
+                    </div>
+                    <div className="text-sm leading-6 text-base-content/80">
                         Hi Sarah,
                         <br />
                         Your order <strong>#1042</strong> is currently in
                         transit with <strong>DHL Express</strong>.
                         <br />
                         Track it here:{" "}
-                        <span
-                            style={{
-                                color: "#0d9b48",
-                                textDecoration: "underline",
-                            }}
-                        >
+                        <span className="text-primary underline">
                             track.dhl.com/EU728193…
                         </span>
                         <br />
                         Expected delivery: <strong>Thursday, May 14</strong>.
                         <br />
-                        <span style={{ color: "var(--muted)" }}>
+                        <span className="text-base-content/70">
                             Thanks for your patience — the team at Yourstore.
                         </span>
                     </div>
-                    <div
-                        style={{
-                            marginTop: 12,
-                            display: "flex",
-                            gap: 8,
-                            alignItems: "center",
-                            flexWrap: "wrap",
-                        }}
-                    >
-                        <span className="label">Auto-reply</span>
-                        <span
-                            style={{
-                                fontSize: 11,
-                                color: "var(--muted)",
-                                fontFamily: "var(--font-mono)",
-                            }}
-                        >
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                        <span className="inline-flex rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
+                            Auto-reply
+                        </span>
+                        <span className=" text-[11px] text-base-content/70">
                             delivered in 3.2s
                         </span>
                     </div>

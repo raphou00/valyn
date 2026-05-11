@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
     Container,
+    faqAnswerClass,
+    faqDetailsClass,
+    faqIconClass,
+    faqSummaryClass,
     PageHead,
     PublicFooter,
     PublicHeader,
@@ -103,10 +107,7 @@ const groups: { kicker: string; title: string; items: Faq[] }[] = [
                         before hitting your limit so you can upgrade.{" "}
                         <Link
                             href="/pricing"
-                            style={{
-                                color: "var(--green-deep)",
-                                textDecoration: "underline",
-                            }}
+                            className="text-primary underline"
                         >
                             Full pricing here
                         </Link>
@@ -153,10 +154,7 @@ const Page = () => (
                     this is the page. Anything not covered here —{" "}
                     <a
                         href={`mailto:${SUPPORT_EMAIL}`}
-                        style={{
-                            color: "var(--green-deep)",
-                            textDecoration: "underline",
-                        }}
+                        className="text-primary underline"
                     >
                         ask us directly
                     </a>
@@ -170,23 +168,26 @@ const Page = () => (
                 {groups.map((group, gi) => (
                     <div
                         key={group.title}
-                        style={gi > 0 ? { marginTop: 64 } : undefined}
+                        className={gi > 0 ? "mt-16" : undefined}
                     >
-                        <span className="kicker">{group.kicker}</span>
-                        <h2 style={{ marginTop: 14, marginBottom: 18 }}>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">{group.kicker}</span>
+                        <h2 className="mb-[18px] mt-3.5 text-3xl font-semibold leading-tight text-base-content sm:text-4xl">
                             {group.title}
                         </h2>
-                        <div className="faq">
+                        <div className="grid gap-3">
                             {group.items.map((item, ii) => (
                                 <details
+                                    className={faqDetailsClass}
                                     key={item.q}
                                     open={item.open || (gi === 0 && ii === 0)}
                                 >
-                                    <summary>
+                                    <summary className={faqSummaryClass}>
                                         {item.q}
-                                        <span className="ico" />
+                                        <span className={faqIconClass} />
                                     </summary>
-                                    <div className="answer">{item.a}</div>
+                                    <div className={faqAnswerClass}>
+                                        {item.a}
+                                    </div>
                                 </details>
                             ))}
                         </div>
@@ -197,20 +198,25 @@ const Page = () => (
 
         <Section>
             <Container>
-                <div className="cta-block" id="contact">
-                    <h2>Didn&apos;t find your answer?</h2>
-                    <p>
+                <div className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14" id="contact">
+                    <h2 className="text-3xl font-semibold leading-tight text-accent-content sm:text-4xl">
+                        Didn&apos;t find your answer?
+                    </h2>
+                    <p className="mx-auto mt-4 max-w-2xl text-accent-content/70">
                         We answer every email personally. Usually within a few
                         hours.
                     </p>
-                    <div className="btns">
+                    <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                         <a
                             href={`mailto:${SUPPORT_EMAIL}`}
-                            className="btn btn-green btn-lg"
+                            className="btn btn-primary btn-lg"
                         >
                             {SUPPORT_EMAIL}
                         </a>
-                        <Link href="/demo" className="btn btn-ghost btn-lg">
+                        <Link
+                            href="/demo"
+                            className="btn btn-outline btn-lg border-accent-content/30 text-accent-content hover:bg-accent-content hover:text-accent"
+                        >
                             View demo first
                         </Link>
                     </div>

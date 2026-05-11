@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import {
+    cardClass,
     Container,
     FinalCta,
+    iconBoxClass,
     PageHead,
     PublicFooter,
     PublicHeader,
@@ -47,9 +49,9 @@ const Page = () => (
                     eyebrow="Under the hood"
                     title="What happens between forward and reply."
                 />
-                <div className="grid-3">
-                    <div className="card">
-                        <div className="ico-box">
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    <div className={cardClass}>
+                        <div className={iconBoxClass}>
                             <Mailbox />
                         </div>
                         <h3>SES inbound</h3>
@@ -59,8 +61,8 @@ const Page = () => (
                             pipeline.
                         </p>
                     </div>
-                    <div className="card">
-                        <div className="ico-box">
+                    <div className={cardClass}>
+                        <div className={iconBoxClass}>
                             <Search />
                         </div>
                         <h3>Detect &amp; identify</h3>
@@ -70,8 +72,8 @@ const Page = () => (
                             recent-order priority.
                         </p>
                     </div>
-                    <div className="card">
-                        <div className="ico-box">
+                    <div className={cardClass}>
+                        <div className={iconBoxClass}>
                             <Send />
                         </div>
                         <h3>Reply via your SMTP</h3>

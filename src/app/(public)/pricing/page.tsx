@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+    checkItemClass,
+    checkMarkClass,
+    cn,
     Container,
+    dashMarkClass,
+    faqAnswerClass,
+    faqDetailsClass,
+    faqIconClass,
+    faqSummaryClass,
+    featuredPlanClass,
+    featureTdClass,
     FinalCta,
     PageHead,
+    planClass,
     PublicFooter,
     PublicHeader,
     Section,
     SectionHead,
+    tableClass,
+    tdClass,
+    thClass,
 } from "../_components/site-shell";
 import { Check } from "../_components/icons";
 import { INSTALL_HREF, marketingMetadata } from "../_lib/metadata";
@@ -102,8 +116,8 @@ const faqs = [
 ];
 
 const renderCell = (text: string) =>
-    text === "✓" ? <span className="check">✓</span>
-    : text === "—" ? <span className="dash">—</span>
+    text === "✓" ? <span className={checkMarkClass}>✓</span>
+    : text === "—" ? <span className={dashMarkClass}>—</span>
     : text;
 
 const Page = () => (
@@ -125,34 +139,38 @@ const Page = () => (
         <Section style={{ paddingTop: 48 }}>
             <Container>
                 <div
-                    className="pricing-grid"
-                    style={{
-                        gridTemplateColumns: "repeat(2, 1fr)",
-                        maxWidth: 880,
-                        margin: "0 auto",
-                    }}
+                    className="grid gap-5 lg:grid-cols-2"
                 >
                     {plans.map((plan) => (
                         <div
-                            className={`plan${plan.featured ? " featured" : ""}`}
+                            className={cn(
+                                planClass,
+                                plan.featured && featuredPlanClass
+                            )}
                             key={plan.name}
                         >
                             {plan.featured && (
-                                <span className="badge">Most popular</span>
+                                <span className="w-fit rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
+                                    Most popular
+                                </span>
                             )}
                             <div>
-                                <h3>{plan.name}</h3>
-                                <div className="price" style={{ marginTop: 8 }}>
+                                <h3 className="text-2xl font-semibold text-base-content">
+                                    {plan.name}
+                                </h3>
+                                <div className="mt-2 text-4xl font-semibold text-base-content">
                                     {plan.price}
-                                    <span>/month</span>
+                                    <span className="ml-1 text-base font-normal text-base-content/60">
+                                        /month
+                                    </span>
                                 </div>
-                                <p className="desc" style={{ marginTop: 8 }}>
+                                <p className="mt-2 text-base-content/70">
                                     {plan.desc}
                                 </p>
                             </div>
-                            <ul>
+                            <ul className="grid gap-3">
                                 {plan.feats.map((f, i) => (
-                                    <li key={i}>
+                                    <li className={checkItemClass} key={i}>
                                         <Check />
                                         <div>
                                             {f.emphasis && (
@@ -166,7 +184,7 @@ const Page = () => (
                             <Link
                                 href={INSTALL_HREF}
                                 className={
-                                    plan.featured ? "btn btn-green" : (
+                                    plan.featured ? "btn btn-primary" : (
                                         "btn btn-ghost"
                                     )
                                 }
@@ -180,7 +198,7 @@ const Page = () => (
                     style={{
                         textAlign: "center",
                         marginTop: 32,
-                        color: "var(--muted)",
+                        color: "var(--color-neutral)",
                         fontSize: 14,
                     }}
                 >
@@ -196,20 +214,28 @@ const Page = () => (
                     eyebrow="Full comparison"
                     title="What's in each plan."
                 />
-                <table className="compare-table">
+                <table className={tableClass}>
                     <thead>
                         <tr>
-                            <th style={{ width: "40%" }}>Feature</th>
-                            <th>Starter</th>
-                            <th className="col-us">Pro</th>
+                            <th className={cn(thClass, "w-[40%]")}>
+                                Feature
+                            </th>
+                            <th className={thClass}>Starter</th>
+                            <th className={cn(thClass, "text-primary")}>
+                                Pro
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {comparisonRows.map((row) => (
                             <tr key={row[0]}>
-                                <td className="feature">{row[0]}</td>
-                                <td>{renderCell(row[1])}</td>
-                                <td>{renderCell(row[2])}</td>
+                                <td className={featureTdClass}>{row[0]}</td>
+                                <td className={tdClass}>
+                                    {renderCell(row[1])}
+                                </td>
+                                <td className={tdClass}>
+                                    {renderCell(row[2])}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -223,14 +249,18 @@ const Page = () => (
                     eyebrow="Pricing questions"
                     title="Honest answers."
                 />
-                <div className="faq">
+                <div className="grid gap-3">
                     {faqs.map((item) => (
-                        <details key={item.q} open={item.open}>
-                            <summary>
+                        <details
+                            className={faqDetailsClass}
+                            key={item.q}
+                            open={item.open}
+                        >
+                            <summary className={faqSummaryClass}>
                                 {item.q}
-                                <span className="ico" />
+                                <span className={faqIconClass} />
                             </summary>
-                            <div className="answer">{item.a}</div>
+                            <div className={faqAnswerClass}>{item.a}</div>
                         </details>
                     ))}
                 </div>

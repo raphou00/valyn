@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import {
+    cardClass,
+    checkItemClass,
     Container,
     FinalCta,
+    iconBoxClass,
+    pillClass,
     PageHead,
     PublicFooter,
     PublicHeader,
@@ -110,7 +114,7 @@ const lookupRows: {
 ];
 
 const ChecklistItem = ({ text }: { text: string }) => (
-    <li>
+    <li className={checkItemClass}>
         <Check />
         <span>{text}</span>
     </li>
@@ -134,57 +138,37 @@ const Page = () => (
 
         <Section>
             <Container>
-                <div className="feat-row">
+                <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                     <div>
-                        <span className="kicker">01 — Detection</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">01 — Detection</span>
                         <h2 style={{ marginTop: 14 }}>
                             WISMO detection that actually skips the rest.
                         </h2>
-                        <p className="lede" style={{ marginTop: 18 }}>
+                        <p className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl" style={{ marginTop: 18 }}>
                             Keyword + sender classification flags order-tracking
                             emails in three languages. Everything else lands
                             untouched in your inbox so real support still
                             reaches you.
                         </p>
-                        <ul className="check-list">
+                        <ul className="mt-6 grid gap-3">
                             {detectionPoints.map((p) => (
                                 <ChecklistItem key={p} text={p} />
                             ))}
                         </ul>
                     </div>
-                    <div
-                        className="card"
-                        style={{ padding: 0, overflow: "hidden" }}
-                    >
-                        <div
-                            style={{
-                                padding: "14px 18px",
-                                background: "var(--bg-soft)",
-                                borderBottom: "1px solid var(--line)",
-                                fontSize: 12,
-                                color: "var(--muted)",
-                                fontFamily: "var(--font-mono)",
-                            }}
-                        >
+                    <div className={cardClass} style={{ padding: 0, overflow: "hidden" }}>
+                        <div className="border-b border-base-300 bg-base-200 px-[18px] py-3.5 text-xs text-base-content/70">
                             classification.log
                         </div>
-                        <div
-                            style={{
-                                padding: 22,
-                                fontFamily: "var(--font-mono)",
-                                fontSize: 13,
-                                lineHeight: 1.8,
-                            }}
-                        >
+                        <div className="p-[22px] text-[13px] leading-7 text-base-content">
                             {classificationLines.map(([t, q, tone, tag]) => (
                                 <div key={`${t}${q}`}>
-                                    <span style={{ color: "var(--muted)" }}>
+                                    <span className="text-base-content/60">
                                         {t}
                                     </span>{" "}
                                     {q}
                                     <span
-                                        className={`pill ${tone}`}
-                                        style={{ marginLeft: 6 }}
+                                        className={`${pillClass(tone)} ml-1.5`}
                                     >
                                         {tag}
                                     </span>
@@ -198,54 +182,27 @@ const Page = () => (
 
         <Section bg="soft">
             <Container>
-                <div className="feat-row">
-                    <div
-                        className="card"
-                        style={{ padding: 0, overflow: "hidden" }}
-                    >
-                        <div
-                            style={{
-                                padding: "14px 18px",
-                                background: "var(--bg-soft)",
-                                borderBottom: "1px solid var(--line)",
-                                fontSize: 12,
-                                color: "var(--muted)",
-                                fontFamily: "var(--font-mono)",
-                            }}
-                        >
+                <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+                    <div className={cardClass} style={{ padding: 0, overflow: "hidden" }}>
+                        <div className="border-b border-base-300 bg-base-200 px-[18px] py-3.5 text-xs text-base-content/70">
                             order.lookup
                         </div>
-                        <div style={{ padding: 22 }}>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 14,
-                                }}
-                            >
+                        <div className="p-[22px]">
+                            <div className="grid gap-3.5">
                                 {lookupRows.map((row) => (
                                     <div
                                         key={row.tag}
-                                        style={{
-                                            display: "flex",
-                                            gap: 12,
-                                            alignItems: "flex-start",
-                                        }}
+                                        className="flex items-start gap-3"
                                     >
                                         <span
-                                            className={`pill ${row.pill}`}
-                                            style={{ flexShrink: 0 }}
+                                            className={`${pillClass(row.pill)} shrink-0`}
                                         >
                                             {row.tag}
                                         </span>
-                                        <div style={{ fontSize: 13 }}>
+                                        <div className="text-[13px] leading-6">
                                             <strong>{row.title}</strong>
                                             <br />
-                                            <span
-                                                style={{
-                                                    color: "var(--muted)",
-                                                }}
-                                            >
+                                            <span className="text-base-content/70">
                                                 {row.body}
                                             </span>
                                         </div>
@@ -255,17 +212,17 @@ const Page = () => (
                         </div>
                     </div>
                     <div>
-                        <span className="kicker">02 — Lookup</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">02 — Lookup</span>
                         <h2 style={{ marginTop: 14 }}>
                             Three ways to find the order. One graceful fallback.
                         </h2>
-                        <p className="lede" style={{ marginTop: 18 }}>
+                        <p className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl" style={{ marginTop: 18 }}>
                             Order numbers come in dozens of formats. Senders
                             email from addresses that don&apos;t match their
                             Shopify customer record. Valyn tries the obvious
                             match first and degrades cleanly when it can&apos;t.
                         </p>
-                        <ul className="check-list">
+                        <ul className="mt-6 grid gap-3">
                             {lookupPoints.map((p) => (
                                 <ChecklistItem key={p} text={p} />
                             ))}
@@ -277,30 +234,36 @@ const Page = () => (
 
         <Section>
             <Container>
-                <div className="feat-row">
+                <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                     <div>
-                        <span className="kicker">03 — Reply</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">03 — Reply</span>
                         <h2 style={{ marginTop: 14 }}>
                             Sent from your address. In your voice.
                         </h2>
-                        <p className="lede" style={{ marginTop: 18 }}>
+                        <p className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl" style={{ marginTop: 18 }}>
                             Replies go out via your own SMTP. The customer sees
                             your domain, your signature, your tone. Valyn is
                             invisible in the conversation.
                         </p>
-                        <ul className="check-list">
+                        <ul className="mt-6 grid gap-3">
                             {replyPoints.map((p) => (
                                 <ChecklistItem key={p} text={p} />
                             ))}
                         </ul>
                     </div>
-                    <div className="email out" style={{ borderRadius: 14 }}>
-                        <div className="meta">
-                            <div className="from">support@yourstore.com</div>
-                            <div className="time">14:02</div>
+                    <div className="rounded-box border border-primary/30 bg-primary/10 p-4">
+                        <div className="mb-2 flex items-start justify-between gap-3 text-xs text-base-content/70">
+                            <div className="font-semibold text-base-content">
+                                support@yourstore.com
+                            </div>
+                            <div className="">
+                                14:02
+                            </div>
                         </div>
-                        <div className="subject">Re: Where is my order?</div>
-                        <div className="body">
+                        <div className="mb-3 font-semibold text-base-content">
+                            Re: Where is my order?
+                        </div>
+                        <div className="text-sm leading-7 text-base-content/80">
                             Hi Sarah,
                             <br />
                             <br />
@@ -311,12 +274,7 @@ const Page = () => (
                             <br />
                             You can follow it here:
                             <br />
-                            <span
-                                style={{
-                                    color: "var(--green-deep)",
-                                    textDecoration: "underline",
-                                }}
-                            >
+                            <span className="text-primary underline">
                                 track.dhl.com/EU728193…
                             </span>
                             <br />
@@ -325,7 +283,7 @@ const Page = () => (
                             .
                             <br />
                             <br />
-                            <span style={{ color: "var(--muted)" }}>
+                            <span className="text-base-content/70">
                                 — The team at Yourstore
                                 <br />
                                 support@yourstore.com
@@ -343,10 +301,10 @@ const Page = () => (
                     title="Embedded inside Shopify. Always one click away."
                     description="Live status of every automation, every email, every failed lookup. No new tab, no separate login."
                 />
-                <div className="grid-4">
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {dashboardCards.map((c) => (
-                        <div className="card" key={c.title}>
-                            <div className="ico-box">{c.icon}</div>
+                        <div className={cardClass} key={c.title}>
+                            <div className={iconBoxClass}>{c.icon}</div>
                             <h3>{c.title}</h3>
                             <p>{c.body}</p>
                         </div>
@@ -357,21 +315,15 @@ const Page = () => (
 
         <Section>
             <Container>
-                <div className="callout">
-                    <div className="icon">
-                        <AlertCircle
-                            style={{
-                                width: 18,
-                                height: 18,
-                                color: "#8a5a08",
-                            }}
-                        />
+                <div className="flex gap-4 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-box bg-warning/20 text-warning">
+                        <AlertCircle className="size-[18px]" />
                     </div>
                     <div>
                         <h3 style={{ marginBottom: 8 }}>
                             What Valyn doesn&apos;t do
                         </h3>
-                        <p style={{ marginBottom: 0, color: "var(--ink-2)" }}>
+                        <p style={{ marginBottom: 0, color: "var(--color-base-content)" }}>
                             No returns automation. No refunds. No live chat. No
                             AI chatbot. No social DMs. No marketing emails. No
                             abandoned-cart recovery. No multi-mailbox routing.

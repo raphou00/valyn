@@ -1,7 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
+    cardClass,
     Container,
+    faqAnswerClass,
+    faqDetailsClass,
+    faqIconClass,
+    faqSummaryClass,
     FinalCta,
     PageHead,
     PublicFooter,
@@ -22,75 +27,33 @@ const slugify = (s: string) =>
         .replace(/(^-|-$)/g, "");
 
 export const ContentSections = ({ sections }: { sections: TextSection[] }) => (
-    <div
-        style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 280px",
-            gap: 40,
-        }}
-        className="content-layout"
-    >
-        <article style={{ maxWidth: 760 }}>
+    <div className="grid gap-10 lg:grid-cols-[1fr_280px]">
+        <article>
             {sections.map((section) => (
                 <section
                     key={section.title}
                     id={slugify(section.title)}
-                    style={{ marginBottom: 36, scrollMarginTop: 96 }}
+                    className="mb-9 scroll-mt-24"
                 >
-                    <h2
-                        style={{
-                            fontSize: 28,
-                            marginBottom: 14,
-                            color: "var(--ink)",
-                        }}
-                    >
+                    <h2 className="mb-3.5 text-3xl font-semibold leading-tight text-base-content">
                         {section.title}
                     </h2>
                     {section.paragraphs?.map((p, i) => (
                         <p
                             key={i}
-                            style={{
-                                fontSize: 17,
-                                lineHeight: 1.65,
-                                color: "var(--ink-2)",
-                                marginTop: 12,
-                            }}
+                            className="mt-3 text-[17px] leading-8 text-base-content/80"
                         >
                             {p}
                         </p>
                     ))}
                     {section.bullets && (
-                        <ul
-                            style={{
-                                listStyle: "none",
-                                padding: 0,
-                                margin: "16px 0 0",
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 10,
-                            }}
-                        >
+                        <ul className="mt-4 grid gap-2.5">
                             {section.bullets.map((b) => (
                                 <li
                                     key={b}
-                                    style={{
-                                        display: "flex",
-                                        gap: 10,
-                                        alignItems: "flex-start",
-                                        fontSize: 16,
-                                        color: "var(--ink-2)",
-                                    }}
+                                    className="flex items-start gap-2.5 text-base leading-7 text-base-content/80"
                                 >
-                                    <span
-                                        style={{
-                                            marginTop: 8,
-                                            width: 6,
-                                            height: 6,
-                                            borderRadius: "50%",
-                                            background: "var(--green)",
-                                            flexShrink: 0,
-                                        }}
-                                    />
+                                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
                                     <span>{b}</span>
                                 </li>
                             ))}
@@ -99,40 +62,17 @@ export const ContentSections = ({ sections }: { sections: TextSection[] }) => (
                 </section>
             ))}
         </article>
-        <aside style={{ position: "relative" }}>
-            <div
-                style={{
-                    position: "sticky",
-                    top: 100,
-                    background: "var(--bg-soft)",
-                    borderRadius: 12,
-                    padding: 22,
-                }}
-            >
-                <p
-                    style={{
-                        fontSize: 12,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
-                        color: "var(--muted)",
-                        fontWeight: 540,
-                        marginBottom: 12,
-                    }}
-                >
+        <aside className="relative hidden lg:block">
+            <div className="sticky top-24 rounded-box bg-base-200 p-5">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-normal text-base-content/60">
                     On this page
                 </p>
-                <nav
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 8,
-                    }}
-                >
+                <nav className="grid gap-2">
                     {sections.map((section) => (
                         <a
                             key={section.title}
                             href={`#${slugify(section.title)}`}
-                            style={{ fontSize: 14, color: "var(--ink-2)" }}
+                            className="text-sm text-base-content/80 hover:text-base-content"
                         >
                             {section.title}
                         </a>
@@ -180,24 +120,17 @@ export type ListingItem = {
 };
 
 export const ListingGrid = ({ items }: { items: ListingItem[] }) => (
-    <div className="grid-3">
+    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
-            <Link className="card" href={item.href} key={item.href}>
+            <Link className={cardClass} href={item.href} key={item.href}>
                 {item.badge && (
-                    <span className="kicker" style={{ marginBottom: 10 }}>
+                    <span className="mb-2.5 block text-xs font-semibold uppercase tracking-normal text-base-content/70">
                         {item.badge}
                     </span>
                 )}
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-                <p
-                    style={{
-                        marginTop: 14,
-                        fontWeight: 540,
-                        fontSize: 14,
-                        color: "var(--green-deep)",
-                    }}
-                >
+                <p className="mt-3.5 text-sm font-semibold text-primary">
                     Read →
                 </p>
             </Link>
@@ -210,14 +143,14 @@ export const FaqList = ({
 }: {
     items: { question: string; answer: string }[];
 }) => (
-    <div className="faq" style={{ maxWidth: 760, margin: "0 auto" }}>
+    <div className="grid gap-3">
         {items.map((item, i) => (
-            <details key={item.question} open={i === 0}>
-                <summary>
+            <details className={faqDetailsClass} key={item.question} open={i === 0}>
+                <summary className={faqSummaryClass}>
                     {item.question}
-                    <span className="ico" />
+                    <span className={faqIconClass} />
                 </summary>
-                <div className="answer">{item.answer}</div>
+                <div className={faqAnswerClass}>{item.answer}</div>
             </details>
         ))}
     </div>

@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import {
+    cardClass,
+    checkItemClass,
+    checkMarkClass,
+    cn,
     Container,
+    dashMarkClass,
+    featureTdClass,
     FinalCta,
     PageHead,
     PublicFooter,
     PublicHeader,
     Section,
     SectionHead,
+    tableClass,
+    tdClass,
+    thClass,
 } from "../_components/site-shell";
 import { Check } from "../_components/icons";
 import { marketingMetadata } from "../_lib/metadata";
@@ -53,35 +62,10 @@ const compareRows: [string, string, string, boolean?][] = [
 ];
 
 const ChecksList = ({ items }: { items: string[] }) => (
-    <ul
-        style={{
-            listStyle: "none",
-            padding: 0,
-            margin: 0,
-            display: "flex",
-            flexDirection: "column",
-            gap: 14,
-        }}
-    >
+    <ul className="grid gap-3.5">
         {items.map((t) => (
-            <li
-                key={t}
-                style={{
-                    display: "flex",
-                    gap: 12,
-                    alignItems: "flex-start",
-                    fontSize: 15,
-                }}
-            >
-                <Check
-                    style={{
-                        width: 16,
-                        height: 16,
-                        marginTop: 4,
-                        flexShrink: 0,
-                        color: "var(--green-deep)",
-                    }}
-                />
+            <li className={checkItemClass} key={t}>
+                <Check />
                 <span>{t}</span>
             </li>
         ))}
@@ -106,8 +90,8 @@ const Page = () => (
 
         <Section style={{ paddingTop: 48 }}>
             <Container>
-                <div className="grid-2">
-                    <div className="card" style={{ padding: 32 }}>
+                <div className="grid gap-5 md:grid-cols-2">
+                    <div className={cardClass} style={{ padding: 32 }}>
                         <div
                             style={{
                                 display: "flex",
@@ -120,7 +104,7 @@ const Page = () => (
                                 style={{
                                     width: 36,
                                     height: 36,
-                                    background: "var(--bg-soft)",
+                                    background: "var(--color-base-200)",
                                     borderRadius: 8,
                                     display: "inline-flex",
                                     alignItems: "center",
@@ -135,7 +119,7 @@ const Page = () => (
                         </div>
                         <p
                             style={{
-                                color: "var(--muted)",
+                                color: "var(--color-neutral)",
                                 fontSize: 15,
                                 lineHeight: 1.6,
                             }}
@@ -150,7 +134,7 @@ const Page = () => (
                             style={{
                                 marginTop: 18,
                                 paddingTop: 18,
-                                borderTop: "1px solid var(--line)",
+                                borderTop: "1px solid var(--color-base-300)",
                                 display: "flex",
                                 flexDirection: "column",
                                 gap: 10,
@@ -163,7 +147,7 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--muted)" }}>
+                                <span style={{ color: "var(--color-neutral)" }}>
                                     Starts at
                                 </span>
                                 <strong>~$60/mo</strong>
@@ -174,7 +158,7 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--muted)" }}>
+                                <span style={{ color: "var(--color-neutral)" }}>
                                     Setup
                                 </span>
                                 <strong>Days to weeks</strong>
@@ -185,7 +169,7 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--muted)" }}>
+                                <span style={{ color: "var(--color-neutral)" }}>
                                     Onboarding
                                 </span>
                                 <strong>Implementation call</strong>
@@ -194,10 +178,10 @@ const Page = () => (
                     </div>
 
                     <div
-                        className="card"
+                        className={cardClass}
                         style={{
                             padding: 32,
-                            background: "var(--green-tint)",
+                            background: "var(--color-base-200)",
                             borderColor: "#b8edcb",
                         }}
                     >
@@ -214,7 +198,7 @@ const Page = () => (
                                     width: 36,
                                     height: 36,
                                     background:
-                                        "linear-gradient(135deg, var(--green) 0%, var(--green-deep) 100%)",
+                                        "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%)",
                                     borderRadius: 8,
                                     color: "#052b13",
                                     display: "inline-flex",
@@ -229,7 +213,7 @@ const Page = () => (
                         </div>
                         <p
                             style={{
-                                color: "var(--ink-2)",
+                                color: "var(--color-base-content)",
                                 fontSize: 15,
                                 lineHeight: 1.6,
                             }}
@@ -257,7 +241,7 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--ink-2)" }}>
+                                <span style={{ color: "var(--color-base-content)" }}>
                                     Starts at
                                 </span>
                                 <strong>$19/mo</strong>
@@ -268,7 +252,7 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--ink-2)" }}>
+                                <span style={{ color: "var(--color-base-content)" }}>
                                     Setup
                                 </span>
                                 <strong>Under 5 minutes</strong>
@@ -279,7 +263,7 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--ink-2)" }}>
+                                <span style={{ color: "var(--color-base-content)" }}>
                                     Onboarding
                                 </span>
                                 <strong>Self-serve</strong>
@@ -296,13 +280,13 @@ const Page = () => (
                     eyebrow="The decision"
                     title="Which one is right for your store?"
                 />
-                <div className="grid-2">
-                    <div className="card" style={{ padding: 32 }}>
+                <div className="grid gap-5 md:grid-cols-2">
+                    <div className={cardClass} style={{ padding: 32 }}>
                         <h3 style={{ marginBottom: 14 }}>Choose Gorgias if…</h3>
                         <ChecksList items={chooseGorgias} />
                     </div>
                     <div
-                        className="card"
+                        className={cardClass}
                         style={{
                             padding: 32,
                             background: "#fff",
@@ -317,15 +301,14 @@ const Page = () => (
                     style={{
                         textAlign: "center",
                         marginTop: 32,
-                        color: "var(--muted)",
+                        color: "var(--color-neutral)",
                         fontSize: 15,
-                        maxWidth: 600,
                         marginLeft: "auto",
                         marginRight: "auto",
                     }}
                 >
                     Many stores run{" "}
-                    <strong style={{ color: "var(--ink)" }}>both</strong> —
+                    <strong style={{ color: "var(--color-base-content)" }}>both</strong> —
                     Valyn handling tracking, a helpdesk handling everything
                     else. They don&apos;t compete.
                 </p>
@@ -339,34 +322,34 @@ const Page = () => (
                     title="Side by side."
                     description="What each tool tries to be best at."
                 />
-                <table className="compare-table">
+                <table className={tableClass}>
                     <thead>
                         <tr>
-                            <th style={{ width: "40%" }}>Capability</th>
-                            <th>Gorgias</th>
-                            <th className="col-us">Valyn</th>
+                            <th className={cn(thClass, "w-[40%]")}>
+                                Capability
+                            </th>
+                            <th className={thClass}>Gorgias</th>
+                            <th className={cn(thClass, "text-primary")}>
+                                Valyn
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {compareRows.map(([cap, g, v, highlight]) => (
                             <tr key={cap}>
-                                <td className="feature">{cap}</td>
-                                <td>
+                                <td className={featureTdClass}>{cap}</td>
+                                <td className={tdClass}>
                                     {g === "✓" ?
-                                        <span className="check">✓</span>
+                                        <span className={checkMarkClass}>✓</span>
                                     : g === "—" ?
-                                        <span className="dash">—</span>
+                                        <span className={dashMarkClass}>—</span>
                                     :   g}
                                 </td>
-                                <td>
+                                <td className={tdClass}>
                                     {v === "—" ?
-                                        <span className="dash">—</span>
+                                        <span className={dashMarkClass}>—</span>
                                     : highlight ?
-                                        <strong
-                                            style={{
-                                                color: "var(--green-deep)",
-                                            }}
-                                        >
+                                        <strong className="text-primary">
                                             {v}
                                         </strong>
                                     :   v}
@@ -379,7 +362,7 @@ const Page = () => (
                     style={{
                         textAlign: "center",
                         marginTop: 24,
-                        color: "var(--muted)",
+                        color: "var(--color-neutral)",
                         fontSize: 13,
                     }}
                 >
@@ -399,20 +382,20 @@ const Page = () => (
                 <p
                     style={{
                         textAlign: "center",
-                        color: "var(--muted)",
+                        color: "var(--color-neutral)",
                         marginBottom: 32,
                     }}
                 >
                     Modeled for a store with ~2,000 support emails per month,
                     ~60% of them WISMO.
                 </p>
-                <div className="grid-2">
-                    <div className="card" style={{ padding: 28 }}>
+                <div className="grid gap-5 md:grid-cols-2">
+                    <div className={cardClass} style={{ padding: 28 }}>
                         <h4 style={{ marginBottom: 10 }}>With Gorgias</h4>
                         <div
                             style={{
                                 fontSize: 14,
-                                color: "var(--ink-2)",
+                                color: "var(--color-base-content)",
                                 display: "flex",
                                 flexDirection: "column",
                                 gap: 10,
@@ -442,7 +425,7 @@ const Page = () => (
                                     display: "flex",
                                     justifyContent: "space-between",
                                     paddingTop: 10,
-                                    borderTop: "1px solid var(--line)",
+                                    borderTop: "1px solid var(--color-base-300)",
                                 }}
                             >
                                 <span>Monthly cost</span>
@@ -452,7 +435,7 @@ const Page = () => (
                         <p
                             style={{
                                 fontSize: 13,
-                                color: "var(--muted)",
+                                color: "var(--color-neutral)",
                                 marginTop: 14,
                             }}
                         >
@@ -462,10 +445,10 @@ const Page = () => (
                         </p>
                     </div>
                     <div
-                        className="card"
+                        className={cardClass}
                         style={{
                             padding: 28,
-                            background: "var(--green-tint)",
+                            background: "var(--color-base-200)",
                             borderColor: "#b8edcb",
                         }}
                     >
@@ -473,7 +456,7 @@ const Page = () => (
                         <div
                             style={{
                                 fontSize: 14,
-                                color: "var(--ink-2)",
+                                color: "var(--color-base-content)",
                                 display: "flex",
                                 flexDirection: "column",
                                 gap: 10,
@@ -510,7 +493,7 @@ const Page = () => (
                         <p
                             style={{
                                 fontSize: 13,
-                                color: "var(--ink-2)",
+                                color: "var(--color-base-content)",
                                 marginTop: 14,
                             }}
                         >

@@ -1,9 +1,71 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { SUPPORT_EMAIL, INSTALL_HREF } from "../_lib/metadata";
 import { ArrowRight, Check, Play, ShopifyBox } from "./icons";
 
 type NavItem = { label: string; href: string; key: string };
+type PillTone = "ok" | "warn" | "fail" | "muted";
+
+export const cn = (...classes: (string | false | null | undefined)[]) =>
+    classes.filter(Boolean).join(" ");
+
+export const containerClass = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
+
+export const cardClass =
+    "rounded-box border border-base-300 bg-base-100 p-6 shadow-sm transition hover:-translate-y-1 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-base-content [&_h4]:font-semibold [&_h4]:leading-tight [&_h4]:text-base-content [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70";
+
+export const iconBoxClass =
+    "mb-4 inline-flex size-11 items-center justify-center rounded-box bg-primary/10 text-primary [&_svg]:size-5";
+
+export const warningIconBoxClass =
+    "inline-flex size-11 shrink-0 items-center justify-center rounded-box bg-warning/20 text-warning [&_svg]:size-5";
+
+export const faqDetailsClass =
+    "group rounded-box border border-base-300 bg-base-100";
+
+export const faqSummaryClass =
+    "flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-base font-semibold text-base-content [&::-webkit-details-marker]:hidden";
+
+export const faqIconClass =
+    "relative size-4 shrink-0 before:absolute before:left-0 before:top-1/2 before:h-0.5 before:w-4 before:-translate-y-1/2 before:bg-base-content before:content-[''] after:absolute after:left-1/2 after:top-0 after:h-4 after:w-0.5 after:-translate-x-1/2 after:bg-base-content after:transition after:content-[''] group-open:after:rotate-90";
+
+export const faqAnswerClass =
+    "max-w-3xl px-5 pb-5 text-sm leading-7 text-base-content/70";
+
+export const planClass =
+    "relative flex flex-col gap-6 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm";
+
+export const featuredPlanClass =
+    "border-primary bg-primary/10";
+
+export const checkItemClass =
+    "flex items-start gap-3 text-sm leading-6 text-base-content/80 [&_svg]:mt-1 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-primary";
+
+export const tableClass =
+    "w-full overflow-hidden rounded-box border border-base-300 bg-base-100 text-sm";
+
+export const thClass =
+    "border-b border-base-300 bg-base-200 px-4 py-3 text-left font-semibold text-base-content";
+
+export const tdClass =
+    "border-b border-base-300 px-4 py-3 align-top text-base-content/80 last:border-b-0";
+
+export const featureTdClass =
+    "border-b border-base-300 px-4 py-3 align-top font-semibold text-base-content last:border-b-0";
+
+export const checkMarkClass = "font-semibold text-primary";
+
+export const dashMarkClass = "text-base-content/40";
+
+export const pillClass = (tone: PillTone = "muted") =>
+    cn(
+        "inline-flex w-fit items-center rounded-full px-2.5 py-1 text-xs font-semibold",
+        tone === "ok" && "bg-success/15 text-success",
+        tone === "warn" && "bg-warning/20 text-warning",
+        tone === "fail" && "bg-error/15 text-error",
+        tone === "muted" && "bg-base-200 text-base-content/70"
+    );
 
 const navItems: NavItem[] = [
     { label: "Features", href: "/features", key: "features" },
@@ -16,53 +78,48 @@ const navItems: NavItem[] = [
 const BrandMark = ({ inverted = false }: { inverted?: boolean }) => (
     <Link
         href="/"
-        className="brand"
-        style={inverted ? { color: "#fff" } : undefined}
+        className={cn(
+            "inline-flex items-center gap-2 text-lg font-semibold",
+            inverted ? "text-accent-content" : "text-base-content"
+        )}
     >
-        <span
-            aria-hidden
-            style={{
-                width: 28,
-                height: 28,
-                borderRadius: 8,
-                background:
-                    "linear-gradient(135deg, var(--green) 0%, var(--green-deep) 100%)",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#052b13",
-                fontWeight: 700,
-                fontSize: 16,
-                letterSpacing: "-0.04em",
-            }}
-        >
-            V
-        </span>
+        <Image
+            src="/favicon.svg"
+            alt=""
+            width={28}
+            height={28}
+            className="size-7 shrink-0"
+            priority
+        />
         <span>Valyn</span>
     </Link>
 );
 
 export const PublicHeader = ({ active }: { active?: string }) => (
-    <nav className="nav">
-        <div className="wrap nav-inner">
+    <nav className="sticky top-0 z-40 border-b border-base-300 bg-base-100/95 backdrop-blur">
+        <div className={`${containerClass} flex h-16 items-center justify-between gap-4`}>
             <BrandMark />
-            <div className="nav-links">
+            <div className="hidden items-center gap-1 lg:flex">
                 {navItems.map((item) => (
                     <Link
                         key={item.key}
                         href={item.href}
-                        className={item.key === active ? "active" : undefined}
+                        className={cn(
+                            "rounded-full px-3 py-2 text-sm font-medium text-base-content/70 transition hover:bg-base-200 hover:text-base-content",
+                            item.key === active &&
+                                "bg-base-200 text-base-content"
+                        )}
                     >
                         {item.label}
                     </Link>
                 ))}
             </div>
-            <div className="nav-cta">
+            <div className="flex items-center gap-2">
                 <Link href="/demo" className="btn btn-ghost btn-sm">
                     View demo
                 </Link>
-                <Link href={INSTALL_HREF} className="btn btn-green btn-sm">
-                    <ShopifyBox className="ico" />
+                <Link href={INSTALL_HREF} className="btn btn-primary btn-sm">
+                    <ShopifyBox className="size-4 shrink-0" />
                     Install on Shopify
                 </Link>
             </div>
@@ -105,33 +162,40 @@ const footerGroups: {
 ];
 
 export const PublicFooter = () => (
-    <footer className="footer">
-        <div className="wrap">
-            <div className="footer-grid">
+    <footer className="bg-accent py-12 text-accent-content">
+        <div className={containerClass}>
+            <div className="grid gap-8 md:grid-cols-[1.4fr_repeat(3,1fr)]">
                 <div>
                     <BrandMark inverted />
-                    <p className="brand-blurb">
+                    <p className="mt-4 max-w-sm text-sm leading-6 text-accent-content/70">
                         The simplest way to automate order tracking support for
                         Shopify stores.
                     </p>
                 </div>
                 {footerGroups.map((group) => (
                     <div key={group.title}>
-                        <h5>{group.title}</h5>
-                        <ul>
+                        <h5 className="mb-4 text-sm font-semibold uppercase tracking-normal text-accent-content/60">
+                            {group.title}
+                        </h5>
+                        <ul className="grid gap-3">
                             {group.links.map((link) => (
                                 <li key={link.href}>
-                                    <Link href={link.href}>{link.label}</Link>
+                                    <Link
+                                        className="text-sm text-accent-content/70 hover:text-accent-content"
+                                        href={link.href}
+                                    >
+                                        {link.label}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 ))}
             </div>
-            <div className="footer-bottom">
+            <div className="mt-10 flex flex-col gap-3 border-t border-accent-content/20 pt-6 text-sm text-accent-content/70 md:flex-row md:items-center md:justify-between">
                 <span>© 2026 Valyn. Built for Shopify merchants.</span>
-                <span className="shopify-mark">
-                    <Check />
+                <span className="inline-flex items-center gap-2">
+                    <Check className="size-4 text-primary" />
                     Built on Shopify
                 </span>
                 <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
@@ -144,14 +208,13 @@ export const PublicFooter = () => (
 
 export const Container = ({
     children,
-    narrow = false,
     style,
 }: {
     children: ReactNode;
     narrow?: boolean;
     style?: React.CSSProperties;
 }) => (
-    <div className={narrow ? "wrap-narrow" : "wrap"} style={style}>
+    <div className={containerClass} style={style}>
         {children}
     </div>
 );
@@ -168,12 +231,12 @@ export const Section = ({
     style?: React.CSSProperties;
 }) => {
     const bgClass =
-        bg === "soft" ? "bg-soft"
-        : bg === "warm" ? "bg-warm"
-        : bg === "ink" ? "bg-ink"
-        : bg === "green-tint" ? "bg-green-tint"
+        bg === "soft" ? "bg-base-200"
+        : bg === "warm" ? "bg-base-200/60"
+        : bg === "ink" ? "bg-accent text-accent-content"
+        : bg === "green-tint" ? "bg-primary/10"
         : "";
-    const cls = ["section", bgClass, className].filter(Boolean).join(" ");
+    const cls = cn("py-16 lg:py-24", bgClass, className);
     return (
         <section className={cls} style={style}>
             {children}
@@ -190,15 +253,21 @@ export const SectionHead = ({
     title: string;
     description?: string;
 }) => (
-    <div className="section-head">
+    <div className="mx-auto mb-10 max-w-3xl text-center">
         {eyebrow && (
-            <span className="eyebrow">
-                <span className="dot" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_18%,transparent)]" />
                 {eyebrow}
             </span>
         )}
-        <h2>{title}</h2>
-        {description && <p>{description}</p>}
+        <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
+            {title}
+        </h2>
+        {description && (
+            <p className="mt-4 text-lg leading-8 text-base-content/70">
+                {description}
+            </p>
+        )}
     </div>
 );
 
@@ -213,16 +282,27 @@ export const PageHead = ({
     description?: ReactNode;
     center?: boolean;
 }) => (
-    <section className={`page-head${center ? " center" : ""}`}>
-        <div className="wrap">
+    <section className={cn("py-16 lg:py-24", center && "text-center")}>
+        <div className={containerClass}>
             {eyebrow && (
-                <span className="eyebrow">
-                    <span className="dot" />
+                <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                    <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_18%,transparent)]" />
                     {eyebrow}
                 </span>
             )}
-            <h1>{title}</h1>
-            {description && <p className="lede">{description}</p>}
+            <h1 className="mt-5 text-4xl font-semibold leading-tight text-base-content sm:text-5xl lg:text-6xl">
+                {title}
+            </h1>
+            {description && (
+                <p
+                    className={cn(
+                        "mt-5 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl",
+                        center && "mx-auto"
+                    )}
+                >
+                    {description}
+                </p>
+            )}
         </div>
     </section>
 );
@@ -240,27 +320,29 @@ export const FeatureCard = ({
     badge?: string;
     children: ReactNode;
 }) => (
-    <div className="card">
+    <div className={cardClass}>
         {badge && (
-            <span className="kicker" style={{ marginBottom: 10 }}>
+            <span className="mb-2.5 block text-xs font-semibold uppercase tracking-normal text-base-content/70">
                 {badge}
             </span>
         )}
-        <h3>{title}</h3>
+        <h3 className="text-xl font-semibold text-base-content sm:text-2xl">
+            {title}
+        </h3>
         <div>{children}</div>
     </div>
 );
 
 export const PrimaryActions = ({ centered }: { centered?: boolean }) => (
     <div
-        className="hero-ctas"
+        className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
         style={centered ? { justifyContent: "center" } : undefined}
     >
-        <Link href={INSTALL_HREF} className="btn btn-green btn-lg">
-            Install on Shopify <ArrowRight className="ico" />
+        <Link href={INSTALL_HREF} className="btn btn-primary btn-lg">
+            Install on Shopify <ArrowRight className="size-4 shrink-0" />
         </Link>
         <Link href="/demo" className="btn btn-ghost btn-lg">
-            <Play className="ico" />
+            <Play className="size-4 shrink-0" />
             View live demo
         </Link>
     </div>
@@ -283,14 +365,21 @@ export const FinalCta = ({
 }) => (
     <Section>
         <Container>
-            <div className="cta-block">
-                <h2>{title}</h2>
-                <p>{description}</p>
-                <div className="btns">
-                    <Link href={primaryHref} className="btn btn-green btn-lg">
+            <div className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14">
+                <h2 className="mx-auto max-w-3xl text-3xl font-semibold leading-tight text-accent-content sm:text-4xl lg:text-5xl">
+                    {title}
+                </h2>
+                <p className="mx-auto mt-4 max-w-2xl text-accent-content/70">
+                    {description}
+                </p>
+                <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                    <Link href={primaryHref} className="btn btn-primary btn-lg">
                         {primaryLabel}
                     </Link>
-                    <Link href={secondaryHref} className="btn btn-ghost btn-lg">
+                    <Link
+                        href={secondaryHref}
+                        className="btn btn-outline btn-lg border-accent-content/30 text-accent-content hover:bg-accent-content hover:text-accent"
+                    >
                         {secondaryLabel}
                     </Link>
                 </div>
@@ -304,23 +393,21 @@ export const FinalCta = ({
 export const InstallPanel = () => (
     <Section>
         <Container>
-            <div className="cta-block" id="install">
-                <h2>Install Valyn on your Shopify store.</h2>
-                <p>
+            <div
+                className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14"
+                id="install"
+            >
+                <h2 className="mx-auto max-w-3xl text-3xl font-semibold leading-tight text-accent-content sm:text-4xl lg:text-5xl">
+                    Install Valyn on your Shopify store.
+                </h2>
+                <p className="mx-auto mt-4 max-w-2xl text-accent-content/70">
                     Enter your store domain to start the OAuth flow. Setup and
                     SMTP configuration happen inside the app.
                 </p>
                 <form
                     action="/api/auth"
                     method="get"
-                    style={{
-                        position: "relative",
-                        display: "flex",
-                        gap: 10,
-                        justifyContent: "center",
-                        marginTop: 28,
-                        flexWrap: "wrap",
-                    }}
+                    className="relative mt-7 flex flex-wrap justify-center gap-2.5"
                 >
                     <input
                         name="shop"
@@ -328,30 +415,13 @@ export const InstallPanel = () => (
                         placeholder="your-store.myshopify.com"
                         aria-label="Shopify store domain"
                         pattern="[a-z0-9][a-z0-9\-]*\.myshopify\.com"
-                        style={{
-                            background: "rgba(255, 255, 255, 0.08)",
-                            color: "#fff",
-                            border: "1px solid #2a313c",
-                            borderRadius: "var(--radius)",
-                            padding: "14px 18px",
-                            fontFamily: "inherit",
-                            fontSize: 15,
-                            width: "min(360px, 100%)",
-                            outline: "none",
-                        }}
+                        className="input input-bordered w-full max-w-sm border-accent-content/20 bg-accent-content/10 text-accent-content placeholder:text-accent-content/50"
                     />
-                    <button type="submit" className="btn btn-green btn-lg">
+                    <button type="submit" className="btn btn-primary btn-lg">
                         Install
                     </button>
                 </form>
-                <p
-                    style={{
-                        marginTop: 14,
-                        fontSize: 13,
-                        color: "#8a93a1",
-                        position: "relative",
-                    }}
-                >
+                <p className="relative mt-3.5 text-sm text-accent-content/60">
                     Or find Valyn on the Shopify App Store once we&apos;re
                     listed.
                 </p>
@@ -438,64 +508,64 @@ const DASH_ROWS: {
 ];
 
 export const DashboardMockup = () => (
-    <div className="dash">
-        <div className="dash-head">
-            <div className="left">
-                <span
-                    style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                    }}
-                >
-                    <span
-                        style={{
-                            width: 8,
-                            height: 8,
-                            background: "var(--green)",
-                            borderRadius: "50%",
-                        }}
-                    />
+    <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm">
+        <div className="flex items-center gap-4 border-b border-base-300 bg-base-200 px-5 py-4 text-sm text-base-content/70">
+            <div>
+                <span className="inline-flex items-center gap-1.5">
+                    <span className="size-2 rounded-full bg-primary" />
                     Inbox automation —{" "}
-                    <strong style={{ color: "var(--ink)" }}>Live</strong>
+                    <strong className="text-base-content">Live</strong>
                 </span>
             </div>
-            <div
-                style={{
-                    marginLeft: "auto",
-                    fontSize: 12,
-                    color: "var(--muted)",
-                }}
-            >
+            <div className="ml-auto text-xs text-base-content/70">
                 Last 7 days
             </div>
         </div>
-        <div className="dash-stats">
+        <div className="grid border-b border-base-300 sm:grid-cols-2 lg:grid-cols-4">
             {DASH_STATS.map((s) => (
-                <div className="dash-stat" key={s.label}>
-                    <div className="label">{s.label}</div>
-                    <div className="val">{s.val}</div>
-                    <div className={`trend${s.flat ? " flat" : ""}`}>
+                <div
+                    className="border-b border-base-300 p-5 sm:border-r sm:border-b-0 last:border-r-0"
+                    key={s.label}
+                >
+                    <div className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                        {s.label}
+                    </div>
+                    <div className="mt-2 text-3xl font-semibold text-base-content">
+                        {s.val}
+                    </div>
+                    <div
+                        className={cn(
+                            "mt-2 text-xs",
+                            s.flat ? "text-base-content/70" : "text-primary"
+                        )}
+                    >
                         {s.trend}
                     </div>
                 </div>
             ))}
         </div>
-        <div className="dash-table">
+        <div className="grid">
             {DASH_ROWS.map((row) => (
-                <div className="dash-row" key={row.subject}>
-                    <div className="who">
+                <div
+                    className="grid gap-3 border-b border-base-300 px-5 py-4 text-sm last:border-b-0 lg:grid-cols-[1.1fr_1.4fr_80px_130px_80px] lg:items-center"
+                    key={row.subject}
+                >
+                    <div className="font-semibold text-base-content">
                         {row.name}
-                        <span className="sub">{row.addr}</span>
-                    </div>
-                    <div className="sub-text">{row.subject}</div>
-                    <div className="order">{row.order}</div>
-                    <div>
-                        <span className={`pill ${row.pill.tone}`}>
-                            {row.pill.text}
+                        <span className="block text-xs font-normal text-base-content/70">
+                            {row.addr}
                         </span>
                     </div>
-                    <div className="time">{row.time}</div>
+                    <div className="text-xs text-base-content/70">
+                        {row.subject}
+                    </div>
+                    <div className=" text-sm">
+                        {row.order}
+                    </div>
+                    <div>
+                        <span className={pillClass(row.pill.tone)}>{row.pill.text}</span>
+                    </div>
+                    <div className="text-xs text-base-content/70">{row.time}</div>
                 </div>
             ))}
         </div>

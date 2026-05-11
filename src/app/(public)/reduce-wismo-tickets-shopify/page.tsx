@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+    cardClass,
     Container,
     PageHead,
     PublicFooter,
@@ -47,10 +48,12 @@ const Page = () => (
         />
 
         <Section style={{ paddingTop: 48 }}>
-            <article className="article">
-                <div className="toc">
-                    <h5>In this guide</h5>
-                    <ol>
+            <article className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 [&_blockquote]:mt-6 [&_blockquote]:rounded-box [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:bg-primary/10 [&_blockquote]:p-5 [&_blockquote]:text-lg [&_blockquote]:leading-8 [&_blockquote]:text-base-content [&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-base-content [&_h3]:mt-8 [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:text-base-content [&_ol]:mt-4 [&_ol]:grid [&_ol]:gap-2 [&_ol]:pl-5 [&_ol]:text-base-content/80 [&_p]:mt-4 [&_p]:max-w-4xl [&_p]:text-[17px] [&_p]:leading-8 [&_p]:text-base-content/80 [&_ul]:mt-4 [&_ul]:grid [&_ul]:gap-2 [&_ul]:pl-5 [&_ul]:text-base-content/80">
+                <div className="rounded-box border border-base-300 bg-base-100 p-5">
+                    <h5 className="mb-3 text-sm font-semibold uppercase tracking-normal text-base-content/70">
+                        In this guide
+                    </h5>
+                    <ol className="mt-0 grid gap-2 pl-5 text-sm text-base-content/80">
                         <li>
                             <a href="#what">What WISMO means</a>
                         </li>
@@ -141,22 +144,28 @@ const Page = () => (
                     </li>
                 </ol>
 
-                <div className="stat-pull">
-                    <div className="b">
-                        <div className="v">~60%</div>
-                        <div className="l">
+                <div className="my-8 grid gap-4 md:grid-cols-3">
+                    <div className="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                        <div className="text-3xl font-semibold text-base-content">
+                            ~60%
+                        </div>
+                        <div className="mt-1 text-sm text-base-content/70">
                             of repeat-volume support tickets are WISMO
                         </div>
                     </div>
-                    <div className="b">
-                        <div className="v">3.4 min</div>
-                        <div className="l">
+                    <div className="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                        <div className="text-3xl font-semibold text-base-content">
+                            3.4 min
+                        </div>
+                        <div className="mt-1 text-sm text-base-content/70">
                             average manual handle-time per ticket
                         </div>
                     </div>
-                    <div className="b">
-                        <div className="v">2.1x</div>
-                        <div className="l">
+                    <div className="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                        <div className="text-3xl font-semibold text-base-content">
+                            2.1x
+                        </div>
+                        <div className="mt-1 text-sm text-base-content/70">
                             repeat rate per customer per order
                         </div>
                     </div>
@@ -199,9 +208,9 @@ const Page = () => (
                 <p>
                     A simple{" "}
                     <code
-                        className="mono"
+                        className=""
                         style={{
-                            background: "var(--bg-soft)",
+                            background: "var(--color-base-200)",
                             padding: "2px 6px",
                             borderRadius: 4,
                             fontSize: 14,
@@ -298,29 +307,22 @@ const Page = () => (
                     for the order number politely or skips entirely — your call.
                 </p>
 
-                <div className="callout" style={{ marginTop: 32 }}>
-                    <div className="icon">
-                        <Check
-                            style={{
-                                width: 18,
-                                height: 18,
-                                color: "#0d9b48",
-                            }}
-                        />
+                <div className="mt-8 flex gap-4 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-box bg-primary/10 text-primary">
+                        <Check className="size-[18px]" />
                     </div>
                     <div>
-                        <h4 style={{ marginBottom: 6 }}>
+                        <h4 className="mb-1.5 font-semibold text-base-content">
                             Try it on your store
                         </h4>
-                        <p style={{ margin: 0 }}>
+                        <p className="m-0 text-base-content/80">
                             7-day free trial, no card. Install Valyn, forward
                             one email, see how it handles it.
                         </p>
-                        <div style={{ marginTop: 14 }}>
+                        <div className="mt-3.5 flex flex-wrap gap-2">
                             <Link
                                 href={INSTALL_HREF}
-                                className="btn btn-green btn-sm"
-                                style={{ marginRight: 8 }}
+                                className="btn btn-primary btn-sm"
                             >
                                 Install on Shopify
                             </Link>
@@ -339,15 +341,15 @@ const Page = () => (
                     eyebrow="Keep reading"
                     title="More on Shopify support automation."
                 />
-                <div className="grid-3">
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                     {otherGuides.map((g) => (
-                        <Link key={g.href} href={g.href} className="card">
+                        <Link key={g.href} href={g.href} className={cardClass}>
                             <h3>{g.title}</h3>
                             <p>{g.body}</p>
                             <p
                                 style={{
                                     marginTop: 12,
-                                    color: "var(--green-deep)",
+                                    color: "var(--color-primary)",
                                     fontWeight: 540,
                                     fontSize: 14,
                                 }}

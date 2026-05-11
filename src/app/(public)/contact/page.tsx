@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import {
+    cardClass,
     Container,
     FinalCta,
     PageHead,
@@ -26,45 +27,28 @@ const Page = () => (
         />
         <Section bg="soft">
             <Container>
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "0.8fr 1.2fr",
-                        gap: 32,
-                    }}
-                >
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 18,
-                        }}
-                    >
-                        <div className="card">
+                <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+                    <div className="grid gap-[18px]">
+                        <div className={cardClass}>
                             <h3>Support email</h3>
                             <a
                                 href={`mailto:${SUPPORT_EMAIL}`}
-                                style={{
-                                    marginTop: 12,
-                                    display: "inline-block",
-                                    color: "var(--green-deep)",
-                                    fontWeight: 540,
-                                }}
+                                className="mt-3 inline-block font-semibold text-primary"
                             >
                                 {SUPPORT_EMAIL}
                             </a>
                         </div>
-                        <div className="card">
+                        <div className={cardClass}>
                             <h3>Response expectations</h3>
-                            <p style={{ marginTop: 12 }}>
+                            <p>
                                 Merchant support requests are reviewed during
                                 business hours. Urgent privacy or security
                                 questions should use the support email above.
                             </p>
                         </div>
-                        <div className="card">
+                        <div className={cardClass}>
                             <h3>Company &amp; legal identity</h3>
-                            <p style={{ marginTop: 12 }}>
+                            <p>
                                 Company legal details should be finalized before
                                 public launch and Shopify App Store submission.
                             </p>
@@ -74,111 +58,47 @@ const Page = () => (
                         action={`mailto:${SUPPORT_EMAIL}`}
                         method="post"
                         encType="text/plain"
-                        className="card"
+                        className={cardClass}
                     >
                         <h3>Contact form</h3>
-                        <div
-                            style={{
-                                marginTop: 18,
-                                display: "grid",
-                                gap: 14,
-                            }}
-                        >
-                            <label
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 6,
-                                    fontSize: 14,
-                                    color: "var(--ink-2)",
-                                }}
-                            >
+                        <div className="mt-[18px] grid gap-3.5">
+                            <label className="grid gap-1.5 text-sm text-base-content">
                                 <span>Name</span>
                                 <input
                                     name="name"
                                     required
-                                    style={{
-                                        padding: "10px 12px",
-                                        border: "1px solid var(--line)",
-                                        borderRadius: 8,
-                                        fontFamily: "inherit",
-                                        fontSize: 14,
-                                    }}
+                                    className="input input-bordered w-full"
                                 />
                             </label>
-                            <label
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 6,
-                                    fontSize: 14,
-                                    color: "var(--ink-2)",
-                                }}
-                            >
+                            <label className="grid gap-1.5 text-sm text-base-content">
                                 <span>Email</span>
                                 <input
                                     name="email"
                                     type="email"
                                     required
-                                    style={{
-                                        padding: "10px 12px",
-                                        border: "1px solid var(--line)",
-                                        borderRadius: 8,
-                                        fontFamily: "inherit",
-                                        fontSize: 14,
-                                    }}
+                                    className="input input-bordered w-full"
                                 />
                             </label>
-                            <label
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 6,
-                                    fontSize: 14,
-                                    color: "var(--ink-2)",
-                                }}
-                            >
+                            <label className="grid gap-1.5 text-sm text-base-content">
                                 <span>Store URL</span>
                                 <input
                                     name="store"
                                     placeholder="your-store.myshopify.com"
-                                    style={{
-                                        padding: "10px 12px",
-                                        border: "1px solid var(--line)",
-                                        borderRadius: 8,
-                                        fontFamily: "inherit",
-                                        fontSize: 14,
-                                    }}
+                                    className="input input-bordered w-full"
                                 />
                             </label>
-                            <label
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 6,
-                                    fontSize: 14,
-                                    color: "var(--ink-2)",
-                                }}
-                            >
+                            <label className="grid gap-1.5 text-sm text-base-content">
                                 <span>Message</span>
                                 <textarea
                                     name="message"
                                     required
                                     rows={6}
-                                    style={{
-                                        padding: "10px 12px",
-                                        border: "1px solid var(--line)",
-                                        borderRadius: 8,
-                                        fontFamily: "inherit",
-                                        fontSize: 14,
-                                        resize: "vertical",
-                                    }}
+                                    className="textarea textarea-bordered w-full resize-y"
                                 />
                             </label>
                             <button
                                 type="submit"
-                                className="btn btn-green"
-                                style={{ justifyContent: "center" }}
+                                className="btn btn-primary justify-center"
                             >
                                 Send message
                             </button>

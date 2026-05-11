@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { cn, pillClass } from "./site-shell";
 
 const STEPS: { n: string; t: string }[] = [
     { n: "01", t: "Customer email" },
@@ -10,25 +11,36 @@ const STEPS: { n: string; t: string }[] = [
     { n: "05", t: "Reply sent" },
 ];
 
+const panelClass =
+    "overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm";
+const panelHeaderClass =
+    "flex items-center justify-between gap-3 border-b border-base-300 bg-base-200 px-4 py-3 text-xs font-semibold text-base-content/70";
+const panelBodyClass = "p-5 text-sm leading-7 text-base-content/80";
+const lookupCellClass = "rounded-box border border-base-300 bg-base-200 p-3";
+const lookupKeyClass =
+    "text-xs font-semibold uppercase tracking-normal text-base-content/60";
+const lookupValueClass =
+    "mt-1 text-sm font-semibold text-base-content";
+
 const Inbound = () => (
-    <div className="stage-panel">
-        <div className="ph">
+    <div className={panelClass}>
+        <div className={panelHeaderClass}>
             <span>Inbound — sarah.p@gmail.com</span>
             <span>14:02</span>
         </div>
-        <div className="pb">
-            <div style={{ fontSize: 13, fontWeight: 540, marginBottom: 4 }}>
+        <div className={panelBodyClass}>
+            <div className="mb-1 font-semibold text-base-content">
                 To: support@yourstore.com
             </div>
-            <div style={{ fontSize: 13, fontWeight: 540, marginBottom: 12 }}>
+            <div className="mb-3 font-semibold text-base-content">
                 Subject: Where is my order?
             </div>
-            <p style={{ margin: 0, color: "var(--ink-2)" }}>
+            <p>
                 Hi, I ordered last week and still haven&apos;t received my
                 package. My order number is <strong>#1042</strong>. Can you
                 check?
             </p>
-            <p style={{ marginTop: 8, color: "var(--muted)" }}>
+            <p className="mt-2 text-base-content/70">
                 Thanks,
                 <br />
                 Sarah
@@ -38,34 +50,17 @@ const Inbound = () => (
 );
 
 const PanelAwaiting = () => (
-    <div className="stage-panel">
-        <div className="ph">
+    <div className={panelClass}>
+        <div className={panelHeaderClass}>
             <span>Awaiting events…</span>
             <span>—</span>
         </div>
-        <div className="pb" style={{ color: "var(--muted)" }}>
-            <div
-                style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
-            >
-                <span
-                    style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: "50%",
-                        background: "var(--green)",
-                        animation: "valyn-pulse 1.6s infinite",
-                    }}
-                />
+        <div className={panelBodyClass}>
+            <div className="inline-flex items-center gap-2 text-base-content/70">
+                <span className="size-1.5 rounded-full bg-primary" />
                 Email forwarded to your Valyn address
             </div>
-            <div
-                style={{
-                    marginTop: 14,
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 12,
-                    color: "var(--muted-2)",
-                }}
-            >
+            <div className="mt-3.5 text-xs leading-6 text-base-content/60">
                 inbound.getvalyn.com
                 <br />↓ SES receives MIME
                 <br />↓ S3 stores blob
@@ -76,41 +71,29 @@ const PanelAwaiting = () => (
 );
 
 const PanelDetect = () => (
-    <div className="stage-panel">
-        <div className="ph">
+    <div className={panelClass}>
+        <div className={panelHeaderClass}>
             <span>classify.intent</span>
-            <span className="mono">0.42s</span>
+            <span className="">0.42s</span>
         </div>
-        <div className="pb">
-            <div
-                style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 13,
-                    lineHeight: 1.8,
-                }}
-            >
+        <div className={panelBodyClass}>
+            <div className=" text-[13px] leading-7 text-base-content">
                 <div>
                     scan_keywords([
-                    <span style={{ color: "var(--green-deep)" }}>
-                        &quot;where is&quot;
-                    </span>
-                    , &quot;tracking&quot;, &quot;commande&quot;])
+                    <span className="text-primary">&quot;where is&quot;</span>,
+                    &quot;tracking&quot;, &quot;commande&quot;])
                 </div>
-                <div style={{ color: "var(--muted)" }}>
+                <div className="text-base-content/60">
                     → matched: &quot;where is&quot;, &quot;order #&quot;
                 </div>
                 <div>
-                    language: <span style={{ color: "var(--ink)" }}>EN</span>
+                    language: <span>EN</span>
                 </div>
                 <div>
-                    intent:{" "}
-                    <span className="pill ok" style={{ marginLeft: 4 }}>
-                        WISMO
-                    </span>
+                    intent: <span className={`${pillClass("ok")} ml-1`}>WISMO</span>
                 </div>
                 <div>
-                    confidence:{" "}
-                    <span style={{ color: "var(--ink)" }}>0.94</span>
+                    confidence: <span>0.94</span>
                 </div>
             </div>
         </div>
@@ -118,32 +101,32 @@ const PanelDetect = () => (
 );
 
 const PanelLookup = () => (
-    <div className="stage-panel">
-        <div className="ph">
+    <div className={panelClass}>
+        <div className={panelHeaderClass}>
             <span>order.lookup</span>
-            <span className="mono">1.08s</span>
+            <span className="">1.08s</span>
         </div>
-        <div className="pb">
-            <div className="lookup-grid">
-                <div className="lookup-cell">
-                    <div className="k">Order</div>
-                    <div className="v">#1042</div>
+        <div className={panelBodyClass}>
+            <div className="grid gap-3 sm:grid-cols-2">
+                <div className={lookupCellClass}>
+                    <div className={lookupKeyClass}>Order</div>
+                    <div className={lookupValueClass}>#1042</div>
                 </div>
-                <div className="lookup-cell">
-                    <div className="k">Status</div>
-                    <div className="v">in_transit</div>
+                <div className={lookupCellClass}>
+                    <div className={lookupKeyClass}>Status</div>
+                    <div className={lookupValueClass}>in_transit</div>
                 </div>
-                <div className="lookup-cell">
-                    <div className="k">Carrier</div>
-                    <div className="v">DHL Express</div>
+                <div className={lookupCellClass}>
+                    <div className={lookupKeyClass}>Carrier</div>
+                    <div className={lookupValueClass}>DHL Express</div>
                 </div>
-                <div className="lookup-cell">
-                    <div className="k">Tracking</div>
-                    <div className="v">EU728193…</div>
+                <div className={lookupCellClass}>
+                    <div className={lookupKeyClass}>Tracking</div>
+                    <div className={lookupValueClass}>EU728193…</div>
                 </div>
-                <div className="lookup-cell" style={{ gridColumn: "1 / -1" }}>
-                    <div className="k">ETA</div>
-                    <div className="v">Thursday, May 14</div>
+                <div className={`${lookupCellClass} sm:col-span-2`}>
+                    <div className={lookupKeyClass}>ETA</div>
+                    <div className={lookupValueClass}>Thursday, May 14</div>
                 </div>
             </div>
         </div>
@@ -151,17 +134,17 @@ const PanelLookup = () => (
 );
 
 const PanelReply = ({ sent }: { sent: boolean }) => (
-    <div className="stage-panel">
-        <div className="ph">
+    <div className={panelClass}>
+        <div className={panelHeaderClass}>
             <span>{sent ? "reply.sent" : "reply.draft"}</span>
-            <span className="mono">{sent ? "delivered ✓" : "drafting…"}</span>
+            <span className="">
+                {sent ? "delivered ✓" : "drafting…"}
+            </span>
         </div>
-        <div className="pb">
-            <div style={{ fontSize: 13, color: "var(--ink-2)" }}>
-                <div style={{ fontWeight: 540 }}>
-                    From: support@yourstore.com
-                </div>
-                <div style={{ fontWeight: 540, marginBottom: 10 }}>
+        <div className={panelBodyClass}>
+            <div className="text-[13px] leading-7 text-base-content">
+                <div className="font-semibold">From: support@yourstore.com</div>
+                <div className="mb-2.5 font-semibold">
                     Subject: Re: Where is my order?
                 </div>
                 <div>
@@ -172,35 +155,17 @@ const PanelReply = ({ sent }: { sent: boolean }) => (
                     with <strong>DHL Express</strong>.
                     <br />
                     Track it here:{" "}
-                    <span
-                        style={{
-                            color: "var(--green-deep)",
-                            textDecoration: "underline",
-                        }}
-                    >
+                    <span className="text-primary underline">
                         track.dhl.com/EU728193…
                     </span>
                     <br />
                     Expected delivery: <strong>Thursday, May 14</strong>.
                 </div>
-                <div
-                    style={{
-                        marginTop: 14,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 8,
-                    }}
-                >
-                    <span className={`pill ${sent ? "ok" : "warn"}`}>
+                <div className="mt-3.5 inline-flex flex-wrap items-center gap-2">
+                    <span className={pillClass(sent ? "ok" : "warn")}>
                         {sent ? "● Sent" : "● Draft"}
                     </span>
-                    <span
-                        style={{
-                            fontSize: 11,
-                            color: "var(--muted)",
-                            fontFamily: "var(--font-mono)",
-                        }}
-                    >
+                    <span className=" text-[11px] text-base-content/60">
                         {sent ? "3.2s end-to-end" : "awaiting send"}
                     </span>
                 </div>
@@ -230,34 +195,38 @@ const DemoStage = () => {
     }, [auto]);
 
     return (
-        <div className="demo-stage">
-            <div className="demo-flow">
-                {STEPS.map((s, i) => {
-                    const klass =
-                        i === step ? "current"
-                        : i < step ? "done"
-                        : "";
-                    return (
-                        <button
-                            key={s.n}
-                            type="button"
-                            className={`demo-step ${klass}`.trim()}
-                            onClick={() => {
-                                setAuto(false);
-                                setStep(i);
-                            }}
-                        >
-                            <div className="n">{s.n}</div>
-                            <div className="t">{s.t}</div>
-                        </button>
-                    );
-                })}
+        <div className={panelClass}>
+            <div className="grid gap-2 border-b border-base-300 bg-base-200 p-4 md:grid-cols-5">
+                {STEPS.map((s, i) => (
+                    <button
+                        key={s.n}
+                        type="button"
+                        className={cn(
+                            "rounded-box border px-3 py-2 text-left transition",
+                            i === step &&
+                                "border-primary bg-primary text-primary-content",
+                            i < step &&
+                                i !== step &&
+                                "border-primary/30 bg-primary/10 text-base-content",
+                            i > step && "border-base-300 bg-base-100 text-base-content/70"
+                        )}
+                        onClick={() => {
+                            setAuto(false);
+                            setStep(i);
+                        }}
+                    >
+                        <div className=" text-xs font-semibold">
+                            {s.n}
+                        </div>
+                        <div className="mt-1 text-sm font-semibold">{s.t}</div>
+                    </button>
+                ))}
             </div>
-            <div className="stage-body">
+            <div className="grid gap-4 p-4 lg:grid-cols-2">
                 <Inbound />
                 <RightPanel step={step} />
             </div>
-            <div className="controls">
+            <div className="flex flex-wrap justify-end gap-2 border-t border-base-300 p-4">
                 <button
                     type="button"
                     className="btn btn-ghost btn-sm"
