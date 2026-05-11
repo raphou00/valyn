@@ -241,7 +241,11 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--color-base-content)" }}>
+                                <span
+                                    style={{
+                                        color: "var(--color-base-content)",
+                                    }}
+                                >
                                     Starts at
                                 </span>
                                 <strong>$19/mo</strong>
@@ -252,7 +256,11 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--color-base-content)" }}>
+                                <span
+                                    style={{
+                                        color: "var(--color-base-content)",
+                                    }}
+                                >
                                     Setup
                                 </span>
                                 <strong>Under 5 minutes</strong>
@@ -263,7 +271,11 @@ const Page = () => (
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <span style={{ color: "var(--color-base-content)" }}>
+                                <span
+                                    style={{
+                                        color: "var(--color-base-content)",
+                                    }}
+                                >
                                     Onboarding
                                 </span>
                                 <strong>Self-serve</strong>
@@ -308,8 +320,10 @@ const Page = () => (
                     }}
                 >
                     Many stores run{" "}
-                    <strong style={{ color: "var(--color-base-content)" }}>both</strong> —
-                    Valyn handling tracking, a helpdesk handling everything
+                    <strong style={{ color: "var(--color-base-content)" }}>
+                        both
+                    </strong>{" "}
+                    — Valyn handling tracking, a helpdesk handling everything
                     else. They don&apos;t compete.
                 </p>
             </Container>
@@ -340,7 +354,9 @@ const Page = () => (
                                 <td className={featureTdClass}>{cap}</td>
                                 <td className={tdClass}>
                                     {g === "✓" ?
-                                        <span className={checkMarkClass}>✓</span>
+                                        <span className={checkMarkClass}>
+                                            ✓
+                                        </span>
                                     : g === "—" ?
                                         <span className={dashMarkClass}>—</span>
                                     :   g}
@@ -425,7 +441,8 @@ const Page = () => (
                                     display: "flex",
                                     justifyContent: "space-between",
                                     paddingTop: 10,
-                                    borderTop: "1px solid var(--color-base-300)",
+                                    borderTop:
+                                        "1px solid var(--color-base-300)",
                                 }}
                             >
                                 <span>Monthly cost</span>

@@ -269,7 +269,9 @@ const Page = () => (
             <Container>
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">The problem</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                            The problem
+                        </span>
                         <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
                             Your support inbox shouldn&apos;t be full of
                             tracking questions.
@@ -445,11 +447,11 @@ const Page = () => (
         {/* Security */}
         <Section>
             <Container>
-                <div
-                    className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-start"
-                >
+                <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-start">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">Trust & security</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                            Trust & security
+                        </span>
                         <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
                             Designed with merchant trust in mind.
                         </h2>

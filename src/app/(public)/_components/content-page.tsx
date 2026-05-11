@@ -145,7 +145,11 @@ export const FaqList = ({
 }) => (
     <div className="grid gap-3">
         {items.map((item, i) => (
-            <details className={faqDetailsClass} key={item.question} open={i === 0}>
+            <details
+                className={faqDetailsClass}
+                key={item.question}
+                open={i === 0}
+            >
                 <summary className={faqSummaryClass}>
                     {item.question}
                     <span className={faqIconClass} />

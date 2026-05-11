@@ -19,8 +19,7 @@ const panelBodyClass = "p-5 text-sm leading-7 text-base-content/80";
 const lookupCellClass = "rounded-box border border-base-300 bg-base-200 p-3";
 const lookupKeyClass =
     "text-xs font-semibold uppercase tracking-normal text-base-content/60";
-const lookupValueClass =
-    "mt-1 text-sm font-semibold text-base-content";
+const lookupValueClass = "mt-1 text-sm font-semibold text-base-content";
 
 const Inbound = () => (
     <div className={panelClass}>
@@ -90,7 +89,8 @@ const PanelDetect = () => (
                     language: <span>EN</span>
                 </div>
                 <div>
-                    intent: <span className={`${pillClass("ok")} ml-1`}>WISMO</span>
+                    intent:{" "}
+                    <span className={`${pillClass("ok")} ml-1`}>WISMO</span>
                 </div>
                 <div>
                     confidence: <span>0.94</span>
@@ -137,9 +137,7 @@ const PanelReply = ({ sent }: { sent: boolean }) => (
     <div className={panelClass}>
         <div className={panelHeaderClass}>
             <span>{sent ? "reply.sent" : "reply.draft"}</span>
-            <span className="">
-                {sent ? "delivered ✓" : "drafting…"}
-            </span>
+            <span className="">{sent ? "delivered ✓" : "drafting…"}</span>
         </div>
         <div className={panelBodyClass}>
             <div className="text-[13px] leading-7 text-base-content">
@@ -208,16 +206,15 @@ const DemoStage = () => {
                             i < step &&
                                 i !== step &&
                                 "border-primary/30 bg-primary/10 text-base-content",
-                            i > step && "border-base-300 bg-base-100 text-base-content/70"
+                            i > step &&
+                                "border-base-300 bg-base-100 text-base-content/70"
                         )}
                         onClick={() => {
                             setAuto(false);
                             setStep(i);
                         }}
                     >
-                        <div className=" text-xs font-semibold">
-                            {s.n}
-                        </div>
+                        <div className=" text-xs font-semibold">{s.n}</div>
                         <div className="mt-1 text-sm font-semibold">{s.t}</div>
                     </button>
                 ))}

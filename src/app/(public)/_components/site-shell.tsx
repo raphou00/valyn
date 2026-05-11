@@ -36,8 +36,7 @@ export const faqAnswerClass =
 export const planClass =
     "relative flex flex-col gap-6 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm";
 
-export const featuredPlanClass =
-    "border-primary bg-primary/10";
+export const featuredPlanClass = "border-primary bg-primary/10";
 
 export const checkItemClass =
     "flex items-start gap-3 text-sm leading-6 text-base-content/80 [&_svg]:mt-1 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-primary";
@@ -97,7 +96,9 @@ const BrandMark = ({ inverted = false }: { inverted?: boolean }) => (
 
 export const PublicHeader = ({ active }: { active?: string }) => (
     <nav className="sticky top-0 z-40 border-b border-base-300 bg-base-100/95 backdrop-blur">
-        <div className={`${containerClass} flex h-16 items-center justify-between gap-4`}>
+        <div
+            className={`${containerClass} flex h-16 items-center justify-between gap-4`}
+        >
             <BrandMark />
             <div className="hidden items-center gap-1 lg:flex">
                 {navItems.map((item) => (
@@ -559,13 +560,15 @@ export const DashboardMockup = () => (
                     <div className="text-xs text-base-content/70">
                         {row.subject}
                     </div>
-                    <div className=" text-sm">
-                        {row.order}
-                    </div>
+                    <div className=" text-sm">{row.order}</div>
                     <div>
-                        <span className={pillClass(row.pill.tone)}>{row.pill.text}</span>
+                        <span className={pillClass(row.pill.tone)}>
+                            {row.pill.text}
+                        </span>
                     </div>
-                    <div className="text-xs text-base-content/70">{row.time}</div>
+                    <div className="text-xs text-base-content/70">
+                        {row.time}
+                    </div>
                 </div>
             ))}
         </div>

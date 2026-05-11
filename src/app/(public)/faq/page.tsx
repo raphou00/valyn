@@ -170,7 +170,9 @@ const Page = () => (
                         key={group.title}
                         className={gi > 0 ? "mt-16" : undefined}
                     >
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">{group.kicker}</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                            {group.kicker}
+                        </span>
                         <h2 className="mb-[18px] mt-3.5 text-3xl font-semibold leading-tight text-base-content sm:text-4xl">
                             {group.title}
                         </h2>
@@ -198,7 +200,10 @@ const Page = () => (
 
         <Section>
             <Container>
-                <div className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14" id="contact">
+                <div
+                    className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14"
+                    id="contact"
+                >
                     <h2 className="text-3xl font-semibold leading-tight text-accent-content sm:text-4xl">
                         Didn&apos;t find your answer?
                     </h2>

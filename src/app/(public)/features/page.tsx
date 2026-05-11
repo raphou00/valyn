@@ -140,11 +140,16 @@ const Page = () => (
             <Container>
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">01 — Detection</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                            01 — Detection
+                        </span>
                         <h2 style={{ marginTop: 14 }}>
                             WISMO detection that actually skips the rest.
                         </h2>
-                        <p className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl" style={{ marginTop: 18 }}>
+                        <p
+                            className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl"
+                            style={{ marginTop: 18 }}
+                        >
                             Keyword + sender classification flags order-tracking
                             emails in three languages. Everything else lands
                             untouched in your inbox so real support still
@@ -156,7 +161,10 @@ const Page = () => (
                             ))}
                         </ul>
                     </div>
-                    <div className={cardClass} style={{ padding: 0, overflow: "hidden" }}>
+                    <div
+                        className={cardClass}
+                        style={{ padding: 0, overflow: "hidden" }}
+                    >
                         <div className="border-b border-base-300 bg-base-200 px-[18px] py-3.5 text-xs text-base-content/70">
                             classification.log
                         </div>
@@ -183,7 +191,10 @@ const Page = () => (
         <Section bg="soft">
             <Container>
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
-                    <div className={cardClass} style={{ padding: 0, overflow: "hidden" }}>
+                    <div
+                        className={cardClass}
+                        style={{ padding: 0, overflow: "hidden" }}
+                    >
                         <div className="border-b border-base-300 bg-base-200 px-[18px] py-3.5 text-xs text-base-content/70">
                             order.lookup
                         </div>
@@ -212,11 +223,16 @@ const Page = () => (
                         </div>
                     </div>
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">02 — Lookup</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                            02 — Lookup
+                        </span>
                         <h2 style={{ marginTop: 14 }}>
                             Three ways to find the order. One graceful fallback.
                         </h2>
-                        <p className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl" style={{ marginTop: 18 }}>
+                        <p
+                            className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl"
+                            style={{ marginTop: 18 }}
+                        >
                             Order numbers come in dozens of formats. Senders
                             email from addresses that don&apos;t match their
                             Shopify customer record. Valyn tries the obvious
@@ -236,11 +252,16 @@ const Page = () => (
             <Container>
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">03 — Reply</span>
+                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                            03 — Reply
+                        </span>
                         <h2 style={{ marginTop: 14 }}>
                             Sent from your address. In your voice.
                         </h2>
-                        <p className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl" style={{ marginTop: 18 }}>
+                        <p
+                            className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl"
+                            style={{ marginTop: 18 }}
+                        >
                             Replies go out via your own SMTP. The customer sees
                             your domain, your signature, your tone. Valyn is
                             invisible in the conversation.
@@ -256,9 +277,7 @@ const Page = () => (
                             <div className="font-semibold text-base-content">
                                 support@yourstore.com
                             </div>
-                            <div className="">
-                                14:02
-                            </div>
+                            <div className="">14:02</div>
                         </div>
                         <div className="mb-3 font-semibold text-base-content">
                             Re: Where is my order?
@@ -323,7 +342,12 @@ const Page = () => (
                         <h3 style={{ marginBottom: 8 }}>
                             What Valyn doesn&apos;t do
                         </h3>
-                        <p style={{ marginBottom: 0, color: "var(--color-base-content)" }}>
+                        <p
+                            style={{
+                                marginBottom: 0,
+                                color: "var(--color-base-content)",
+                            }}
+                        >
                             No returns automation. No refunds. No live chat. No
                             AI chatbot. No social DMs. No marketing emails. No
                             abandoned-cart recovery. No multi-mailbox routing.

@@ -138,9 +138,7 @@ const Page = () => (
 
         <Section style={{ paddingTop: 48 }}>
             <Container>
-                <div
-                    className="grid gap-5 lg:grid-cols-2"
-                >
+                <div className="grid gap-5 lg:grid-cols-2">
                     {plans.map((plan) => (
                         <div
                             className={cn(
@@ -217,13 +215,9 @@ const Page = () => (
                 <table className={tableClass}>
                     <thead>
                         <tr>
-                            <th className={cn(thClass, "w-[40%]")}>
-                                Feature
-                            </th>
+                            <th className={cn(thClass, "w-[40%]")}>Feature</th>
                             <th className={thClass}>Starter</th>
-                            <th className={cn(thClass, "text-primary")}>
-                                Pro
-                            </th>
+                            <th className={cn(thClass, "text-primary")}>Pro</th>
                         </tr>
                     </thead>
                     <tbody>

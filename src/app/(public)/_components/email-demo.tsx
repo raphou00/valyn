@@ -45,9 +45,7 @@ const EmailDemo = () => {
                                 &lt;sarah.p@gmail.com&gt;
                             </span>
                         </div>
-                        <div className="">
-                            14:02
-                        </div>
+                        <div className="">14:02</div>
                     </div>
                     <div className="mb-3 font-semibold text-base-content">
                         Where is my order?
@@ -77,9 +75,7 @@ const EmailDemo = () => {
                                 on behalf of yourstore.com
                             </span>
                         </div>
-                        <div className="">
-                            14:02
-                        </div>
+                        <div className="">14:02</div>
                     </div>
                     <div className="mb-3 font-semibold text-base-content">
                         Re: Where is my order?
