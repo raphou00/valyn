@@ -199,19 +199,19 @@ const Page = () => (
     <>
         <PublicHeader variant="dark" />
 
-        <section className="relative overflow-hidden bg-accent pb-12 pt-16 text-accent-content sm:pt-20 lg:pb-20 lg:pt-24">
+        <section className="relative overflow-hidden bg-accent pb-10 pt-12 text-accent-content sm:pt-20 lg:pb-20 lg:pt-24">
             <Container>
-                <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
+                <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
                     <div>
                         <p className="text-xs font-medium uppercase tracking-[0.06em] text-accent-content/55">
                             Shopify support automation
                         </p>
-                        <h1 className="mt-5 max-w-6xl text-[clamp(4rem,11vw,6.5rem)] font-[330] leading-none tracking-[0.025em] text-accent-content">
+                        <h1 className="mt-4 max-w-6xl text-[clamp(3rem,13vw,6.5rem)] font-[330] leading-[0.98] text-accent-content sm:mt-5">
                             Order support that answers before the inbox grows.
                         </h1>
                     </div>
                     <div className="max-w-md lg:pb-4">
-                        <p className="text-lg leading-8 text-accent-content/70">
+                        <p className="text-base leading-7 text-accent-content/70 sm:text-lg sm:leading-8">
                             Valyn detects order-tracking emails, finds the
                             matching Shopify order, and replies from your own
                             address with accurate tracking details.
@@ -224,8 +224,8 @@ const Page = () => (
                 </div>
             </Container>
 
-            <div className="mt-12 lg:mt-16">
-                <div className="relative h-[320px] overflow-hidden sm:h-[440px] lg:h-[560px]">
+            <div className="mt-10 lg:mt-16">
+                <div className="relative h-[280px] overflow-hidden sm:h-[440px] lg:h-[560px]">
                     <Image
                         src="https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?auto=format&fit=crop&w=2200&q=82"
                         alt="Merchant preparing ecommerce orders in a studio workspace"
@@ -263,7 +263,7 @@ const Page = () => (
                         <p className="text-xs font-medium uppercase tracking-[0.06em] text-accent-content/55">
                             The problem
                         </p>
-                        <h2 className="mt-5 text-5xl font-[330] leading-none text-accent-content sm:text-6xl lg:text-[72px]">
+                        <h2 className="mt-5 text-[2.7rem] font-[330] leading-[1.02] text-accent-content sm:text-6xl lg:text-[72px]">
                             Your support inbox should not be a tracking lookup
                             queue.
                         </h2>
@@ -327,10 +327,10 @@ const Page = () => (
                         <p className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/55">
                             Live reply preview
                         </p>
-                        <h2 className="mt-5 text-5xl font-[330] leading-[1.05] text-base-content sm:text-6xl">
+                        <h2 className="mt-5 text-[2.65rem] font-[330] leading-[1.06] text-base-content sm:text-6xl">
                             The answer goes out before the ticket pile forms.
                         </h2>
-                        <p className="mt-5 text-lg leading-8 text-base-content/70">
+                        <p className="mt-5 text-base leading-7 text-base-content/70 sm:text-lg sm:leading-8">
                             Customers see your sender, your signature, and the
                             Shopify order data they were asking for.
                         </p>
@@ -443,10 +443,10 @@ const Page = () => (
                         <p className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/55">
                             Trust & security
                         </p>
-                        <h2 className="mt-5 text-5xl font-[330] leading-[1.05] text-base-content sm:text-6xl">
+                        <h2 className="mt-5 text-[2.65rem] font-[330] leading-[1.06] text-base-content sm:text-6xl">
                             Designed with merchant trust in mind.
                         </h2>
-                        <p className="mt-5 max-w-2xl text-lg leading-8 text-base-content/70">
+                        <p className="mt-5 max-w-2xl text-base leading-7 text-base-content/70 sm:text-lg sm:leading-8">
                             Valyn asks Shopify for the minimum permissions
                             needed and nothing more. It never modifies your
                             store.

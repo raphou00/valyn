@@ -11,10 +11,10 @@ export const cn = (...classes: (string | false | null | undefined)[]) =>
     classes.filter(Boolean).join(" ");
 
 export const containerClass =
-    "mx-auto w-full max-w-[90rem] px-5 sm:px-8 lg:px-12";
+    "mx-auto w-full max-w-[90rem] px-5 min-[420px]:px-6 sm:px-8 lg:px-12";
 
 export const cardClass =
-    "rounded-lg border border-base-300 bg-base-100 p-6 shadow-[0_8px_8px_rgba(0,0,0,0.08),0_4px_4px_rgba(0,0,0,0.06),0_2px_2px_rgba(0,0,0,0.05),0_0_0_1px_rgba(0,0,0,0.02)] transition hover:-translate-y-0.5 [&_h3]:text-2xl [&_h3]:font-[330] [&_h3]:leading-tight [&_h3]:text-base-content [&_h4]:text-xl [&_h4]:font-[330] [&_h4]:leading-tight [&_h4]:text-base-content [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70";
+    "rounded-lg border border-base-300 bg-base-100 p-5 shadow-[0_8px_8px_rgba(0,0,0,0.08),0_4px_4px_rgba(0,0,0,0.06),0_2px_2px_rgba(0,0,0,0.05),0_0_0_1px_rgba(0,0,0,0.02)] transition hover:-translate-y-0.5 sm:p-6 [&_h3]:text-[1.4rem] [&_h3]:font-[330] [&_h3]:leading-tight [&_h3]:text-base-content sm:[&_h3]:text-2xl [&_h4]:text-xl [&_h4]:font-[330] [&_h4]:leading-tight [&_h4]:text-base-content [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70";
 
 export const iconBoxClass =
     "mb-5 inline-flex size-11 items-center justify-center rounded-full bg-secondary text-secondary-content [&_svg]:size-5";
@@ -155,14 +155,14 @@ export const PublicHeader = ({
                     <ShopifyBox className="size-4 shrink-0" />
                     Install on Shopify
                 </Link>
-                <details className="dropdown dropdown-end lg:hidden">
+                <details className="dropdown dropdown-end group lg:hidden">
                     <summary
                         aria-label="Open menu"
                         className={cn(
-                            "btn btn-sm btn-ghost btn-square",
+                            "btn btn-sm btn-ghost btn-square focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 group-open:bg-current/10",
                             variant === "dark" ?
-                                "text-accent-content hover:bg-accent-content/10"
-                            :   "text-base-content hover:bg-base-content/5"
+                                "text-accent-content hover:bg-accent-content/10 focus-visible:outline-accent-content/50"
+                            :   "text-base-content hover:bg-base-content/5 focus-visible:outline-base-content/30"
                         )}
                     >
                         <svg
@@ -182,7 +182,7 @@ export const PublicHeader = ({
                     </summary>
                     <ul
                         className={cn(
-                            "menu dropdown-content z-50 mt-3 w-60 rounded-lg border p-2 shadow",
+                            "menu dropdown-content z-50 mt-3 w-60 max-w-[calc(100vw-2.5rem)] rounded-lg border p-2 shadow",
                             variant === "dark" ?
                                 "border-accent-content/10 bg-accent text-accent-content"
                             :   "border-base-300 bg-base-100 text-base-content"
@@ -339,7 +339,7 @@ export const Section = ({
         : bg === "ink" ? "bg-accent text-accent-content"
         : bg === "green-tint" ? "bg-secondary"
         : "";
-    const cls = cn("py-16 lg:py-24", bgClass, className);
+    const cls = cn("py-14 sm:py-16 lg:py-24", bgClass, className);
     return (
         <section className={cls} style={style}>
             {children}
@@ -356,18 +356,18 @@ export const SectionHead = ({
     title: string;
     description?: string;
 }) => (
-    <div className="mx-auto mb-12 max-w-3xl text-center">
+    <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12">
         {eyebrow && (
             <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-xs font-medium uppercase tracking-[0.06em] text-secondary-content">
                 <span className="size-1.5 rounded-full bg-base-content" />
                 {eyebrow}
             </span>
         )}
-        <h2 className="mt-5 text-4xl font-[330] leading-[1.08] text-base-content sm:text-5xl lg:text-[70px]">
+        <h2 className="mt-5 text-[2.35rem] font-[330] leading-[1.08] text-base-content sm:text-5xl lg:text-[70px]">
             {title}
         </h2>
         {description && (
-            <p className="mx-auto mt-5 max-w-2xl text-lg font-normal leading-8 text-base-content/70">
+            <p className="mx-auto mt-5 max-w-2xl text-base font-normal leading-7 text-base-content/70 sm:text-lg sm:leading-8">
                 {description}
             </p>
         )}
