@@ -10,22 +10,23 @@ type PillTone = "ok" | "warn" | "fail" | "muted";
 export const cn = (...classes: (string | false | null | undefined)[]) =>
     classes.filter(Boolean).join(" ");
 
-export const containerClass = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
+export const containerClass =
+    "mx-auto w-full max-w-[90rem] px-5 sm:px-8 lg:px-12";
 
 export const cardClass =
-    "rounded-box border border-base-300 bg-base-100 p-6 shadow-sm transition hover:-translate-y-1 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-base-content [&_h4]:font-semibold [&_h4]:leading-tight [&_h4]:text-base-content [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70";
+    "rounded-lg border border-base-300 bg-base-100 p-6 shadow-[0_8px_8px_rgba(0,0,0,0.08),0_4px_4px_rgba(0,0,0,0.06),0_2px_2px_rgba(0,0,0,0.05),0_0_0_1px_rgba(0,0,0,0.02)] transition hover:-translate-y-0.5 [&_h3]:text-2xl [&_h3]:font-[330] [&_h3]:leading-tight [&_h3]:text-base-content [&_h4]:text-xl [&_h4]:font-[330] [&_h4]:leading-tight [&_h4]:text-base-content [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70";
 
 export const iconBoxClass =
-    "mb-4 inline-flex size-11 items-center justify-center rounded-box bg-primary/10 text-primary [&_svg]:size-5";
+    "mb-5 inline-flex size-11 items-center justify-center rounded-full bg-secondary text-secondary-content [&_svg]:size-5";
 
 export const warningIconBoxClass =
-    "inline-flex size-11 shrink-0 items-center justify-center rounded-box bg-warning/20 text-warning [&_svg]:size-5";
+    "inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-base-content text-base-100 [&_svg]:size-5";
 
 export const faqDetailsClass =
-    "group rounded-box border border-base-300 bg-base-100";
+    "group rounded-lg border border-base-300 bg-base-100 shadow-[0_1px_2px_rgba(0,0,0,0.04)]";
 
 export const faqSummaryClass =
-    "flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-base font-semibold text-base-content [&::-webkit-details-marker]:hidden";
+    "flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-base font-medium text-base-content [&::-webkit-details-marker]:hidden";
 
 export const faqIconClass =
     "relative size-4 shrink-0 before:absolute before:left-0 before:top-1/2 before:h-0.5 before:w-4 before:-translate-y-1/2 before:bg-base-content before:content-[''] after:absolute after:left-1/2 after:top-0 after:h-4 after:w-0.5 after:-translate-x-1/2 after:bg-base-content after:transition after:content-[''] group-open:after:rotate-90";
@@ -34,32 +35,32 @@ export const faqAnswerClass =
     "max-w-3xl px-5 pb-5 text-sm leading-7 text-base-content/70";
 
 export const planClass =
-    "relative flex flex-col gap-6 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm";
+    "relative flex flex-col gap-6 rounded-xl border border-base-300 bg-base-100 p-8 shadow-[0_8px_8px_rgba(0,0,0,0.08),0_4px_4px_rgba(0,0,0,0.06),0_2px_2px_rgba(0,0,0,0.05),0_0_0_1px_rgba(0,0,0,0.02)]";
 
-export const featuredPlanClass = "border-primary bg-primary/10";
+export const featuredPlanClass = "border-transparent bg-secondary";
 
 export const checkItemClass =
-    "flex items-start gap-3 text-sm leading-6 text-base-content/80 [&_svg]:mt-1 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-primary";
+    "flex items-start gap-3 text-sm leading-6 text-base-content/80 [&_svg]:mt-1 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-base-content";
 
 export const tableClass =
-    "w-full overflow-hidden rounded-box border border-base-300 bg-base-100 text-sm";
+    "w-full overflow-hidden rounded-lg border border-base-300 bg-base-100 text-sm";
 
 export const thClass =
-    "border-b border-base-300 bg-base-200 px-4 py-3 text-left font-semibold text-base-content";
+    "border-b border-base-300 bg-base-200 px-4 py-3 text-left font-medium text-base-content";
 
 export const tdClass =
     "border-b border-base-300 px-4 py-3 align-top text-base-content/80 last:border-b-0";
 
 export const featureTdClass =
-    "border-b border-base-300 px-4 py-3 align-top font-semibold text-base-content last:border-b-0";
+    "border-b border-base-300 px-4 py-3 align-top font-medium text-base-content last:border-b-0";
 
-export const checkMarkClass = "font-semibold text-primary";
+export const checkMarkClass = "font-medium text-base-content";
 
 export const dashMarkClass = "text-base-content/40";
 
 export const pillClass = (tone: PillTone = "muted") =>
     cn(
-        "inline-flex w-fit items-center rounded-full px-2.5 py-1 text-xs font-semibold",
+        "inline-flex w-fit items-center rounded-full px-2.5 py-1 text-xs font-medium",
         tone === "ok" && "bg-success/15 text-success",
         tone === "warn" && "bg-warning/20 text-warning",
         tone === "fail" && "bg-error/15 text-error",
@@ -78,13 +79,13 @@ const BrandMark = ({ inverted = false }: { inverted?: boolean }) => (
     <Link
         href="/"
         className={cn(
-            "inline-flex items-center gap-2 text-lg font-semibold",
+            "inline-flex items-center gap-2 text-lg font-bold tracking-wide uppercase",
             inverted ? "text-accent-content" : "text-base-content"
         )}
     >
         <Image
             src="/favicon.svg"
-            alt=""
+            alt="Valyn logo"
             width={28}
             height={28}
             className="size-7 shrink-0"
@@ -94,35 +95,131 @@ const BrandMark = ({ inverted = false }: { inverted?: boolean }) => (
     </Link>
 );
 
-export const PublicHeader = ({ active }: { active?: string }) => (
-    <nav className="sticky top-0 z-40 border-b border-base-300 bg-base-100/95 backdrop-blur">
+export const PublicHeader = ({
+    active,
+    variant = "light",
+}: {
+    active?: string;
+    variant?: "light" | "dark";
+}) => (
+    <nav
+        className={cn(
+            "sticky top-0 z-40 border-b backdrop-blur",
+            variant === "dark" ?
+                "border-accent-content/10 bg-accent/95 text-accent-content"
+            :   "border-base-300 bg-base-100/95 text-base-content"
+        )}
+    >
         <div
-            className={`${containerClass} flex h-16 items-center justify-between gap-4`}
+            className={`${containerClass} navbar flex h-14 items-center justify-between gap-4`}
         >
-            <BrandMark />
-            <div className="hidden items-center gap-1 lg:flex">
+            <div className="navbar-start">
+                <BrandMark inverted={variant === "dark"} />
+            </div>
+            <div className="navbar-center hidden items-center gap-1 lg:flex">
                 {navItems.map((item) => (
                     <Link
                         key={item.key}
                         href={item.href}
                         className={cn(
-                            "rounded-full px-3 py-2 text-sm font-medium text-base-content/70 transition hover:bg-base-200 hover:text-base-content",
+                            "rounded-full px-3 py-2 text-sm font-medium transition",
+                            variant === "dark" ?
+                                "text-accent-content/70 hover:bg-accent-content/10 hover:text-accent-content"
+                            :   "text-base-content/70 hover:bg-base-content/5 hover:text-base-content",
                             item.key === active &&
-                                "bg-base-200 text-base-content"
+                                (variant === "dark" ?
+                                    "bg-accent-content/10 text-accent-content"
+                                :   "bg-base-content/5 text-base-content")
                         )}
                     >
                         {item.label}
                     </Link>
                 ))}
             </div>
-            <div className="flex items-center gap-2">
-                <Link href="/demo" className="btn btn-ghost btn-sm">
+            <div className="navbar-end flex items-center gap-2">
+                <Link
+                    href="/demo"
+                    className={cn(
+                        "btn btn-sm hidden sm:inline-flex",
+                        variant === "dark" ?
+                            "border border-accent-content/40 bg-transparent text-accent-content hover:bg-accent-content hover:text-accent"
+                        :   "btn-ghost"
+                    )}
+                >
                     View demo
                 </Link>
-                <Link href={INSTALL_HREF} className="btn btn-primary btn-sm">
+                <Link
+                    href={INSTALL_HREF}
+                    className="btn btn-sm hidden sm:inline-flex"
+                >
                     <ShopifyBox className="size-4 shrink-0" />
                     Install on Shopify
                 </Link>
+                <details className="dropdown dropdown-end lg:hidden">
+                    <summary
+                        aria-label="Open menu"
+                        className={cn(
+                            "btn btn-sm btn-ghost btn-square",
+                            variant === "dark" ?
+                                "text-accent-content hover:bg-accent-content/10"
+                            :   "text-base-content hover:bg-base-content/5"
+                        )}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            className="size-5"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6h16M4 12h16M4 18h16"
+                            />
+                        </svg>
+                    </summary>
+                    <ul
+                        className={cn(
+                            "menu dropdown-content z-50 mt-3 w-60 rounded-lg border p-2 shadow",
+                            variant === "dark" ?
+                                "border-accent-content/10 bg-accent text-accent-content"
+                            :   "border-base-300 bg-base-100 text-base-content"
+                        )}
+                    >
+                        {navItems.map((item) => (
+                            <li key={item.key}>
+                                <Link
+                                    href={item.href}
+                                    className={cn(
+                                        "text-sm font-medium",
+                                        item.key === active &&
+                                            (variant === "dark" ?
+                                                "bg-accent-content/10"
+                                            :   "bg-base-content/5")
+                                    )}
+                                >
+                                    {item.label}
+                                </Link>
+                            </li>
+                        ))}
+                        <li className="mt-1 border-t border-current/10 pt-1 sm:hidden">
+                            <Link href="/demo" className="text-sm font-medium">
+                                View demo
+                            </Link>
+                        </li>
+                        <li className="sm:hidden">
+                            <Link
+                                href={INSTALL_HREF}
+                                className="text-sm font-medium"
+                            >
+                                <ShopifyBox className="size-4 shrink-0" />
+                                Install on Shopify
+                            </Link>
+                        </li>
+                    </ul>
+                </details>
             </div>
         </div>
     </nav>
@@ -163,26 +260,34 @@ const footerGroups: {
 ];
 
 export const PublicFooter = () => (
-    <footer className="bg-accent py-12 text-accent-content">
+    <footer className="bg-accent py-16 text-accent-content lg:py-20">
         <div className={containerClass}>
             <div className="grid gap-8 md:grid-cols-[1.4fr_repeat(3,1fr)]">
                 <div>
                     <BrandMark inverted />
-                    <p className="mt-4 max-w-sm text-sm leading-6 text-accent-content/70">
+                    <p className="mt-4 max-w-sm text-sm leading-6 text-accent-content/60">
                         The simplest way to automate order tracking support for
                         Shopify stores.
                     </p>
+                    <span className="flex items-center gap-2 my-2 text-sm">
+                        <Check className="size-4 text-secondary" />
+                        Built on Shopify
+                    </span>
+                    <Link href={INSTALL_HREF} className="btn btn-sm mt-6">
+                        <ShopifyBox className="size-4 shrink-0" />
+                        Install on Shopify
+                    </Link>
                 </div>
                 {footerGroups.map((group) => (
                     <div key={group.title}>
-                        <h5 className="mb-4 text-sm font-semibold uppercase tracking-normal text-accent-content/60">
+                        <h5 className="mb-4 text-xs font-medium uppercase tracking-[0.06em] text-accent-content/50">
                             {group.title}
                         </h5>
                         <ul className="grid gap-3">
                             {group.links.map((link) => (
                                 <li key={link.href}>
                                     <Link
-                                        className="text-sm text-accent-content/70 hover:text-accent-content"
+                                        className="text-sm text-[#9dabad] underline decoration-[#9dabad]/30 underline-offset-4 hover:text-accent-content"
                                         href={link.href}
                                     >
                                         {link.label}
@@ -193,12 +298,8 @@ export const PublicFooter = () => (
                     </div>
                 ))}
             </div>
-            <div className="mt-10 flex flex-col gap-3 border-t border-accent-content/20 pt-6 text-sm text-accent-content/70 md:flex-row md:items-center md:justify-between">
+            <div className="mt-12 flex flex-col gap-3 border-t border-accent-content/15 pt-6 text-sm text-accent-content/60 md:flex-row md:items-center md:justify-between">
                 <span>© 2026 Valyn. Built for Shopify merchants.</span>
-                <span className="inline-flex items-center gap-2">
-                    <Check className="size-4 text-primary" />
-                    Built on Shopify
-                </span>
                 <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
             </div>
         </div>
@@ -209,13 +310,14 @@ export const PublicFooter = () => (
 
 export const Container = ({
     children,
+    narrow,
     style,
 }: {
     children: ReactNode;
     narrow?: boolean;
     style?: React.CSSProperties;
 }) => (
-    <div className={containerClass} style={style}>
+    <div className={cn(containerClass, narrow && "max-w-4xl")} style={style}>
         {children}
     </div>
 );
@@ -233,9 +335,9 @@ export const Section = ({
 }) => {
     const bgClass =
         bg === "soft" ? "bg-base-200"
-        : bg === "warm" ? "bg-base-200/60"
+        : bg === "warm" ? "bg-secondary"
         : bg === "ink" ? "bg-accent text-accent-content"
-        : bg === "green-tint" ? "bg-primary/10"
+        : bg === "green-tint" ? "bg-secondary"
         : "";
     const cls = cn("py-16 lg:py-24", bgClass, className);
     return (
@@ -254,18 +356,18 @@ export const SectionHead = ({
     title: string;
     description?: string;
 }) => (
-    <div className="mx-auto mb-10 max-w-3xl text-center">
+    <div className="mx-auto mb-12 max-w-3xl text-center">
         {eyebrow && (
-            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-xs font-semibold uppercase tracking-normal text-base-content/70">
-                <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_18%,transparent)]" />
+            <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-xs font-medium uppercase tracking-[0.06em] text-secondary-content">
+                <span className="size-1.5 rounded-full bg-base-content" />
                 {eyebrow}
             </span>
         )}
-        <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
+        <h2 className="mt-5 text-4xl font-[330] leading-[1.08] text-base-content sm:text-5xl lg:text-[70px]">
             {title}
         </h2>
         {description && (
-            <p className="mt-4 text-lg leading-8 text-base-content/70">
+            <p className="mx-auto mt-5 max-w-2xl text-lg font-normal leading-8 text-base-content/70">
                 {description}
             </p>
         )}
@@ -283,21 +385,23 @@ export const PageHead = ({
     description?: ReactNode;
     center?: boolean;
 }) => (
-    <section className={cn("py-16 lg:py-24", center && "text-center")}>
+    <section
+        className={cn("bg-base-200 py-16 lg:py-24", center && "text-center")}
+    >
         <div className={containerClass}>
             {eyebrow && (
-                <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-xs font-semibold uppercase tracking-normal text-base-content/70">
-                    <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_18%,transparent)]" />
+                <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-xs font-medium uppercase tracking-[0.06em] text-secondary-content">
+                    <span className="size-1.5 rounded-full bg-base-content" />
                     {eyebrow}
                 </span>
             )}
-            <h1 className="mt-5 text-4xl font-semibold leading-tight text-base-content sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-5xl font-[330] leading-none text-base-content sm:text-6xl lg:text-[86px]">
                 {title}
             </h1>
             {description && (
                 <p
                     className={cn(
-                        "mt-5 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl",
+                        "mt-6 max-w-3xl text-lg leading-8 text-base-content/70 sm:text-xl",
                         center && "mx-auto"
                     )}
                 >
@@ -323,11 +427,11 @@ export const FeatureCard = ({
 }) => (
     <div className={cardClass}>
         {badge && (
-            <span className="mb-2.5 block text-xs font-semibold uppercase tracking-normal text-base-content/70">
+            <span className="mb-2.5 block text-xs font-medium uppercase tracking-[0.06em] text-base-content/70">
                 {badge}
             </span>
         )}
-        <h3 className="text-xl font-semibold text-base-content sm:text-2xl">
+        <h3 className="text-2xl font-[330] text-base-content sm:text-3xl">
             {title}
         </h3>
         <div>{children}</div>
@@ -366,20 +470,20 @@ export const FinalCta = ({
 }) => (
     <Section>
         <Container>
-            <div className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14">
-                <h2 className="mx-auto max-w-3xl text-3xl font-semibold leading-tight text-accent-content sm:text-4xl lg:text-5xl">
+            <div className="relative overflow-hidden rounded-xl bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-16">
+                <h2 className="mx-auto max-w-4xl text-4xl font-[330] leading-[1.05] text-accent-content sm:text-5xl lg:text-[70px]">
                     {title}
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-accent-content/70">
                     {description}
                 </p>
                 <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                    <Link href={primaryHref} className="btn btn-primary btn-lg">
+                    <Link href={primaryHref} className="btn btn-lg invert">
                         {primaryLabel}
                     </Link>
                     <Link
                         href={secondaryHref}
-                        className="btn btn-outline btn-lg border-accent-content/30 text-accent-content hover:bg-accent-content hover:text-accent"
+                        className="btn btn-lg btn-outline border border-accent-content/30 bg-transparent text-accent-content hover:bg-accent-content hover:text-accent"
                     >
                         {secondaryLabel}
                     </Link>
@@ -395,10 +499,10 @@ export const InstallPanel = () => (
     <Section>
         <Container>
             <div
-                className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14"
+                className="relative overflow-hidden rounded-xl bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-16"
                 id="install"
             >
-                <h2 className="mx-auto max-w-3xl text-3xl font-semibold leading-tight text-accent-content sm:text-4xl lg:text-5xl">
+                <h2 className="mx-auto max-w-4xl text-4xl font-[330] leading-[1.05] text-accent-content sm:text-5xl lg:text-[70px]">
                     Install Valyn on your Shopify store.
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-accent-content/70">
@@ -416,9 +520,12 @@ export const InstallPanel = () => (
                         placeholder="your-store.myshopify.com"
                         aria-label="Shopify store domain"
                         pattern="[a-z0-9][a-z0-9\-]*\.myshopify\.com"
-                        className="input input-bordered w-full max-w-sm border-accent-content/20 bg-accent-content/10 text-accent-content placeholder:text-accent-content/50"
+                        className="input input-lg input-bordered w-full max-w-sm border-accent-content/20 bg-accent-content/10 text-accent-content placeholder:text-accent-content/50"
                     />
-                    <button type="submit" className="btn btn-primary btn-lg">
+                    <button
+                        type="submit"
+                        className="btn btn-lg border border-accent-content bg-transparent text-accent-content hover:bg-accent-content hover:text-accent"
+                    >
                         Install
                     </button>
                 </form>
@@ -509,11 +616,11 @@ const DASH_ROWS: {
 ];
 
 export const DashboardMockup = () => (
-    <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-base-300 bg-base-100 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.18)]">
         <div className="flex items-center gap-4 border-b border-base-300 bg-base-200 px-5 py-4 text-sm text-base-content/70">
             <div>
                 <span className="inline-flex items-center gap-1.5">
-                    <span className="size-2 rounded-full bg-primary" />
+                    <span className="size-2 rounded-full bg-success" />
                     Inbox automation —{" "}
                     <strong className="text-base-content">Live</strong>
                 </span>
@@ -528,16 +635,16 @@ export const DashboardMockup = () => (
                     className="border-b border-base-300 p-5 sm:border-r sm:border-b-0 last:border-r-0"
                     key={s.label}
                 >
-                    <div className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                    <div className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/60">
                         {s.label}
                     </div>
-                    <div className="mt-2 text-3xl font-semibold text-base-content">
+                    <div className="mt-2 text-3xl font-[330] text-base-content">
                         {s.val}
                     </div>
                     <div
                         className={cn(
                             "mt-2 text-xs",
-                            s.flat ? "text-base-content/70" : "text-primary"
+                            s.flat ? "text-base-content/70" : "text-success"
                         )}
                     >
                         {s.trend}

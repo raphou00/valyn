@@ -12,14 +12,14 @@ const STEPS: { n: string; t: string }[] = [
 ];
 
 const panelClass =
-    "overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm";
+    "overflow-hidden rounded-xl border border-base-300 bg-base-100 shadow-[0_8px_8px_rgba(0,0,0,0.08),0_4px_4px_rgba(0,0,0,0.06),0_2px_2px_rgba(0,0,0,0.05)]";
 const panelHeaderClass =
-    "flex items-center justify-between gap-3 border-b border-base-300 bg-base-200 px-4 py-3 text-xs font-semibold text-base-content/70";
+    "flex items-center justify-between gap-3 border-b border-base-300 bg-base-200 px-4 py-3 text-xs font-medium text-base-content/70";
 const panelBodyClass = "p-5 text-sm leading-7 text-base-content/80";
-const lookupCellClass = "rounded-box border border-base-300 bg-base-200 p-3";
+const lookupCellClass = "rounded-lg border border-base-300 bg-base-200 p-3";
 const lookupKeyClass =
-    "text-xs font-semibold uppercase tracking-normal text-base-content/60";
-const lookupValueClass = "mt-1 text-sm font-semibold text-base-content";
+    "text-xs font-medium uppercase tracking-[0.06em] text-base-content/60";
+const lookupValueClass = "mt-1 text-sm font-medium text-base-content";
 
 const Inbound = () => (
     <div className={panelClass}>
@@ -28,10 +28,10 @@ const Inbound = () => (
             <span>14:02</span>
         </div>
         <div className={panelBodyClass}>
-            <div className="mb-1 font-semibold text-base-content">
+            <div className="mb-1 font-medium text-base-content">
                 To: support@yourstore.com
             </div>
-            <div className="mb-3 font-semibold text-base-content">
+            <div className="mb-3 font-medium text-base-content">
                 Subject: Where is my order?
             </div>
             <p>
@@ -56,7 +56,7 @@ const PanelAwaiting = () => (
         </div>
         <div className={panelBodyClass}>
             <div className="inline-flex items-center gap-2 text-base-content/70">
-                <span className="size-1.5 rounded-full bg-primary" />
+                <span className="size-1.5 rounded-full bg-success" />
                 Email forwarded to your Valyn address
             </div>
             <div className="mt-3.5 text-xs leading-6 text-base-content/60">
@@ -79,8 +79,10 @@ const PanelDetect = () => (
             <div className=" text-[13px] leading-7 text-base-content">
                 <div>
                     scan_keywords([
-                    <span className="text-primary">&quot;where is&quot;</span>,
-                    &quot;tracking&quot;, &quot;commande&quot;])
+                    <span className="text-base-content">
+                        &quot;where is&quot;
+                    </span>
+                    , &quot;tracking&quot;, &quot;commande&quot;])
                 </div>
                 <div className="text-base-content/60">
                     → matched: &quot;where is&quot;, &quot;order #&quot;
@@ -141,8 +143,8 @@ const PanelReply = ({ sent }: { sent: boolean }) => (
         </div>
         <div className={panelBodyClass}>
             <div className="text-[13px] leading-7 text-base-content">
-                <div className="font-semibold">From: support@yourstore.com</div>
-                <div className="mb-2.5 font-semibold">
+                <div className="font-medium">From: support@yourstore.com</div>
+                <div className="mb-2.5 font-medium">
                     Subject: Re: Where is my order?
                 </div>
                 <div>
@@ -153,7 +155,7 @@ const PanelReply = ({ sent }: { sent: boolean }) => (
                     with <strong>DHL Express</strong>.
                     <br />
                     Track it here:{" "}
-                    <span className="text-primary underline">
+                    <span className="text-base-content underline">
                         track.dhl.com/EU728193…
                     </span>
                     <br />
@@ -200,12 +202,12 @@ const DemoStage = () => {
                         key={s.n}
                         type="button"
                         className={cn(
-                            "rounded-box border px-3 py-2 text-left transition",
+                            "rounded-lg border px-3 py-2 text-left transition",
                             i === step &&
-                                "border-primary bg-primary text-primary-content",
+                                "border-base-content bg-base-content text-base-100",
                             i < step &&
                                 i !== step &&
-                                "border-primary/30 bg-primary/10 text-base-content",
+                                "border-base-content/20 bg-secondary text-base-content",
                             i > step &&
                                 "border-base-300 bg-base-100 text-base-content/70"
                         )}
@@ -214,8 +216,8 @@ const DemoStage = () => {
                             setStep(i);
                         }}
                     >
-                        <div className=" text-xs font-semibold">{s.n}</div>
-                        <div className="mt-1 text-sm font-semibold">{s.t}</div>
+                        <div className=" text-xs font-medium">{s.n}</div>
+                        <div className="mt-1 text-sm font-medium">{s.t}</div>
                     </button>
                 ))}
             </div>

@@ -148,15 +148,15 @@ const Page = () => (
                             key={plan.name}
                         >
                             {plan.featured && (
-                                <span className="w-fit rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
+                                <span className="w-fit rounded-full bg-base-content px-3 py-1 text-xs font-medium uppercase tracking-[0.06em] text-base-100">
                                     Most popular
                                 </span>
                             )}
                             <div>
-                                <h3 className="text-2xl font-semibold text-base-content">
+                                <h3 className="text-3xl font-[330] text-base-content">
                                     {plan.name}
                                 </h3>
-                                <div className="mt-2 text-4xl font-semibold text-base-content">
+                                <div className="mt-3 text-5xl font-[330] text-base-content">
                                     {plan.price}
                                     <span className="ml-1 text-base font-normal text-base-content/60">
                                         /month
@@ -181,11 +181,7 @@ const Page = () => (
                             </ul>
                             <Link
                                 href={INSTALL_HREF}
-                                className={
-                                    plan.featured ? "btn btn-primary" : (
-                                        "btn btn-ghost"
-                                    )
-                                }
+                                className="btn btn-primary mt-auto"
                             >
                                 Start free trial
                             </Link>
@@ -217,7 +213,7 @@ const Page = () => (
                         <tr>
                             <th className={cn(thClass, "w-[40%]")}>Feature</th>
                             <th className={thClass}>Starter</th>
-                            <th className={cn(thClass, "text-primary")}>Pro</th>
+                            <th className={cn(thClass, "bg-secondary")}>Pro</th>
                         </tr>
                     </thead>
                     <tbody>

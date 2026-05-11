@@ -33,7 +33,7 @@ const Page = () => (
                             <h3>Support email</h3>
                             <a
                                 href={`mailto:${SUPPORT_EMAIL}`}
-                                className="mt-3 inline-block font-semibold text-primary"
+                                className="mt-3 inline-block font-medium text-base-content"
                             >
                                 {SUPPORT_EMAIL}
                             </a>

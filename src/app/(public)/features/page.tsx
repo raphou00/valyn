@@ -140,7 +140,7 @@ const Page = () => (
             <Container>
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                        <span className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/70">
                             01 — Detection
                         </span>
                         <h2 style={{ marginTop: 14 }}>
@@ -223,7 +223,7 @@ const Page = () => (
                         </div>
                     </div>
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                        <span className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/70">
                             02 — Lookup
                         </span>
                         <h2 style={{ marginTop: 14 }}>
@@ -252,7 +252,7 @@ const Page = () => (
             <Container>
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                        <span className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/70">
                             03 — Reply
                         </span>
                         <h2 style={{ marginTop: 14 }}>
@@ -272,7 +272,7 @@ const Page = () => (
                             ))}
                         </ul>
                     </div>
-                    <div className="rounded-box border border-primary/30 bg-primary/10 p-4">
+                    <div className="rounded-lg border border-base-content/10 bg-secondary p-4">
                         <div className="mb-2 flex items-start justify-between gap-3 text-xs text-base-content/70">
                             <div className="font-semibold text-base-content">
                                 support@yourstore.com
@@ -293,7 +293,7 @@ const Page = () => (
                             <br />
                             You can follow it here:
                             <br />
-                            <span className="text-primary underline">
+                            <span className="text-base-content underline">
                                 track.dhl.com/EU728193…
                             </span>
                             <br />
@@ -334,8 +334,8 @@ const Page = () => (
 
         <Section>
             <Container>
-                <div className="flex gap-4 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                    <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-box bg-warning/20 text-warning">
+                <div className="flex gap-4 rounded-lg border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/20 text-warning">
                         <AlertCircle className="size-[18px]" />
                     </div>
                     <div>

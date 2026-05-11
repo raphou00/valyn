@@ -107,7 +107,7 @@ const groups: { kicker: string; title: string; items: Faq[] }[] = [
                         before hitting your limit so you can upgrade.{" "}
                         <Link
                             href="/pricing"
-                            className="text-primary underline"
+                            className="text-base-content underline"
                         >
                             Full pricing here
                         </Link>
@@ -154,7 +154,7 @@ const Page = () => (
                     this is the page. Anything not covered here —{" "}
                     <a
                         href={`mailto:${SUPPORT_EMAIL}`}
-                        className="text-primary underline"
+                        className="text-base-content underline"
                     >
                         ask us directly
                     </a>
@@ -170,7 +170,7 @@ const Page = () => (
                         key={group.title}
                         className={gi > 0 ? "mt-16" : undefined}
                     >
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                        <span className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/70">
                             {group.kicker}
                         </span>
                         <h2 className="mb-[18px] mt-3.5 text-3xl font-semibold leading-tight text-base-content sm:text-4xl">
@@ -201,7 +201,7 @@ const Page = () => (
         <Section>
             <Container>
                 <div
-                    className="relative overflow-hidden rounded-box bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14"
+                    className="relative overflow-hidden rounded-lg bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-14"
                     id="contact"
                 >
                     <h2 className="text-3xl font-semibold leading-tight text-accent-content sm:text-4xl">

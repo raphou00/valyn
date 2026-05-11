@@ -343,7 +343,7 @@ const Page = () => (
                                 Capability
                             </th>
                             <th className={thClass}>Gorgias</th>
-                            <th className={cn(thClass, "text-primary")}>
+                            <th className={cn(thClass, "text-base-content")}>
                                 Valyn
                             </th>
                         </tr>
@@ -365,7 +365,7 @@ const Page = () => (
                                     {v === "—" ?
                                         <span className={dashMarkClass}>—</span>
                                     : highlight ?
-                                        <strong className="text-primary">
+                                        <strong className="text-base-content">
                                             {v}
                                         </strong>
                                     :   v}

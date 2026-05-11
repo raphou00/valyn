@@ -35,7 +35,7 @@ export const ContentSections = ({ sections }: { sections: TextSection[] }) => (
                     id={slugify(section.title)}
                     className="mb-9 scroll-mt-24"
                 >
-                    <h2 className="mb-3.5 text-3xl font-semibold leading-tight text-base-content">
+                    <h2 className="mb-3.5 text-4xl font-[330] leading-tight text-base-content">
                         {section.title}
                     </h2>
                     {section.paragraphs?.map((p, i) => (
@@ -53,7 +53,7 @@ export const ContentSections = ({ sections }: { sections: TextSection[] }) => (
                                     key={b}
                                     className="flex items-start gap-2.5 text-base leading-7 text-base-content/80"
                                 >
-                                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-base-content" />
                                     <span>{b}</span>
                                 </li>
                             ))}
@@ -63,8 +63,8 @@ export const ContentSections = ({ sections }: { sections: TextSection[] }) => (
             ))}
         </article>
         <aside className="relative hidden lg:block">
-            <div className="sticky top-24 rounded-box bg-base-200 p-5">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-normal text-base-content/60">
+            <div className="sticky top-24 rounded-lg bg-base-200 p-5">
+                <p className="mb-3 text-xs font-medium uppercase tracking-[0.06em] text-base-content/60">
                     On this page
                 </p>
                 <nav className="grid gap-2">
@@ -124,14 +124,14 @@ export const ListingGrid = ({ items }: { items: ListingItem[] }) => (
         {items.map((item) => (
             <Link className={cardClass} href={item.href} key={item.href}>
                 {item.badge && (
-                    <span className="mb-2.5 block text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                    <span className="mb-2.5 block text-xs font-medium uppercase tracking-[0.06em] text-base-content/70">
                         {item.badge}
                     </span>
                 )}
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-                <p className="mt-3.5 text-sm font-semibold text-primary">
-                    Read →
+                <p className="mt-3.5 text-sm font-medium text-base-content">
+                    Read
                 </p>
             </Link>
         ))}

@@ -48,9 +48,9 @@ const Page = () => (
         />
 
         <Section style={{ paddingTop: 48 }}>
-            <article className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 [&_blockquote]:mt-6 [&_blockquote]:rounded-box [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:bg-primary/10 [&_blockquote]:p-5 [&_blockquote]:text-lg [&_blockquote]:leading-8 [&_blockquote]:text-base-content [&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-base-content [&_h3]:mt-8 [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:text-base-content [&_ol]:mt-4 [&_ol]:grid [&_ol]:gap-2 [&_ol]:pl-5 [&_ol]:text-base-content/80 [&_p]:mt-4 [&_p]:max-w-4xl [&_p]:text-[17px] [&_p]:leading-8 [&_p]:text-base-content/80 [&_ul]:mt-4 [&_ul]:grid [&_ul]:gap-2 [&_ul]:pl-5 [&_ul]:text-base-content/80">
-                <div className="rounded-box border border-base-300 bg-base-100 p-5">
-                    <h5 className="mb-3 text-sm font-semibold uppercase tracking-normal text-base-content/70">
+            <article className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 [&_blockquote]:mt-6 [&_blockquote]:rounded-lg [&_blockquote]:border-l-4 [&_blockquote]:border-base-content [&_blockquote]:bg-secondary [&_blockquote]:p-5 [&_blockquote]:text-lg [&_blockquote]:leading-8 [&_blockquote]:text-base-content [&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-base-content [&_h3]:mt-8 [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:text-base-content [&_ol]:mt-4 [&_ol]:grid [&_ol]:gap-2 [&_ol]:pl-5 [&_ol]:text-base-content/80 [&_p]:mt-4 [&_p]:max-w-4xl [&_p]:text-[17px] [&_p]:leading-8 [&_p]:text-base-content/80 [&_ul]:mt-4 [&_ul]:grid [&_ul]:gap-2 [&_ul]:pl-5 [&_ul]:text-base-content/80">
+                <div className="rounded-lg border border-base-300 bg-base-100 p-5">
+                    <h5 className="mb-3 text-sm font-medium uppercase tracking-[0.06em] text-base-content/70">
                         In this guide
                     </h5>
                     <ol className="mt-0 grid gap-2 pl-5 text-sm text-base-content/80">
@@ -145,7 +145,7 @@ const Page = () => (
                 </ol>
 
                 <div className="my-8 grid gap-4 md:grid-cols-3">
-                    <div className="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <div className="rounded-lg border border-base-300 bg-base-100 p-5 shadow-sm">
                         <div className="text-3xl font-semibold text-base-content">
                             ~60%
                         </div>
@@ -153,7 +153,7 @@ const Page = () => (
                             of repeat-volume support tickets are WISMO
                         </div>
                     </div>
-                    <div className="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <div className="rounded-lg border border-base-300 bg-base-100 p-5 shadow-sm">
                         <div className="text-3xl font-semibold text-base-content">
                             3.4 min
                         </div>
@@ -161,7 +161,7 @@ const Page = () => (
                             average manual handle-time per ticket
                         </div>
                     </div>
-                    <div className="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <div className="rounded-lg border border-base-300 bg-base-100 p-5 shadow-sm">
                         <div className="text-3xl font-semibold text-base-content">
                             2.1x
                         </div>
@@ -307,8 +307,8 @@ const Page = () => (
                     for the order number politely or skips entirely — your call.
                 </p>
 
-                <div className="mt-8 flex gap-4 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                    <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-box bg-primary/10 text-primary">
+                <div className="mt-8 flex gap-4 rounded-lg border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-base-content">
                         <Check className="size-[18px]" />
                     </div>
                     <div>

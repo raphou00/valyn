@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
     cardClass,
@@ -12,14 +13,11 @@ import {
     faqSummaryClass,
     featuredPlanClass,
     iconBoxClass,
-    InstallPanel,
     planClass,
-    PrimaryActions,
     PublicFooter,
     PublicHeader,
     Section,
     SectionHead,
-    warningIconBoxClass,
 } from "./_components/site-shell";
 import EmailDemo from "./_components/email-demo";
 import {
@@ -31,8 +29,9 @@ import {
     Inbox,
     Mail,
     TrendUp,
+    ShopifyBox,
 } from "./_components/icons";
-import { marketingMetadata } from "./_lib/metadata";
+import { INSTALL_HREF, marketingMetadata } from "./_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
     title: 'Valyn — Automate "Where is my order?" support for Shopify',
@@ -198,64 +197,57 @@ const plans = [
 
 const Page = () => (
     <>
-        <PublicHeader />
+        <PublicHeader variant="dark" />
 
-        {/* Hero */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-base-200 to-base-100 py-16 sm:py-20 lg:py-28">
-            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_520px]">
+        <section className="relative overflow-hidden bg-accent pb-12 pt-16 text-accent-content sm:pt-20 lg:pb-20 lg:pt-24">
+            <Container>
+                <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
                     <div>
-                        <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-xs font-semibold uppercase tracking-normal text-base-content/70">
-                            <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-primary)_18%,transparent)]" />
+                        <p className="text-xs font-medium uppercase tracking-[0.06em] text-accent-content/55">
                             Shopify support automation
-                        </span>
-                        <h1 className="mt-5 text-4xl font-semibold leading-tight text-base-content sm:text-5xl lg:text-6xl">
-                            Automate{" "}
-                            <span className="text-primary">
-                                &ldquo;Where is my order?&rdquo;
-                            </span>{" "}
-                            support for Shopify.
-                        </h1>
-                        <p className="mt-6 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl">
-                            Valyn detects customer emails about orders, finds
-                            the matching Shopify order, and replies
-                            automatically with accurate tracking information —
-                            in under 5 seconds.
                         </p>
-                        <PrimaryActions />
-                        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-base-content/70">
-                            <span className="inline-flex items-center gap-1.5">
-                                <Check className="size-4 text-primary" />
-                                7-day free trial
-                            </span>
-                            <span className="inline-flex items-center gap-1.5">
-                                <Check className="size-4 text-primary" />
-                                Installs in under 2 minutes
-                            </span>
-                            <span className="inline-flex items-center gap-1.5">
-                                <Check className="size-4 text-primary" />
-                                Read-only Shopify access
-                            </span>
-                        </div>
+                        <h1 className="mt-5 max-w-6xl text-[clamp(4rem,11vw,6.5rem)] font-[330] leading-none tracking-[0.025em] text-accent-content">
+                            Order support that answers before the inbox grows.
+                        </h1>
                     </div>
-                    <EmailDemo />
+                    <div className="max-w-md lg:pb-4">
+                        <p className="text-lg leading-8 text-accent-content/70">
+                            Valyn detects order-tracking emails, finds the
+                            matching Shopify order, and replies from your own
+                            address with accurate tracking details.
+                        </p>
+                        <Link href={INSTALL_HREF} className="btn mt-8">
+                            <ShopifyBox className="size-4 shrink-0" />
+                            Install on Shopify
+                        </Link>
+                    </div>
+                </div>
+            </Container>
+
+            <div className="mt-12 lg:mt-16">
+                <div className="relative h-[320px] overflow-hidden sm:h-[440px] lg:h-[560px]">
+                    <Image
+                        src="https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?auto=format&fit=crop&w=2200&q=82"
+                        alt="Merchant preparing ecommerce orders in a studio workspace"
+                        fill
+                        priority
+                        sizes="100vw"
+                        className="object-cover"
+                    />
                 </div>
             </div>
-        </section>
 
-        {/* Trust strip */}
-        <section className="bg-base-200 py-8">
             <Container>
-                <div className="grid overflow-hidden rounded-box border border-base-300 bg-base-100 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid border-b border-t border-accent-content/15 py-6 sm:grid-cols-2 lg:grid-cols-4">
                     {trustStats.map((s) => (
                         <div
-                            className="border-b border-base-300 p-5 last:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b-0"
+                            className="border-accent-content/15 py-4 sm:border-r sm:px-6 sm:last:border-r-0"
                             key={s.l}
                         >
-                            <div className="text-2xl font-semibold text-base-content">
+                            <div className="text-4xl font-[330] text-accent-content">
                                 {s.v}
                             </div>
-                            <div className="mt-1 text-sm text-base-content/70">
+                            <div className="mt-2 text-sm text-accent-content/60">
                                 {s.l}
                             </div>
                         </div>
@@ -264,39 +256,32 @@ const Page = () => (
             </Container>
         </section>
 
-        {/* Problem */}
-        <Section>
+        <section className="bg-accent py-16 text-accent-content lg:py-28">
             <Container>
-                <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
+                <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                        <p className="text-xs font-medium uppercase tracking-[0.06em] text-accent-content/55">
                             The problem
-                        </span>
-                        <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
-                            Your support inbox shouldn&apos;t be full of
-                            tracking questions.
-                        </h2>
-                        <p className="mt-5 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl">
-                            Every Shopify merchant has the same conversation, 40
-                            times a week. The same question, the same tracking
-                            link, the same polite reply. It&apos;s repetitive,
-                            it&apos;s slow, and it scales linearly with orders.
                         </p>
+                        <h2 className="mt-5 text-5xl font-[330] leading-none text-accent-content sm:text-6xl lg:text-[72px]">
+                            Your support inbox should not be a tracking lookup
+                            queue.
+                        </h2>
                     </div>
-                    <div className="grid gap-3.5">
+                    <div className="grid gap-3">
                         {problems.map((p) => (
                             <div
-                                className="flex items-start gap-4 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm"
+                                className="flex items-start gap-5 rounded-xl border border-accent-content/10 bg-accent-content/[0.035] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
                                 key={p.title}
                             >
-                                <div className={warningIconBoxClass}>
+                                <div className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-accent-content/20 text-accent-content [&_svg]:size-5">
                                     {p.icon}
                                 </div>
                                 <div>
-                                    <h4 className="mb-1 font-semibold text-base-content">
+                                    <h3 className="text-2xl font-[330] leading-tight text-accent-content">
                                         {p.title}
-                                    </h4>
-                                    <p className="text-sm leading-6 text-base-content/70">
+                                    </h3>
+                                    <p className="mt-2 text-sm leading-6 text-accent-content/62">
                                         {p.body}
                                     </p>
                                 </div>
@@ -305,29 +290,28 @@ const Page = () => (
                     </div>
                 </div>
             </Container>
-        </Section>
+        </section>
 
-        {/* How it works */}
         <Section bg="soft">
             <Container>
                 <SectionHead
                     eyebrow="How it works"
-                    title="Valyn handles repetitive order support automatically."
-                    description="Four steps, no rules engine to configure, no helpdesk to migrate to."
+                    title="Four controlled steps. No helpdesk migration."
+                    description="The workflow is narrow on purpose: receive, detect, look up, reply."
                 />
                 <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
                     {steps.map((s) => (
                         <div
-                            className="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm"
+                            className="rounded-xl border border-base-300 bg-base-100 p-6 shadow-[0_8px_8px_rgba(0,0,0,0.08),0_4px_4px_rgba(0,0,0,0.06),0_2px_2px_rgba(0,0,0,0.05)]"
                             key={s.n}
                         >
-                            <div className="mb-4 inline-flex size-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-content">
-                                {s.n}
+                            <div className="mb-5 text-sm font-medium text-base-content/50">
+                                0{s.n}
                             </div>
-                            <h4 className="font-semibold text-base-content">
+                            <h3 className="text-2xl font-[330] leading-tight text-base-content">
                                 {s.title}
-                            </h4>
-                            <p className="mt-2 text-sm leading-6 text-base-content/70">
+                            </h3>
+                            <p className="mt-3 text-sm leading-6 text-base-content/70">
                                 {s.body}
                             </p>
                         </div>
@@ -336,13 +320,32 @@ const Page = () => (
             </Container>
         </Section>
 
-        {/* Features */}
         <Section>
+            <Container>
+                <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+                    <div>
+                        <p className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/55">
+                            Live reply preview
+                        </p>
+                        <h2 className="mt-5 text-5xl font-[330] leading-[1.05] text-base-content sm:text-6xl">
+                            The answer goes out before the ticket pile forms.
+                        </h2>
+                        <p className="mt-5 text-lg leading-8 text-base-content/70">
+                            Customers see your sender, your signature, and the
+                            Shopify order data they were asking for.
+                        </p>
+                    </div>
+                    <EmailDemo />
+                </div>
+            </Container>
+        </Section>
+
+        <Section bg="warm">
             <Container>
                 <SectionHead
                     eyebrow="Features"
                     title="Built for one job. Built well."
-                    description="No AI hype, no helpdesk bloat. Just the smallest tool that solves WISMO end-to-end."
+                    description="No chatbot sprawl. No omnichannel helpdesk bloat. Just the repetitive order-tracking workload."
                 />
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {features.map((f) => (
@@ -356,26 +359,20 @@ const Page = () => (
             </Container>
         </Section>
 
-        {/* Dashboard preview */}
-        <Section bg="warm">
+        <Section bg="soft">
             <Container>
                 <SectionHead
                     eyebrow="Embedded admin"
                     title="You stay in control. Always."
-                    description="The Valyn dashboard lives inside your Shopify admin. Every reply is logged. Every automation is reviewable."
+                    description="The Valyn dashboard lives inside Shopify admin. Every reply is logged. Every automation is reviewable."
                 />
                 <DashboardMockup />
             </Container>
         </Section>
 
-        {/* Use cases */}
         <Section>
             <Container>
-                <SectionHead
-                    eyebrow="Who it's for"
-                    title="Made for Shopify merchants who'd rather be doing anything else."
-                />
-                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-5 md:grid-cols-3">
                     {useCases.map((u) => (
                         <div className={cardClass} key={u.title}>
                             <h3>{u.title}</h3>
@@ -386,7 +383,6 @@ const Page = () => (
             </Container>
         </Section>
 
-        {/* Pricing teaser */}
         <Section bg="soft">
             <Container>
                 <SectionHead
@@ -404,15 +400,15 @@ const Page = () => (
                             key={plan.name}
                         >
                             {plan.featured && (
-                                <span className="w-fit rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-content">
+                                <span className="w-fit rounded-full bg-base-content px-3 py-1 text-xs font-medium uppercase tracking-[0.06em] text-base-100">
                                     Most popular
                                 </span>
                             )}
                             <div>
-                                <h3 className="text-2xl font-semibold text-base-content">
+                                <h3 className="text-3xl font-[330] text-base-content">
                                     {plan.name}
                                 </h3>
-                                <div className="mt-2 text-4xl font-semibold text-base-content">
+                                <div className="mt-3 text-5xl font-[330] text-base-content">
                                     {plan.price}
                                     <span className="ml-1 text-base font-normal text-base-content/60">
                                         /month
@@ -430,11 +426,7 @@ const Page = () => (
                             </ul>
                             <Link
                                 href="/pricing"
-                                className={
-                                    plan.featured ? "btn btn-primary" : (
-                                        "btn btn-ghost"
-                                    )
-                                }
+                                className="btn btn-primary mt-auto"
                             >
                                 Choose {plan.name}
                             </Link>
@@ -444,40 +436,21 @@ const Page = () => (
             </Container>
         </Section>
 
-        {/* Security */}
         <Section>
             <Container>
                 <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-start">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-normal text-base-content/70">
+                        <p className="text-xs font-medium uppercase tracking-[0.06em] text-base-content/55">
                             Trust & security
-                        </span>
-                        <h2 className="mt-4 text-3xl font-semibold leading-tight text-base-content sm:text-4xl lg:text-5xl">
+                        </p>
+                        <h2 className="mt-5 text-5xl font-[330] leading-[1.05] text-base-content sm:text-6xl">
                             Designed with merchant trust in mind.
                         </h2>
-                        <p className="mt-5 max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl">
-                            We ask Shopify for the minimum permissions needed
-                            and nothing more. Valyn never modifies your store —
-                            it reads order data so it can reply accurately.
+                        <p className="mt-5 max-w-2xl text-lg leading-8 text-base-content/70">
+                            Valyn asks Shopify for the minimum permissions
+                            needed and nothing more. It never modifies your
+                            store.
                         </p>
-                        <div className="mt-6 flex flex-wrap gap-2">
-                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
-                                <span className="size-1.5 rounded-full bg-primary" />
-                                Read-only order access
-                            </span>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
-                                <span className="size-1.5 rounded-full bg-primary" />
-                                GDPR ready
-                            </span>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
-                                <span className="size-1.5 rounded-full bg-primary" />
-                                SES & AWS hosted
-                            </span>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1.5 text-sm text-base-content/70">
-                                <span className="size-1.5 rounded-full bg-primary" />
-                                Encrypted SMTP creds
-                            </span>
-                        </div>
                     </div>
                     <div className="grid gap-3.5 sm:grid-cols-2">
                         {securityCards.map((c) => (
@@ -491,7 +464,6 @@ const Page = () => (
             </Container>
         </Section>
 
-        {/* FAQ teaser */}
         <Section bg="soft">
             <Container narrow>
                 <SectionHead
@@ -515,13 +487,28 @@ const Page = () => (
                 </div>
                 <div className="mt-9 text-center">
                     <Link href="/faq" className="btn btn-ghost">
-                        All questions →
+                        All questions
                     </Link>
                 </div>
             </Container>
         </Section>
 
-        <InstallPanel />
+        <Section>
+            <Container>
+                <div className="rounded-xl bg-accent p-8 text-center text-accent-content sm:p-12 lg:p-16">
+                    <h2 className="mx-auto max-w-4xl text-4xl font-[330] leading-[1.05] sm:text-5xl lg:text-[70px]">
+                        Start automating order support today.
+                    </h2>
+                    <p className="mx-auto mt-5 max-w-2xl text-accent-content/70">
+                        Install on Shopify in under two minutes. 7-day free
+                        trial, no card required.
+                    </p>
+                    <Link href={INSTALL_HREF} className="btn mt-8">
+                        Install on Shopify
+                    </Link>
+                </div>
+            </Container>
+        </Section>
 
         <PublicFooter />
     </>
