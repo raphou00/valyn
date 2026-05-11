@@ -32,8 +32,7 @@
         0 8px 20px -8px rgba(33, 215, 96, 0.18);
     --font-sans:
         "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-mono:
-        "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
     margin: 0;
     padding: 0;

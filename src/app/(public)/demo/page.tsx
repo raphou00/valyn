@@ -54,9 +54,9 @@ const Page = () => (
                         </div>
                         <h3>SES inbound</h3>
                         <p>
-                            Your forwarding address is an AWS SES route.
-                            Inbound MIME lands in S3, an SNS topic kicks off
-                            the pipeline.
+                            Your forwarding address is an AWS SES route. Inbound
+                            MIME lands in S3, an SNS topic kicks off the
+                            pipeline.
                         </p>
                     </div>
                     <div className="card">
@@ -66,8 +66,8 @@ const Page = () => (
                         <h3>Detect &amp; identify</h3>
                         <p>
                             Keyword classifier tags WISMO. Order lookup hits
-                            Shopify Admin GraphQL with order-number → email
-                            → recent-order priority.
+                            Shopify Admin GraphQL with order-number → email →
+                            recent-order priority.
                         </p>
                     </div>
                     <div className="card">
@@ -76,9 +76,9 @@ const Page = () => (
                         </div>
                         <h3>Reply via your SMTP</h3>
                         <p>
-                            nodemailer signs and sends from your domain.
-                            Reply is logged with full envelope and links back
-                            to the source email.
+                            nodemailer signs and sends from your domain. Reply
+                            is logged with full envelope and links back to the
+                            source email.
                         </p>
                     </div>
                 </div>

@@ -33,14 +33,20 @@ html {
     @apply shadow-none outline-none;
 }
 
-.input, .textarea {
+.input,
+.textarea {
     @apply bg-base-200/20 transition border border-base-content/20 focus:border-accent focus:outline-0 ring-0 outline-offset-0;
 }
 
 .skeleton {
     @layer daisyui.l1.l2.l3 {
         background-color: var(--color-base-200);
-        background-image: linear-gradient( 105deg, #0000 0% 40%, var(--color-base-100) /* var(--color-base-100) */ 50%, #0000 60% 100% );
+        background-image: linear-gradient(
+            105deg,
+            #0000 0% 40%,
+            var(--color-base-100) /* var(--color-base-100) */ 50%,
+            #0000 60% 100%
+        );
     }
 }
 
@@ -48,4 +54,3 @@ html {
     width: 100%;
     max-width: 90rem;
 }
-

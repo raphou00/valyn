@@ -14,7 +14,11 @@ const navItems: NavItem[] = [
 ];
 
 const BrandMark = ({ inverted = false }: { inverted?: boolean }) => (
-    <Link href="/" className="brand" style={inverted ? { color: "#fff" } : undefined}>
+    <Link
+        href="/"
+        className="brand"
+        style={inverted ? { color: "#fff" } : undefined}
+    >
         <span
             aria-hidden
             style={{
@@ -66,7 +70,10 @@ export const PublicHeader = ({ active }: { active?: string }) => (
     </nav>
 );
 
-const footerGroups: { title: string; links: { label: string; href: string }[] }[] = [
+const footerGroups: {
+    title: string;
+    links: { label: string; href: string }[];
+}[] = [
     {
         title: "Product",
         links: [
@@ -283,10 +290,7 @@ export const FinalCta = ({
                     <Link href={primaryHref} className="btn btn-green btn-lg">
                         {primaryLabel}
                     </Link>
-                    <Link
-                        href={secondaryHref}
-                        className="btn btn-ghost btn-lg"
-                    >
+                    <Link href={secondaryHref} className="btn btn-ghost btn-lg">
                         {secondaryLabel}
                     </Link>
                 </div>
@@ -303,8 +307,8 @@ export const InstallPanel = () => (
             <div className="cta-block" id="install">
                 <h2>Install Valyn on your Shopify store.</h2>
                 <p>
-                    Enter your store domain to start the OAuth flow. Setup
-                    and SMTP configuration happen inside the app.
+                    Enter your store domain to start the OAuth flow. Setup and
+                    SMTP configuration happen inside the app.
                 </p>
                 <form
                     action="/api/auth"
@@ -358,11 +362,21 @@ export const InstallPanel = () => (
 
 /* ===== Featured visual: dashboard mockup ===== */
 
-const DASH_STATS: { label: string; val: string; trend: string; flat?: boolean }[] = [
+const DASH_STATS: {
+    label: string;
+    val: string;
+    trend: string;
+    flat?: boolean;
+}[] = [
     { label: "Emails processed", val: "1,284", trend: "↑ 12% vs prev week" },
     { label: "WISMO detected", val: "912", trend: "71% of inbox" },
     { label: "Auto-replies sent", val: "887", trend: "97% match rate" },
-    { label: "Failed lookups", val: "25", trend: "Awaiting review", flat: true },
+    {
+        label: "Failed lookups",
+        val: "25",
+        trend: "Awaiting review",
+        flat: true,
+    },
 ];
 
 const DASH_ROWS: {
@@ -446,7 +460,13 @@ export const DashboardMockup = () => (
                     <strong style={{ color: "var(--ink)" }}>Live</strong>
                 </span>
             </div>
-            <div style={{ marginLeft: "auto", fontSize: 12, color: "var(--muted)" }}>
+            <div
+                style={{
+                    marginLeft: "auto",
+                    fontSize: 12,
+                    color: "var(--muted)",
+                }}
+            >
                 Last 7 days
             </div>
         </div>
@@ -455,7 +475,9 @@ export const DashboardMockup = () => (
                 <div className="dash-stat" key={s.label}>
                     <div className="label">{s.label}</div>
                     <div className="val">{s.val}</div>
-                    <div className={`trend${s.flat ? " flat" : ""}`}>{s.trend}</div>
+                    <div className={`trend${s.flat ? " flat" : ""}`}>
+                        {s.trend}
+                    </div>
                 </div>
             ))}
         </div>

@@ -44,7 +44,9 @@ const PanelAwaiting = () => (
             <span>—</span>
         </div>
         <div className="pb" style={{ color: "var(--muted)" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <div
+                style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+            >
                 <span
                     style={{
                         width: 6,

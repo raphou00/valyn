@@ -70,12 +70,12 @@ const Page = () => (
                             </a>
                         </li>
                         <li>
-                            <a href="#auto">When to automate the reply itself</a>
+                            <a href="#auto">
+                                When to automate the reply itself
+                            </a>
                         </li>
                         <li>
-                            <a href="#valyn">
-                                How Valyn handles it end-to-end
-                            </a>
+                            <a href="#valyn">How Valyn handles it end-to-end</a>
                         </li>
                     </ol>
                 </div>
@@ -83,11 +83,11 @@ const Page = () => (
                 <h2 id="what">What WISMO means</h2>
                 <p>
                     <strong>WISMO</strong> stands for{" "}
-                    <em>&ldquo;Where Is My Order?&rdquo;</em> — the most
-                    common customer support question in ecommerce. It&apos;s
-                    the email or chat message a customer sends between the
-                    moment they pay and the moment the package arrives,
-                    asking for an update on shipping status.
+                    <em>&ldquo;Where Is My Order?&rdquo;</em> — the most common
+                    customer support question in ecommerce. It&apos;s the email
+                    or chat message a customer sends between the moment they pay
+                    and the moment the package arrives, asking for an update on
+                    shipping status.
                 </p>
                 <p>
                     For a Shopify merchant, WISMO usually arrives in three
@@ -95,8 +95,8 @@ const Page = () => (
                 </p>
                 <ul>
                     <li>
-                        &ldquo;Hi, I ordered last week and haven&apos;t
-                        received it yet.&rdquo;
+                        &ldquo;Hi, I ordered last week and haven&apos;t received
+                        it yet.&rdquo;
                     </li>
                     <li>
                         &ldquo;Where is order #1042? It says shipped but no
@@ -108,10 +108,9 @@ const Page = () => (
                     </li>
                 </ul>
                 <p>
-                    In all three, the answer is the same: read the order,
-                    read the fulfillment, paste the tracking link, mention
-                    the ETA. It&apos;s not really support. It&apos;s a
-                    lookup.
+                    In all three, the answer is the same: read the order, read
+                    the fulfillment, paste the tracking link, mention the ETA.
+                    It&apos;s not really support. It&apos;s a lookup.
                 </p>
 
                 <h2 id="why">Why customers ask it (and ask it again)</h2>
@@ -122,9 +121,9 @@ const Page = () => (
                             The order confirmation didn&apos;t include a
                             tracking link.
                         </strong>{" "}
-                        Sometimes because tracking wasn&apos;t available yet
-                        at confirmation time, sometimes because the email
-                        template doesn&apos;t surface it well.
+                        Sometimes because tracking wasn&apos;t available yet at
+                        confirmation time, sometimes because the email template
+                        doesn&apos;t surface it well.
                     </li>
                     <li>
                         <strong>
@@ -135,9 +134,7 @@ const Page = () => (
                         landed in promotions.
                     </li>
                     <li>
-                        <strong>
-                            The shipping status is genuinely stale.
-                        </strong>{" "}
+                        <strong>The shipping status is genuinely stale.</strong>{" "}
                         &ldquo;Pre-shipment&rdquo; for four days. &ldquo;In
                         transit&rdquo; for a week with no scans. The carrier
                         broke; the customer wants reassurance.
@@ -167,10 +164,10 @@ const Page = () => (
 
                 <h2 id="cost">What WISMO actually costs your store</h2>
                 <p>
-                    It&apos;s not the tickets — it&apos;s the math behind
-                    them. If your store ships 1,000 orders per week and even
-                    8% of customers email asking about tracking, that&apos;s
-                    80 emails per week. At 3 minutes each, that&apos;s{" "}
+                    It&apos;s not the tickets — it&apos;s the math behind them.
+                    If your store ships 1,000 orders per week and even 8% of
+                    customers email asking about tracking, that&apos;s 80 emails
+                    per week. At 3 minutes each, that&apos;s{" "}
                     <strong>4 hours of weekly support time</strong> spent on
                     lookup, not on real customer problems.
                 </p>
@@ -183,9 +180,8 @@ const Page = () => (
 
                 <blockquote>
                     The fastest way to reduce WISMO complaints isn&apos;t a
-                    better tracking page. It&apos;s faster acknowledgement
-                    that the order exists, is shipping, and has a tracking
-                    link.
+                    better tracking page. It&apos;s faster acknowledgement that
+                    the order exists, is shipping, and has a tracking link.
                 </blockquote>
 
                 <h2 id="fix">Four practical ways to reduce WISMO tickets</h2>
@@ -193,10 +189,10 @@ const Page = () => (
                 <h3>1. Fix the shipping confirmation</h3>
                 <p>
                     Audit your Shopify &ldquo;Shipping confirmation&rdquo;
-                    notification template. The tracking link should be the
-                    most visible element above the fold. If you use a custom
-                    theme app, make sure it&apos;s still firing — broken
-                    shipping emails are a surprisingly common WISMO source.
+                    notification template. The tracking link should be the most
+                    visible element above the fold. If you use a custom theme
+                    app, make sure it&apos;s still firing — broken shipping
+                    emails are a surprisingly common WISMO source.
                 </p>
 
                 <h3>2. Add a self-service tracking page</h3>
@@ -213,39 +209,39 @@ const Page = () => (
                     >
                         /track
                     </code>{" "}
-                    page on your storefront, where customers can enter an
-                    order number and see status, reduces inbound emails.
-                    AfterShip, Parcel Panel, and others do this well. It
-                    won&apos;t eliminate WISMO — many customers will email
-                    anyway — but it cuts the curious ones.
+                    page on your storefront, where customers can enter an order
+                    number and see status, reduces inbound emails. AfterShip,
+                    Parcel Panel, and others do this well. It won&apos;t
+                    eliminate WISMO — many customers will email anyway — but it
+                    cuts the curious ones.
                 </p>
 
                 <h3>3. Set realistic shipping expectations on the PDP</h3>
                 <p>
                     If your dropshipping window is 7–14 days, say so on the
-                    product page. Customers email when expectations and
-                    reality disagree, not when the wait is long.
+                    product page. Customers email when expectations and reality
+                    disagree, not when the wait is long.
                 </p>
 
                 <h3>4. Use proactive transit notifications</h3>
                 <p>
-                    &ldquo;Your order is out for delivery today.&rdquo; Sent
-                    the morning of, not when the package is already on the
-                    doorstep. This single email reduces WISMO by 20–30% in
-                    stores that adopt it.
+                    &ldquo;Your order is out for delivery today.&rdquo; Sent the
+                    morning of, not when the package is already on the doorstep.
+                    This single email reduces WISMO by 20–30% in stores that
+                    adopt it.
                 </p>
 
                 <h2 id="auto">When to automate the reply itself</h2>
                 <p>
-                    The four steps above reduce WISMO volume by maybe 40%.
-                    The remaining 60% will still email — because customers,
+                    The four steps above reduce WISMO volume by maybe 40%. The
+                    remaining 60% will still email — because customers,
                     especially anxious ones, want a human (or human-looking)
                     reply to a question they&apos;re worried about.
                 </p>
                 <p>
-                    That&apos;s the point where you stop trying to prevent
-                    WISMO and start answering it instantly, automatically, in
-                    your own voice.
+                    That&apos;s the point where you stop trying to prevent WISMO
+                    and start answering it instantly, automatically, in your own
+                    voice.
                 </p>
                 <p>Automated WISMO replies should:</p>
                 <ul>
@@ -274,9 +270,9 @@ const Page = () => (
 
                 <h2 id="valyn">How Valyn handles it end-to-end</h2>
                 <p>
-                    Valyn is a Shopify app focused on exactly this problem.
-                    You forward your support inbox (or a dedicated tracking
-                    inbox) to a Valyn address. When a WISMO email arrives:
+                    Valyn is a Shopify app focused on exactly this problem. You
+                    forward your support inbox (or a dedicated tracking inbox)
+                    to a Valyn address. When a WISMO email arrives:
                 </p>
                 <ol>
                     <li>
@@ -288,21 +284,18 @@ const Page = () => (
                         email, or recent history
                     </li>
                     <li>
-                        It composes a reply using your template and real
-                        Shopify order data
+                        It composes a reply using your template and real Shopify
+                        order data
                     </li>
                     <li>
                         It sends from your own SMTP — the customer sees your
                         domain
                     </li>
-                    <li>
-                        It logs everything in your Shopify admin for review
-                    </li>
+                    <li>It logs everything in your Shopify admin for review</li>
                 </ol>
                 <p>
-                    If it can&apos;t confidently match the order, it either
-                    asks for the order number politely or skips entirely —
-                    your call.
+                    If it can&apos;t confidently match the order, it either asks
+                    for the order number politely or skips entirely — your call.
                 </p>
 
                 <div className="callout" style={{ marginTop: 32 }}>
@@ -320,8 +313,8 @@ const Page = () => (
                             Try it on your store
                         </h4>
                         <p style={{ margin: 0 }}>
-                            7-day free trial, no card. Install Valyn,
-                            forward one email, see how it handles it.
+                            7-day free trial, no card. Install Valyn, forward
+                            one email, see how it handles it.
                         </p>
                         <div style={{ marginTop: 14 }}>
                             <Link

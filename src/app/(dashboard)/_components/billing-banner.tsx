@@ -76,8 +76,8 @@ const BillingBanner: React.FC<Props> = ({ status }) => {
             <BlockStack gap="300">
                 <Text as="p" variant="bodyMd">
                     Auto-replies are paused until your subscription is active.
-                    Both plans include a 7-day free trial — no card required
-                    to install.
+                    Both plans include a 7-day free trial — no card required to
+                    install.
                 </Text>
 
                 <InlineGrid columns={{ xs: 1, sm: 2 }} gap="300">
@@ -104,20 +104,23 @@ const BillingBanner: React.FC<Props> = ({ status }) => {
                                             </Text>
                                         </Text>
                                     </InlineStack>
-                                    <Text as="p" tone="subdued" variant="bodySm">
+                                    <Text
+                                        as="p"
+                                        tone="subdued"
+                                        variant="bodySm"
+                                    >
                                         {plan.description}
                                     </Text>
                                     <Text as="p" variant="bodySm">
-                                        Up to{" "}
-                                        {plan.emailQuota.toLocaleString()}{" "}
+                                        Up to {plan.emailQuota.toLocaleString()}{" "}
                                         emails / month
                                     </Text>
                                     <Box paddingBlockStart="100">
                                         <Button
                                             variant={
-                                                key === "pro" ?
-                                                    "primary"
-                                                :   "secondary"
+                                                key === "pro" ? "primary" : (
+                                                    "secondary"
+                                                )
                                             }
                                             loading={loadingKey === key}
                                             disabled={

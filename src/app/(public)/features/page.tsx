@@ -67,16 +67,22 @@ const dashboardCards = [
     },
 ];
 
-const classificationLines: [string, string, "ok" | "warn" | "muted", string][] = [
-    ["14:02 → ", '"where is my order"', "ok", "WISMO"],
-    ["14:08 → ", '"ma commande"', "ok", "WISMO"],
-    ["14:11 → ", '"can i change my address?"', "muted", "SKIP"],
-    ["14:18 → ", '"tracking link broken"', "warn", "REVIEW"],
-    ["14:22 → ", '"wo ist mein paket"', "ok", "WISMO"],
-    ["14:29 → ", '"i want a refund"', "muted", "SKIP"],
-];
+const classificationLines: [string, string, "ok" | "warn" | "muted", string][] =
+    [
+        ["14:02 → ", '"where is my order"', "ok", "WISMO"],
+        ["14:08 → ", '"ma commande"', "ok", "WISMO"],
+        ["14:11 → ", '"can i change my address?"', "muted", "SKIP"],
+        ["14:18 → ", '"tracking link broken"', "warn", "REVIEW"],
+        ["14:22 → ", '"wo ist mein paket"', "ok", "WISMO"],
+        ["14:29 → ", '"i want a refund"', "muted", "SKIP"],
+    ];
 
-const lookupRows: { pill: "ok" | "warn" | "muted"; tag: string; title: string; body: string }[] = [
+const lookupRows: {
+    pill: "ok" | "warn" | "muted";
+    tag: string;
+    title: string;
+    body: string;
+}[] = [
     {
         pill: "ok",
         tag: "1st try",
@@ -135,10 +141,10 @@ const Page = () => (
                             WISMO detection that actually skips the rest.
                         </h2>
                         <p className="lede" style={{ marginTop: 18 }}>
-                            Keyword + sender classification flags
-                            order-tracking emails in three languages.
-                            Everything else lands untouched in your inbox so
-                            real support still reaches you.
+                            Keyword + sender classification flags order-tracking
+                            emails in three languages. Everything else lands
+                            untouched in your inbox so real support still
+                            reaches you.
                         </p>
                         <ul className="check-list">
                             {detectionPoints.map((p) => (
@@ -146,7 +152,10 @@ const Page = () => (
                             ))}
                         </ul>
                     </div>
-                    <div className="card" style={{ padding: 0, overflow: "hidden" }}>
+                    <div
+                        className="card"
+                        style={{ padding: 0, overflow: "hidden" }}
+                    >
                         <div
                             style={{
                                 padding: "14px 18px",
@@ -190,7 +199,10 @@ const Page = () => (
         <Section bg="soft">
             <Container>
                 <div className="feat-row">
-                    <div className="card" style={{ padding: 0, overflow: "hidden" }}>
+                    <div
+                        className="card"
+                        style={{ padding: 0, overflow: "hidden" }}
+                    >
                         <div
                             style={{
                                 padding: "14px 18px",
@@ -229,7 +241,11 @@ const Page = () => (
                                         <div style={{ fontSize: 13 }}>
                                             <strong>{row.title}</strong>
                                             <br />
-                                            <span style={{ color: "var(--muted)" }}>
+                                            <span
+                                                style={{
+                                                    color: "var(--muted)",
+                                                }}
+                                            >
                                                 {row.body}
                                             </span>
                                         </div>
@@ -241,15 +257,13 @@ const Page = () => (
                     <div>
                         <span className="kicker">02 — Lookup</span>
                         <h2 style={{ marginTop: 14 }}>
-                            Three ways to find the order. One graceful
-                            fallback.
+                            Three ways to find the order. One graceful fallback.
                         </h2>
                         <p className="lede" style={{ marginTop: 18 }}>
                             Order numbers come in dozens of formats. Senders
                             email from addresses that don&apos;t match their
                             Shopify customer record. Valyn tries the obvious
-                            match first and degrades cleanly when it
-                            can&apos;t.
+                            match first and degrades cleanly when it can&apos;t.
                         </p>
                         <ul className="check-list">
                             {lookupPoints.map((p) => (
@@ -270,9 +284,9 @@ const Page = () => (
                             Sent from your address. In your voice.
                         </h2>
                         <p className="lede" style={{ marginTop: 18 }}>
-                            Replies go out via your own SMTP. The customer
-                            sees your domain, your signature, your tone.
-                            Valyn is invisible in the conversation.
+                            Replies go out via your own SMTP. The customer sees
+                            your domain, your signature, your tone. Valyn is
+                            invisible in the conversation.
                         </p>
                         <ul className="check-list">
                             {replyPoints.map((p) => (
@@ -307,8 +321,8 @@ const Page = () => (
                             </span>
                             <br />
                             <br />
-                            Expected delivery:{" "}
-                            <strong>Thursday, May 14</strong>.
+                            Expected delivery: <strong>Thursday, May 14</strong>
+                            .
                             <br />
                             <br />
                             <span style={{ color: "var(--muted)" }}>
@@ -358,12 +372,12 @@ const Page = () => (
                             What Valyn doesn&apos;t do
                         </h3>
                         <p style={{ marginBottom: 0, color: "var(--ink-2)" }}>
-                            No returns automation. No refunds. No live chat.
-                            No AI chatbot. No social DMs. No marketing emails.
-                            No abandoned-cart recovery. No multi-mailbox
-                            routing. If you need any of those, you need a
-                            different tool — and that&apos;s fine. We&apos;re
-                            focused on WISMO, end of story.
+                            No returns automation. No refunds. No live chat. No
+                            AI chatbot. No social DMs. No marketing emails. No
+                            abandoned-cart recovery. No multi-mailbox routing.
+                            If you need any of those, you need a different tool
+                            — and that&apos;s fine. We&apos;re focused on WISMO,
+                            end of story.
                         </p>
                     </div>
                 </div>

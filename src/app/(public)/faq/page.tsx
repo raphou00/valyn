@@ -34,11 +34,11 @@ const groups: { kicker: string; title: string; items: Faq[] }[] = [
             },
             {
                 q: "Does it replace my helpdesk?",
-                a: 'No, and it isn\'t trying to. Valyn handles the repetitive 60% of your inbox — tracking questions — so your real helpdesk (or your own time) is freed for everything else: returns, complaints, product questions, fraud cases. If you don\'t have a helpdesk, Valyn is the smallest possible step up from "just my Gmail."',
+                a: "No, and it isn't trying to. Valyn handles the repetitive 60% of your inbox — tracking questions — so your real helpdesk (or your own time) is freed for everything else: returns, complaints, product questions, fraud cases. If you don't have a helpdesk, Valyn is the smallest possible step up from \"just my Gmail.\"",
             },
             {
                 q: "How long does setup take?",
-                a: 'Under 5 minutes for most stores. Install from the Shopify App Store, paste your SMTP credentials (Gmail app password works), copy the forwarding address Valyn gives you into your support inbox forwarding rule, send a test email. That\'s it.',
+                a: "Under 5 minutes for most stores. Install from the Shopify App Store, paste your SMTP credentials (Gmail app password works), copy the forwarding address Valyn gives you into your support inbox forwarding rule, send a test email. That's it.",
             },
         ],
     },
@@ -99,9 +99,8 @@ const groups: { kicker: string; title: string; items: Faq[] }[] = [
                 a: (
                     <>
                         Two plans: Starter $19/mo (500 emails) and Pro $49/mo
-                        (3,000 emails). You&apos;ll be notified in the
-                        dashboard before hitting your limit so you can
-                        upgrade.{" "}
+                        (3,000 emails). You&apos;ll be notified in the dashboard
+                        before hitting your limit so you can upgrade.{" "}
                         <Link
                             href="/pricing"
                             style={{

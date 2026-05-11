@@ -65,9 +65,8 @@ const Page = () => (
                         <div className="card">
                             <h3>Company &amp; legal identity</h3>
                             <p style={{ marginTop: 12 }}>
-                                Company legal details should be finalized
-                                before public launch and Shopify App Store
-                                submission.
+                                Company legal details should be finalized before
+                                public launch and Shopify App Store submission.
                             </p>
                         </div>
                     </div>

@@ -265,11 +265,10 @@ const Page = () => (
                             tracking questions.
                         </h2>
                         <p className="lede" style={{ marginTop: 20 }}>
-                            Every Shopify merchant has the same conversation,
-                            40 times a week. The same question, the same
-                            tracking link, the same polite reply. It&apos;s
-                            repetitive, it&apos;s slow, and it scales linearly
-                            with orders.
+                            Every Shopify merchant has the same conversation, 40
+                            times a week. The same question, the same tracking
+                            link, the same polite reply. It&apos;s repetitive,
+                            it&apos;s slow, and it scales linearly with orders.
                         </p>
                     </div>
                     <div
@@ -427,9 +426,9 @@ const Page = () => (
                             <Link
                                 href="/pricing"
                                 className={
-                                    plan.featured ?
-                                        "btn btn-green"
-                                    :   "btn btn-ghost"
+                                    plan.featured ? "btn btn-green" : (
+                                        "btn btn-ghost"
+                                    )
                                 }
                             >
                                 Choose {plan.name}

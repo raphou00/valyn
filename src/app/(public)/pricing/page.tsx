@@ -102,11 +102,9 @@ const faqs = [
 ];
 
 const renderCell = (text: string) =>
-    text === "✓" ?
-        <span className="check">✓</span>
-    : text === "—" ?
-        <span className="dash">—</span>
-    :   text;
+    text === "✓" ? <span className="check">✓</span>
+    : text === "—" ? <span className="dash">—</span>
+    : text;
 
 const Page = () => (
     <>
@@ -168,9 +166,9 @@ const Page = () => (
                             <Link
                                 href={INSTALL_HREF}
                                 className={
-                                    plan.featured ?
-                                        "btn btn-green"
-                                    :   "btn btn-ghost"
+                                    plan.featured ? "btn btn-green" : (
+                                        "btn btn-ghost"
+                                    )
                                 }
                             >
                                 Start free trial
@@ -186,8 +184,8 @@ const Page = () => (
                         fontSize: 14,
                     }}
                 >
-                    Both plans billed monthly through Shopify. Switch tiers
-                    any time from your Valyn dashboard.
+                    Both plans billed monthly through Shopify. Switch tiers any
+                    time from your Valyn dashboard.
                 </p>
             </Container>
         </Section>

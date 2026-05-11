@@ -35,7 +35,11 @@ const chooseValyn = [
 ];
 
 const compareRows: [string, string, string, boolean?][] = [
-    ["WISMO auto-reply with order data", "✓ (requires rule setup)", "✓ Out of the box"],
+    [
+        "WISMO auto-reply with order data",
+        "✓ (requires rule setup)",
+        "✓ Out of the box",
+    ],
     ["Shopify order lookup", "✓", "✓"],
     ["Multi-language detection", "Add-on / configure", "EN, FR, DE built-in"],
     ["Send from your domain (SMTP)", "✓", "✓"],
@@ -139,8 +143,8 @@ const Page = () => (
                             A full customer-support helpdesk. Multi-channel
                             inbox, automation rules, macros, a ticketing UI,
                             integrations with dozens of apps, reporting,
-                            customer profiles, intent detection. Built to be
-                            the center of your support operation.
+                            customer profiles, intent detection. Built to be the
+                            center of your support operation.
                         </p>
                         <div
                             style={{
@@ -153,16 +157,37 @@ const Page = () => (
                                 fontSize: 14,
                             }}
                         >
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <span style={{ color: "var(--muted)" }}>Starts at</span>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <span style={{ color: "var(--muted)" }}>
+                                    Starts at
+                                </span>
                                 <strong>~$60/mo</strong>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <span style={{ color: "var(--muted)" }}>Setup</span>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <span style={{ color: "var(--muted)" }}>
+                                    Setup
+                                </span>
                                 <strong>Days to weeks</strong>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <span style={{ color: "var(--muted)" }}>Onboarding</span>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <span style={{ color: "var(--muted)" }}>
+                                    Onboarding
+                                </span>
                                 <strong>Implementation call</strong>
                             </div>
                         </div>
@@ -209,11 +234,11 @@ const Page = () => (
                                 lineHeight: 1.6,
                             }}
                         >
-                            A single tool that does one thing: read your
-                            inbox, find Shopify orders, and reply to &quot;where
-                            is my order?&quot; emails. No tickets, no macros,
-                            no rules engine. The 60% of your inbox that&apos;s
-                            a tracking lookup just stops happening.
+                            A single tool that does one thing: read your inbox,
+                            find Shopify orders, and reply to &quot;where is my
+                            order?&quot; emails. No tickets, no macros, no rules
+                            engine. The 60% of your inbox that&apos;s a tracking
+                            lookup just stops happening.
                         </p>
                         <div
                             style={{
@@ -226,16 +251,37 @@ const Page = () => (
                                 fontSize: 14,
                             }}
                         >
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <span style={{ color: "var(--ink-2)" }}>Starts at</span>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <span style={{ color: "var(--ink-2)" }}>
+                                    Starts at
+                                </span>
                                 <strong>$19/mo</strong>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <span style={{ color: "var(--ink-2)" }}>Setup</span>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <span style={{ color: "var(--ink-2)" }}>
+                                    Setup
+                                </span>
                                 <strong>Under 5 minutes</strong>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <span style={{ color: "var(--ink-2)" }}>Onboarding</span>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <span style={{ color: "var(--ink-2)" }}>
+                                    Onboarding
+                                </span>
                                 <strong>Self-serve</strong>
                             </div>
                         </div>
@@ -337,8 +383,8 @@ const Page = () => (
                         fontSize: 13,
                     }}
                 >
-                    Comparison reflects Gorgias&apos; public Starter plan as
-                    of this writing. Always verify on their site for current
+                    Comparison reflects Gorgias&apos; public Starter plan as of
+                    this writing. Always verify on their site for current
                     details.
                 </p>
             </Container>
@@ -374,7 +420,10 @@ const Page = () => (
                         >
                             {[
                                 ["Base plan (Starter)", "$60/mo"],
-                                ["Setup time (one-off, your hours)", "~6 hours"],
+                                [
+                                    "Setup time (one-off, your hours)",
+                                    "~6 hours",
+                                ],
                                 ["Maintenance (rules, macros)", "~1 hr/mo"],
                             ].map(([k, v]) => (
                                 <div

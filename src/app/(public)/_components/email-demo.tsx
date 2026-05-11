@@ -54,7 +54,9 @@ const EmailDemo = () => {
                     <div className="meta">
                         <div className="from">
                             Sarah Patel{" "}
-                            <span className="addr">&lt;sarah.p@gmail.com&gt;</span>
+                            <span className="addr">
+                                &lt;sarah.p@gmail.com&gt;
+                            </span>
                         </div>
                         <div className="time">14:02</div>
                     </div>
@@ -80,7 +82,9 @@ const EmailDemo = () => {
                     <div className="meta">
                         <div className="from">
                             Valyn{" "}
-                            <span className="addr">on behalf of yourstore.com</span>
+                            <span className="addr">
+                                on behalf of yourstore.com
+                            </span>
                         </div>
                         <div className="time">14:02</div>
                     </div>
