@@ -8,7 +8,8 @@ import { isValidShop } from "@/lib/shopify-domain";
 const isBypassPath = (pathname: string): boolean =>
     pathname.startsWith("/api/webhooks/") ||
     pathname.startsWith("/api/auth") ||
-    pathname.startsWith("/api/billing/");
+    pathname.startsWith("/api/billing/") ||
+    pathname.startsWith("/api/cron/");
 
 // Embedded admin = the part of the app that loads inside Shopify admin's
 // iframe. Needs frame-ancestors CSP. Public marketing site doesn't.
@@ -16,7 +17,9 @@ const isEmbeddedPath = (pathname: string): boolean =>
     pathname === "/dashboard" ||
     pathname.startsWith("/dashboard/") ||
     pathname === "/settings" ||
-    pathname.startsWith("/settings/");
+    pathname.startsWith("/settings/") ||
+    pathname === "/templates" ||
+    pathname.startsWith("/templates/");
 
 const setEmbeddedCsp = (res: NextResponse, shop: string | null) => {
     const ancestors =

@@ -6,7 +6,7 @@ import { marketingMetadata } from "../../_lib/metadata";
 const page = legalSections.security;
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Security - Valyn",
+    title: "Security — Valyn",
     description: page.description,
     path: "/legal/security",
 });

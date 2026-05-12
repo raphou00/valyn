@@ -6,7 +6,7 @@ import { marketingMetadata } from "../../_lib/metadata";
 const post = blogPosts[0];
 
 export const metadata: Metadata = marketingMetadata({
-    title: "What Is WISMO in eCommerce? | Valyn",
+    title: "What Is WISMO in eCommerce? — Valyn",
     description: post.description,
     path: post.href,
     type: "article",

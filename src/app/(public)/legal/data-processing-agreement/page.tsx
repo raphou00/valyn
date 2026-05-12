@@ -6,7 +6,7 @@ import { marketingMetadata } from "../../_lib/metadata";
 const page = legalSections.dpa;
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Data Processing Agreement - Valyn",
+    title: "Data Processing Agreement — Valyn",
     description: page.description,
     path: "/legal/data-processing-agreement",
 });

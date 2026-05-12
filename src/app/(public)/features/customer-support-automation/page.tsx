@@ -4,7 +4,7 @@ import { featureSections } from "../../_lib/content";
 import { marketingMetadata } from "../../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Customer Support Automation for Shopify Merchants | Valyn",
+    title: "Customer Support Automation for Shopify Merchants — Valyn",
     description:
         "Automate repetitive Shopify customer support questions while keeping merchants in control of replies and settings.",
     path: "/features/customer-support-automation",

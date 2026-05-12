@@ -6,7 +6,7 @@ import { marketingMetadata } from "../../_lib/metadata";
 const post = blogPosts[3];
 
 export const metadata: Metadata = marketingMetadata({
-    title: "How to Automate Shopify Order Tracking Emails | Valyn",
+    title: "How to Automate Shopify Order Tracking Emails — Valyn",
     description: post.description,
     path: post.href,
     type: "article",

@@ -1,21 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     Badge,
     Banner,
     BlockStack,
+    Box,
+    Button,
     Card,
     EmptyState,
     InlineGrid,
     InlineStack,
     Pagination,
     Spinner,
+    Tabs,
     Text,
     type BadgeProps,
 } from "@shopify/polaris";
 import { useAuthedFetch } from "../_lib/use-authed-fetch";
 import BillingBanner from "./billing-banner";
+import UsageCard from "./usage-card";
+import PlanCard from "./plan-card";
+import OnboardingCard from "./onboarding-card";
+import LogsFilters, { EMPTY_FILTERS, type LogFilters } from "./logs-filters";
+import LogDetailModal from "./log-detail-modal";
 
 type Stats = {
     total: number;
@@ -25,28 +33,53 @@ type Stats = {
 };
 
 type SubscriptionState = {
-    status:
-        | "PENDING"
-        | "ACTIVE"
-        | "CANCELLED"
-        | "DECLINED"
-        | "EXPIRED"
-        | "FROZEN"
-        | null;
+    status: string | null;
     trialEndsOn: string | null;
     currentPeriodEnd: string | null;
 };
+
+type Usage = {
+    used: number;
+    quota: number;
+    remaining: number;
+    periodEnd: string | null;
+    overQuota: boolean;
+    nearLimit: boolean;
+};
+
+type Plan = {
+    key: string | null;
+    quota: number;
+    retentionDays: number;
+    languages: string[];
+    multipleTemplates: boolean;
+    toneControl: boolean;
+    manualReviewMode: boolean;
+    oneClickRetry: boolean;
+};
+
+type LogStatus =
+    | "REPLIED"
+    | "FAILED"
+    | "IGNORED"
+    | "PENDING"
+    | "REVIEW"
+    | "LIMIT_EXCEEDED"
+    | "MISCLASSIFIED";
 
 type LogRow = {
     id: string;
     senderEmail: string;
     subject: string;
     intent: "WISMO" | "OTHER";
-    status: "REPLIED" | "FAILED" | "IGNORED" | "PENDING";
+    status: LogStatus;
     orderName: string | null;
     errorMessage: string | null;
     receivedAt: string;
     repliedAt: string | null;
+    detectedLanguage: string | null;
+    confidence: number | null;
+    retryCount: number;
 };
 
 type LogsResponse = {
@@ -57,11 +90,24 @@ type LogsResponse = {
     hasMore: boolean;
 };
 
-const STATUS_TONE: Record<LogRow["status"], BadgeProps["tone"]> = {
+const STATUS_TONE: Record<LogStatus, BadgeProps["tone"]> = {
     REPLIED: "success",
     FAILED: "critical",
     IGNORED: undefined,
     PENDING: "attention",
+    REVIEW: "attention",
+    LIMIT_EXCEEDED: "critical",
+    MISCLASSIFIED: "warning",
+};
+
+const STATUS_LABEL: Record<LogStatus, string> = {
+    REPLIED: "Replied",
+    FAILED: "Failed",
+    IGNORED: "Ignored",
+    PENDING: "Pending",
+    REVIEW: "Needs review",
+    LIMIT_EXCEEDED: "Over quota",
+    MISCLASSIFIED: "Misclassified",
 };
 
 const formatDate = (iso: string) => new Date(iso).toLocaleString();
@@ -82,48 +128,179 @@ const StatCard: React.FC<{ label: string; value: number }> = ({
     </Card>
 );
 
+type SettingsHints = {
+    smtpConfigured: boolean;
+    smtpVerifiedRecently: boolean;
+};
+
 const DashboardView: React.FC = () => {
     const authedFetch = useAuthedFetch();
     const [stats, setStats] = useState<Stats | null>(null);
     const [subscription, setSubscription] = useState<SubscriptionState | null>(
         null
     );
+    const [usage, setUsage] = useState<Usage | null>(null);
+    const [plan, setPlan] = useState<Plan | null>(null);
+    const [settingsHints, setSettingsHints] = useState<SettingsHints | null>(
+        null
+    );
     const [logs, setLogs] = useState<LogsResponse | null>(null);
     const [page, setPage] = useState(0);
+    const [tabIndex, setTabIndex] = useState(0);
+    const [filters, setFilters] = useState<LogFilters>(EMPTY_FILTERS);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [openLog, setOpenLog] = useState<string | null>(null);
+
+    // Tabs are filter shortcuts. Custom filters apply on top of the tab status.
+    const tabs = useMemo(
+        () => [
+            { id: "all", content: "All", filter: "" },
+            { id: "review", content: "Needs review", filter: "REVIEW" },
+            { id: "failed", content: "Failed", filter: "FAILED" },
+            { id: "replied", content: "Replied", filter: "REPLIED" },
+        ],
+        []
+    );
+
+    const effectiveStatus = filters.status || tabs[tabIndex].filter;
 
     const load = useCallback(
         async (p: number) => {
             setLoading(true);
             setError(null);
             try {
-                const [statsRes, logsRes] = await Promise.all([
-                    authedFetch("/api/internal/stats"),
-                    authedFetch(`/api/internal/logs?page=${p}`),
-                ]);
+                const params = new URLSearchParams();
+                params.set("page", String(p));
+                if (effectiveStatus) params.set("status", effectiveStatus);
+                if (filters.intent) params.set("intent", filters.intent);
+                if (filters.q) params.set("q", filters.q);
+                if (filters.from) params.set("from", filters.from);
+                if (filters.to) params.set("to", filters.to);
+
+                const [statsRes, logsRes, usageRes, settingsRes] =
+                    await Promise.all([
+                        authedFetch("/api/internal/stats"),
+                        authedFetch(
+                            `/api/internal/logs?${params.toString()}`
+                        ),
+                        authedFetch("/api/internal/usage"),
+                        authedFetch("/api/internal/settings"),
+                    ]);
                 if (!statsRes.ok) throw new Error(`stats ${statsRes.status}`);
                 if (!logsRes.ok) throw new Error(`logs ${logsRes.status}`);
+                if (!usageRes.ok) throw new Error(`usage ${usageRes.status}`);
                 const statsData = (await statsRes.json()) as {
                     stats: Stats;
                     subscription: SubscriptionState;
                 };
                 const logsData = (await logsRes.json()) as LogsResponse;
+                const usageData = (await usageRes.json()) as {
+                    usage: Usage;
+                    plan: Plan;
+                };
                 setStats(statsData.stats);
                 setSubscription(statsData.subscription);
+                setUsage(usageData.usage);
+                setPlan(usageData.plan);
                 setLogs(logsData);
+
+                if (settingsRes.ok) {
+                    const sd = (await settingsRes.json()) as {
+                        settings: {
+                            smtpHost: string | null;
+                            smtpPort: number | null;
+                            smtpUser: string | null;
+                            smtpFromAddress: string | null;
+                            hasSmtpPass: boolean;
+                            smtpLastVerifiedAt: string | null;
+                        } | null;
+                    };
+                    if (sd.settings) {
+                        const s = sd.settings;
+                        const configured = Boolean(
+                            s.smtpHost &&
+                                s.smtpPort &&
+                                s.smtpUser &&
+                                s.smtpFromAddress &&
+                                s.hasSmtpPass
+                        );
+                        setSettingsHints({
+                            smtpConfigured: configured,
+                            smtpVerifiedRecently: Boolean(
+                                s.smtpLastVerifiedAt
+                            ),
+                        });
+                    } else {
+                        setSettingsHints({
+                            smtpConfigured: false,
+                            smtpVerifiedRecently: false,
+                        });
+                    }
+                }
             } catch (e) {
                 setError((e as Error).message);
             } finally {
                 setLoading(false);
             }
         },
-        [authedFetch]
+        [authedFetch, effectiveStatus, filters.intent, filters.q, filters.from, filters.to]
     );
 
     useEffect(() => {
         void load(page);
     }, [load, page]);
+
+    // Reset to page 0 when filter/tab inputs change.
+    useEffect(() => {
+        setPage(0);
+    }, [effectiveStatus, filters.intent, filters.q, filters.from, filters.to]);
+
+    const exportCsv = () => {
+        // Window navigation here triggers the streaming CSV download; the
+        // session token can't ride a normal <a> click, so we fetch via the
+        // authed helper and blob-it. Small enough to keep in memory.
+        (async () => {
+            const res = await authedFetch("/api/internal/logs/export");
+            if (!res.ok) return;
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `valyn-logs-${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        })();
+    };
+
+    const subscriptionActive = subscription?.status === "ACTIVE";
+
+    const onboardingSteps = useMemo(
+        () => [
+            { label: "Choose a plan", done: subscriptionActive },
+            {
+                label: "Configure SMTP credentials",
+                done: Boolean(settingsHints?.smtpConfigured),
+                href: "/settings",
+            },
+            {
+                label: "Test SMTP connection",
+                done: Boolean(settingsHints?.smtpVerifiedRecently),
+                href: "/settings",
+            },
+            {
+                label: "Copy forwarding address into your support inbox",
+                done: false,
+                href: "/settings",
+            },
+            {
+                label: "Receive your first processed email",
+                done: (stats?.total ?? 0) > 0,
+            },
+        ],
+        [subscriptionActive, settingsHints, stats]
+    );
+    const onboardingAllDone = onboardingSteps.every((s) => s.done);
 
     return (
         <BlockStack gap="400">
@@ -133,11 +310,52 @@ const DashboardView: React.FC = () => {
                 </Banner>
             )}
 
-            {subscription && <BillingBanner status={subscription.status} />}
+            {subscription && <BillingBanner status={subscription.status as "PENDING" | "ACTIVE" | "CANCELLED" | "DECLINED" | "EXPIRED" | "FROZEN" | null} />}
+
+            {!onboardingAllDone && (
+                <OnboardingCard
+                    steps={onboardingSteps}
+                    allDone={onboardingAllDone}
+                />
+            )}
+
+            <InlineGrid columns={{ xs: 1, md: 3 }} gap="400">
+                {usage && (
+                    <UsageCard
+                        used={usage.used}
+                        quota={usage.quota}
+                        remaining={usage.remaining}
+                        periodEnd={usage.periodEnd}
+                        overQuota={usage.overQuota}
+                        nearLimit={usage.nearLimit}
+                    />
+                )}
+                {subscription && (
+                    <PlanCard
+                        planKey={plan?.key ?? null}
+                        status={subscription.status}
+                        trialEndsOn={subscription.trialEndsOn}
+                        currentPeriodEnd={subscription.currentPeriodEnd}
+                    />
+                )}
+                <Card>
+                    <BlockStack gap="100">
+                        <Text as="h3" variant="headingSm">
+                            Failed lookups
+                        </Text>
+                        <Text as="p" variant="heading2xl">
+                            {(stats?.failed ?? 0).toLocaleString()}
+                        </Text>
+                        <Text as="p" variant="bodySm" tone="subdued">
+                            Awaiting review or retry
+                        </Text>
+                    </BlockStack>
+                </Card>
+            </InlineGrid>
 
             <InlineGrid columns={{ xs: 2, md: 4 }} gap="400">
                 <StatCard
-                    label="Total emails processed"
+                    label="Total processed"
                     value={stats?.total ?? 0}
                 />
                 <StatCard label="WISMO detected" value={stats?.wismo ?? 0} />
@@ -145,34 +363,57 @@ const DashboardView: React.FC = () => {
                     label="Auto-replies sent"
                     value={stats?.replied ?? 0}
                 />
-                <StatCard label="Failed lookups" value={stats?.failed ?? 0} />
+                <StatCard label="Retention" value={plan?.retentionDays ?? 0} />
             </InlineGrid>
 
             <Card padding="0">
                 <BlockStack>
-                    <div style={{ padding: 16 }}>
-                        <Text as="h2" variant="headingMd">
-                            Email log
-                        </Text>
-                    </div>
+                    <Box padding="400">
+                        <InlineStack
+                            align="space-between"
+                            blockAlign="center"
+                            wrap
+                        >
+                            <Text as="h2" variant="headingMd">
+                                Email log
+                            </Text>
+                            <Button onClick={exportCsv} variant="secondary">
+                                Export CSV
+                            </Button>
+                        </InlineStack>
+                    </Box>
+
+                    <Tabs
+                        tabs={tabs}
+                        selected={tabIndex}
+                        onSelect={(i) => setTabIndex(i)}
+                    >
+                        <Box padding="400" paddingBlockStart="200">
+                            <LogsFilters
+                                value={filters}
+                                onChange={setFilters}
+                                onReset={() => setFilters(EMPTY_FILTERS)}
+                            />
+                        </Box>
+                    </Tabs>
 
                     {loading && !logs ?
                         <InlineStack align="center" blockAlign="center">
-                            <div style={{ padding: 32 }}>
+                            <Box padding="800">
                                 <Spinner
                                     accessibilityLabel="Loading"
                                     size="large"
                                 />
-                            </div>
+                            </Box>
                         </InlineStack>
                     : logs && logs.logs.length === 0 ?
                         <EmptyState
-                            heading="No emails yet"
+                            heading="No matching emails"
                             image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
                         >
                             <p>
-                                Once your support inbox forwards a message,
-                                you&apos;ll see it here.
+                                Try clearing filters, or wait for your support
+                                inbox to forward a message.
                             </p>
                         </EmptyState>
                     :   <table
@@ -193,13 +434,14 @@ const DashboardView: React.FC = () => {
                             </thead>
                             <tbody>
                                 {logs?.logs.map((row) => (
-                                    <tr key={row.id} style={tr}>
+                                    <tr
+                                        key={row.id}
+                                        style={trStyle}
+                                        onClick={() => setOpenLog(row.id)}
+                                    >
                                         <td style={td}>
                                             <BlockStack gap="050">
-                                                <Text
-                                                    as="span"
-                                                    variant="bodyMd"
-                                                >
+                                                <Text as="span" variant="bodyMd">
                                                     {row.senderEmail || "—"}
                                                 </Text>
                                                 <Text
@@ -233,7 +475,7 @@ const DashboardView: React.FC = () => {
                                                         STATUS_TONE[row.status]
                                                     }
                                                 >
-                                                    {row.status}
+                                                    {STATUS_LABEL[row.status]}
                                                 </Badge>
                                                 {row.errorMessage && (
                                                     <Text
@@ -256,11 +498,10 @@ const DashboardView: React.FC = () => {
                     }
 
                     {logs && logs.total > logs.pageSize && (
-                        <div
-                            style={{
-                                padding: 12,
-                                borderTop: "1px solid var(--p-color-border)",
-                            }}
+                        <Box
+                            padding="300"
+                            borderBlockStartWidth="025"
+                            borderColor="border"
                         >
                             <InlineStack align="center">
                                 <Pagination
@@ -273,10 +514,21 @@ const DashboardView: React.FC = () => {
                                     label={`Page ${page + 1}`}
                                 />
                             </InlineStack>
-                        </div>
+                        </Box>
                     )}
                 </BlockStack>
             </Card>
+
+            <LogDetailModal
+                open={openLog !== null}
+                logId={openLog}
+                caps={{
+                    oneClickRetry: plan?.oneClickRetry ?? false,
+                    manualReviewMode: plan?.manualReviewMode ?? false,
+                }}
+                onClose={() => setOpenLog(null)}
+                onChanged={() => void load(page)}
+            />
         </BlockStack>
     );
 };
@@ -292,6 +544,6 @@ const td: React.CSSProperties = {
     borderBottom: "1px solid var(--p-color-border-subdued)",
     verticalAlign: "top",
 };
-const tr: React.CSSProperties = {};
+const trStyle: React.CSSProperties = { cursor: "pointer" };
 
 export default DashboardView;

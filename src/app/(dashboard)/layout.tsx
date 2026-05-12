@@ -13,6 +13,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <Link href="/dashboard" rel="home">
                     Dashboard
                 </Link>
+                <Link href="/templates">Templates</Link>
                 <Link href="/settings">Settings</Link>
             </NavMenu>
             {children}

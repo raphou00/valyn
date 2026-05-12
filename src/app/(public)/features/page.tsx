@@ -23,7 +23,7 @@ import {
 import { marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Features — Valyn",
+    title: "Features — Valyn Shopify WISMO automation",
     description:
         "Everything Valyn does to handle repetitive order tracking support for Shopify stores.",
     path: "/features",

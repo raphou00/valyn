@@ -6,7 +6,7 @@ import { marketingMetadata } from "../../_lib/metadata";
 const post = blogPosts[1];
 
 export const metadata: Metadata = marketingMetadata({
-    title: "How to Reduce Shopify Support Tickets | Valyn",
+    title: "How to Reduce Shopify Support Tickets — Valyn",
     description: post.description,
     path: post.href,
     type: "article",

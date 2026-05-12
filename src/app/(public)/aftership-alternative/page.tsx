@@ -4,7 +4,7 @@ import { comparisonPages } from "../_lib/content";
 import { marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Focused AfterShip Alternative for Shopify Support Automation | Valyn",
+    title: "Focused AfterShip Alternative for Shopify Support Automation — Valyn",
     description:
         "Valyn focuses on automated support replies for Shopify order questions, not only tracking pages.",
     path: "/aftership-alternative",

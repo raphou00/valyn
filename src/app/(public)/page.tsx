@@ -20,6 +20,7 @@ import {
     SectionHead,
 } from "./_components/site-shell";
 import EmailDemo from "./_components/email-demo";
+import { SoftwareAppJsonLd } from "./_components/jsonld";
 import {
     Activity,
     AlertCircle,
@@ -197,6 +198,7 @@ const plans = [
 
 const Page = () => (
     <>
+        <SoftwareAppJsonLd />
         <PublicHeader variant="dark" />
 
         <section className="relative overflow-hidden bg-accent pb-10 pt-12 text-accent-content sm:pt-20 lg:pb-20 lg:pt-24">

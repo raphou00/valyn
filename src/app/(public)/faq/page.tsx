@@ -12,9 +12,10 @@ import {
     Section,
 } from "../_components/site-shell";
 import { marketingMetadata, SUPPORT_EMAIL } from "../_lib/metadata";
+import { FaqJsonLd } from "../_components/jsonld";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "FAQ — Valyn",
+    title: "FAQ — Valyn for Shopify order support automation",
     description:
         "Detailed answers about Valyn's features, setup, GDPR posture, billing, and language coverage.",
     path: "/faq",
@@ -141,8 +142,19 @@ const groups: { kicker: string; title: string; items: Faq[] }[] = [
     },
 ];
 
+// Flatten Q&A for FAQ structured data. Only include items with plain string
+// answers — Google rejects HTML/JSX in FAQ schema text. Keep this in sync
+// with `groups` above.
+const faqJsonItems: { question: string; answer: string }[] = groups.flatMap(
+    (g) =>
+        g.items
+            .filter((it): it is Faq & { a: string } => typeof it.a === "string")
+            .map((it) => ({ question: it.q, answer: it.a }))
+);
+
 const Page = () => (
     <>
+        <FaqJsonLd items={faqJsonItems} />
         <PublicHeader active="faq" />
 
         <PageHead

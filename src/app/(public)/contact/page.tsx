@@ -11,7 +11,7 @@ import {
 import { marketingMetadata, SUPPORT_EMAIL } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Contact Valyn",
+    title: "Contact Valyn — Shopify app support &amp; questions",
     description:
         "Contact Valyn for Shopify app support, app installation questions, privacy requests, and merchant support.",
     path: "/contact",

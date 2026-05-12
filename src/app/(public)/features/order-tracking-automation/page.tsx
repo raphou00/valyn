@@ -4,7 +4,7 @@ import { featureSections } from "../../_lib/content";
 import { marketingMetadata } from "../../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Shopify Order Tracking Automation | Valyn",
+    title: "Shopify Order Tracking Automation — Valyn",
     description:
         "Automate Shopify order tracking emails with order lookup, fulfillment status, tracking links, and fallback behavior.",
     path: "/features/order-tracking-automation",

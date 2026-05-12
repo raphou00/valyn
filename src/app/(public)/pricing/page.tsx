@@ -27,7 +27,7 @@ import { Check } from "../_components/icons";
 import { INSTALL_HREF, marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Pricing — Valyn",
+    title: "Pricing — Valyn Shopify order support automation",
     description:
         "Two plans for Valyn — Starter $19/mo and Pro $49/mo. 7-day free trial, cancel anytime.",
     path: "/pricing",
@@ -99,7 +99,7 @@ const faqs = [
     },
     {
         q: "What happens if I exceed my plan limit?",
-        a: "Nothing breaks. We'll notify you in the dashboard so you can upgrade or wait for the next billing cycle. Overage isn't silently throttled.",
+        a: "Auto-replies pause for the rest of the billing period and emails land in your dashboard log marked “Over quota”. Upgrade to resume sending — usage resets on the next renewal.",
     },
     {
         q: "Is there a free plan?",

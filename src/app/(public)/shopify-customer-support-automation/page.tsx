@@ -4,7 +4,7 @@ import { seoPages } from "../_lib/content";
 import { marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Shopify Customer Support Automation | Valyn",
+    title: "Shopify Customer Support Automation — Valyn",
     description:
         "Automate repetitive Shopify order support without adopting a broad helpdesk platform.",
     path: "/shopify-customer-support-automation",

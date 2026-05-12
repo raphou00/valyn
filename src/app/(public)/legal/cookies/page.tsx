@@ -6,7 +6,7 @@ import { marketingMetadata } from "../../_lib/metadata";
 const page = legalSections.cookies;
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Cookie Policy - Valyn",
+    title: "Cookie Policy — Valyn",
     description: page.description,
     path: "/legal/cookies",
 });

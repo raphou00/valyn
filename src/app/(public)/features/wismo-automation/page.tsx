@@ -4,7 +4,7 @@ import { featureSections } from "../../_lib/content";
 import { marketingMetadata } from "../../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Reduce WISMO Tickets for Shopify Stores | Valyn",
+    title: "Reduce WISMO Tickets for Shopify Stores — Valyn",
     description:
         "Reduce repetitive WISMO tickets with automated Shopify order tracking replies and merchant-controlled fallback behavior.",
     path: "/features/wismo-automation",

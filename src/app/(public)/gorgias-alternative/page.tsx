@@ -21,7 +21,7 @@ import { Check } from "../_components/icons";
 import { marketingMetadata } from "../_lib/metadata";
 
 export const metadata: Metadata = marketingMetadata({
-    title: "Gorgias alternative — Valyn",
+    title: "Gorgias alternative — Valyn for Shopify WISMO",
     description:
         "A focused, simpler alternative to Gorgias for Shopify merchants who mostly need to automate WISMO support replies.",
     path: "/gorgias-alternative",

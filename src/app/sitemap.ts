@@ -31,12 +31,25 @@ const routes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const lastModified = new Date("2026-05-10");
+    // Use deploy time so search engines see a fresh `lastmod` every release.
+    const lastModified = new Date();
 
-    return routes.map((route) => ({
-        url: new URL(route, SITE_URL).toString(),
-        lastModified,
-        changeFrequency: route === "/" ? "weekly" : "monthly",
-        priority: route === "/" ? 1 : 0.7,
-    }));
+    return routes.map((route) => {
+        const isHome = route === "/";
+        const isBlog = route.startsWith("/blog");
+        const isLegal = route.startsWith("/legal/");
+        return {
+            url: new URL(route, SITE_URL).toString(),
+            lastModified,
+            changeFrequency:
+                isHome ? "weekly"
+                : isBlog ? "monthly"
+                : isLegal ? "yearly"
+                : "monthly",
+            priority:
+                isHome ? 1
+                : isLegal ? 0.3
+                : 0.7,
+        };
+    });
 }

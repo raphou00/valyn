@@ -14,16 +14,38 @@ enum Intent {
 }
 
 enum EmailStatus {
+    PENDING
     REPLIED
     FAILED
     IGNORED
-    PENDING
+    REVIEW
+    LIMIT_EXCEEDED
+    MISCLASSIFIED
 }
 
 enum Tone {
     NEUTRAL
     FRIENDLY
     FORMAL
+}
+
+enum Strictness {
+    AUTO_REPLY
+    REVIEW_QUEUE
+    PASS_THROUGH
+}
+
+enum FallbackBehavior {
+    SEND_FALLBACK
+    QUEUE_REVIEW
+    SKIP
+}
+
+enum TemplateType {
+    IN_TRANSIT
+    PROCESSING
+    NO_ORDER
+    MULTIPLE
 }
 
 enum SubscriptionStatus {
@@ -53,6 +75,7 @@ model Shop {
 
     settings  Settings?
     emailLogs EmailLog[]
+    templates ReplyTemplate[]
 }
 
 model Settings {
@@ -66,19 +89,39 @@ model Settings {
     tone                 Tone    @default(NEUTRAL)
     supportEmail         String?
 
-    smtpHost        String?
-    smtpPort        Int?
-    smtpSecure      Boolean @default(true)
-    smtpUser        String?
-    smtpPassEnc     String?
-    smtpFromName    String?
-    smtpFromAddress String?
+    strictness       Strictness       @default(AUTO_REPLY)
+    fallbackBehavior FallbackBehavior @default(SEND_FALLBACK)
+
+    smtpHost           String?
+    smtpPort           Int?
+    smtpSecure         Boolean   @default(true)
+    smtpUser           String?
+    smtpPassEnc        String?
+    smtpFromName       String?
+    smtpFromAddress    String?
+    smtpLastVerifiedAt DateTime?
+    smtpLastError      String?
 
     inboundAddress String? @unique
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+}
+
+model ReplyTemplate {
+    id        String       @id @default(uuid())
+    shopId    String
+    type      TemplateType
+    name      String
+    body      String
+    isDefault Boolean      @default(false)
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+    shop      Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+    @@unique([shopId, type, name])
+    @@index([shopId, type])
 }
 
 model EmailLog {
@@ -89,16 +132,29 @@ model EmailLog {
     subject          String
     body             String
     intent           Intent
-    orderId          String?
-    orderName        String?
-    status           EmailStatus @default(PENDING)
-    errorMessage     String?
-    repliedAt        DateTime?
-    receivedAt       DateTime    @default(now())
-    createdAt        DateTime    @default(now())
-    updatedAt        DateTime    @updatedAt
-    shop             Shop        @relation(fields: [shopId], references: [id], onDelete: Cascade)
+    detectedLanguage String?
+    confidence       Float?
+    detectionReason  String?
+
+    orderId   String?
+    orderName String?
+
+    status        EmailStatus @default(PENDING)
+    errorMessage  String?
+    replyPreview  String?
+    repliedAt     DateTime?
+    receivedAt    DateTime    @default(now())
+    retryCount    Int         @default(0)
+    lastRetryAt   DateTime?
+    reviewedAt    DateTime?
+    reviewedBy    String?
+    manuallyMarked Boolean    @default(false)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
     @@index([shopId, receivedAt])
     @@index([shopId, status])
+    @@index([shopId, intent, status])
 }
