@@ -9,7 +9,10 @@ type Props = {
     currentPeriodEnd: string | null;
 };
 
-const PRETTY: Record<string, { label: string; tone: "success" | "info" | "warning" | "critical" }> = {
+const PRETTY: Record<
+    string,
+    { label: string; tone: "success" | "info" | "warning" | "critical" }
+> = {
     ACTIVE: { label: "Active", tone: "success" },
     PENDING: { label: "Pending approval", tone: "info" },
     CANCELLED: { label: "Cancelled", tone: "warning" },
@@ -29,8 +32,7 @@ const PlanCard: React.FC<Props> = ({
         : planKey === "pro" ? "Pro"
         : "—";
     const meta = status ? PRETTY[status] : null;
-    const inTrial =
-        trialEndsOn && new Date(trialEndsOn).getTime() > Date.now();
+    const inTrial = trialEndsOn && new Date(trialEndsOn).getTime() > Date.now();
     return (
         <Card>
             <BlockStack gap="200">
@@ -50,8 +52,7 @@ const PlanCard: React.FC<Props> = ({
                 )}
                 {currentPeriodEnd && (
                     <Text as="p" variant="bodySm" tone="subdued">
-                        Renews{" "}
-                        {new Date(currentPeriodEnd).toLocaleDateString()}
+                        Renews {new Date(currentPeriodEnd).toLocaleDateString()}
                     </Text>
                 )}
             </BlockStack>

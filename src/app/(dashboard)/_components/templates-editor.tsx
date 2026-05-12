@@ -191,9 +191,9 @@ const TemplatesEditor: React.FC<{
                                         ...d,
                                         type: v as TemplateType,
                                         body:
-                                            d.body === DEFAULT_BODY[d.type]
-                                                ? DEFAULT_BODY[v as TemplateType]
-                                                : d.body,
+                                            d.body === DEFAULT_BODY[d.type] ?
+                                                DEFAULT_BODY[v as TemplateType]
+                                            :   d.body,
                                     }))
                                 }
                             />
@@ -241,7 +241,7 @@ const TemplatesEditor: React.FC<{
                                         <Text as="h3" variant="headingSm">
                                             {TYPE_LABEL[type]}
                                         </Text>
-                                        {grouped[type].length === 0 ? (
+                                        {grouped[type].length === 0 ?
                                             <Text
                                                 as="p"
                                                 tone="subdued"
@@ -250,8 +250,7 @@ const TemplatesEditor: React.FC<{
                                                 Using the built-in default for
                                                 this scenario.
                                             </Text>
-                                        ) : (
-                                            grouped[type].map((tpl) => (
+                                        :   grouped[type].map((tpl) => (
                                                 <Box
                                                     key={tpl.id}
                                                     padding="300"
@@ -262,7 +261,10 @@ const TemplatesEditor: React.FC<{
                                                         align="space-between"
                                                         blockAlign="center"
                                                     >
-                                                        <InlineStack gap="200" blockAlign="center">
+                                                        <InlineStack
+                                                            gap="200"
+                                                            blockAlign="center"
+                                                        >
                                                             <Text
                                                                 as="p"
                                                                 variant="bodyMd"
@@ -318,7 +320,7 @@ const TemplatesEditor: React.FC<{
                                                     </Box>
                                                 </Box>
                                             ))
-                                        )}
+                                        }
                                     </BlockStack>
                                 </Card>
                             )

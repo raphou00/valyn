@@ -64,7 +64,10 @@ const TONE_OPTIONS = [
 const STRICTNESS_OPTIONS = [
     { label: "Auto-reply (recommended)", value: "AUTO_REPLY" },
     { label: "Queue every email for manual review", value: "REVIEW_QUEUE" },
-    { label: "Pass through — never reply automatically", value: "PASS_THROUGH" },
+    {
+        label: "Pass through — never reply automatically",
+        value: "PASS_THROUGH",
+    },
 ];
 
 const FALLBACK_OPTIONS = [
@@ -207,9 +210,10 @@ const SettingsForm: React.FC = () => {
         label: LANG_LABELS[l] ?? l,
         value: l,
     }));
-    const strictnessOptions = plan?.manualReviewMode
-        ? STRICTNESS_OPTIONS
-        : STRICTNESS_OPTIONS.filter((o) => o.value !== "REVIEW_QUEUE");
+    const strictnessOptions =
+        plan?.manualReviewMode ? STRICTNESS_OPTIONS : (
+            STRICTNESS_OPTIONS.filter((o) => o.value !== "REVIEW_QUEUE")
+        );
 
     return (
         <BlockStack gap="400">
@@ -252,7 +256,10 @@ const SettingsForm: React.FC = () => {
                                 options={strictnessOptions}
                                 value={s.strictness}
                                 onChange={(v) =>
-                                    update("strictness", v as SettingsDTO["strictness"])
+                                    update(
+                                        "strictness",
+                                        v as SettingsDTO["strictness"]
+                                    )
                                 }
                             />
                             <Select
@@ -285,9 +292,9 @@ const SettingsForm: React.FC = () => {
                             <Select
                                 label="Reply language"
                                 helpText={
-                                    plan && plan.languages.length === 1
-                                        ? "Pro plan unlocks French and German."
-                                        : "Valyn auto-detects each customer's language and replies in it."
+                                    plan && plan.languages.length === 1 ?
+                                        "Pro plan unlocks French and German."
+                                    :   "Valyn auto-detects each customer's language and replies in it."
                                 }
                                 options={langOptions}
                                 value={s.language}
@@ -301,14 +308,14 @@ const SettingsForm: React.FC = () => {
                             <Select
                                 label="Tone"
                                 helpText={
-                                    plan?.toneControl
-                                        ? "Soft tone wrapper around the reply body. Greeting/signature stay yours."
-                                        : "Pro plan unlocks Friendly and Formal tones."
+                                    plan?.toneControl ?
+                                        "Soft tone wrapper around the reply body. Greeting/signature stay yours."
+                                    :   "Pro plan unlocks Friendly and Formal tones."
                                 }
                                 options={
-                                    plan?.toneControl
-                                        ? TONE_OPTIONS
-                                        : [TONE_OPTIONS[0]]
+                                    plan?.toneControl ? TONE_OPTIONS : (
+                                        [TONE_OPTIONS[0]]
+                                    )
                                 }
                                 value={s.tone}
                                 onChange={(v) =>
@@ -353,17 +360,15 @@ const SettingsForm: React.FC = () => {
                                 <Text as="h3" variant="headingSm">
                                     Connection health
                                 </Text>
-                                {s.smtpLastVerifiedAt && !s.smtpLastError ? (
+                                {s.smtpLastVerifiedAt && !s.smtpLastError ?
                                     <Badge tone="success">
                                         {`Verified ${new Date(s.smtpLastVerifiedAt).toLocaleDateString()}`}
                                     </Badge>
-                                ) : s.smtpLastError ? (
+                                : s.smtpLastError ?
                                     <Badge tone="critical">
                                         Last test failed
                                     </Badge>
-                                ) : (
-                                    <Badge>Not tested</Badge>
-                                )}
+                                :   <Badge>Not tested</Badge>}
                             </InlineStack>
                             {s.smtpLastError && (
                                 <Text as="p" tone="critical" variant="bodySm">
@@ -403,9 +408,9 @@ const SettingsForm: React.FC = () => {
                             />
                             <TextField
                                 label={
-                                    s.hasSmtpPass
-                                        ? "Password (saved — leave blank to keep)"
-                                        : "Password"
+                                    s.hasSmtpPass ?
+                                        "Password (saved — leave blank to keep)"
+                                    :   "Password"
                                 }
                                 type="password"
                                 value={smtpPass}
@@ -442,9 +447,9 @@ const SettingsForm: React.FC = () => {
                                 <Banner
                                     tone={smtpTest.ok ? "success" : "critical"}
                                     title={
-                                        smtpTest.ok
-                                            ? "SMTP connection succeeded"
-                                            : "SMTP connection failed"
+                                        smtpTest.ok ?
+                                            "SMTP connection succeeded"
+                                        :   "SMTP connection failed"
                                     }
                                     onDismiss={() => setSmtpTest(null)}
                                 >

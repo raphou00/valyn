@@ -41,7 +41,11 @@ export async function POST(req: NextRequest) {
         // If isDefault: clear any existing default for the same type.
         if (parsed.data.isDefault) {
             await db.replyTemplate.updateMany({
-                where: { shopId: shop.id, type: parsed.data.type, isDefault: true },
+                where: {
+                    shopId: shop.id,
+                    type: parsed.data.type,
+                    isDefault: true,
+                },
                 data: { isDefault: false },
             });
         }

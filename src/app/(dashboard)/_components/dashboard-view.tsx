@@ -181,9 +181,7 @@ const DashboardView: React.FC = () => {
                 const [statsRes, logsRes, usageRes, settingsRes] =
                     await Promise.all([
                         authedFetch("/api/internal/stats"),
-                        authedFetch(
-                            `/api/internal/logs?${params.toString()}`
-                        ),
+                        authedFetch(`/api/internal/logs?${params.toString()}`),
                         authedFetch("/api/internal/usage"),
                         authedFetch("/api/internal/settings"),
                     ]);
@@ -220,16 +218,14 @@ const DashboardView: React.FC = () => {
                         const s = sd.settings;
                         const configured = Boolean(
                             s.smtpHost &&
-                                s.smtpPort &&
-                                s.smtpUser &&
-                                s.smtpFromAddress &&
-                                s.hasSmtpPass
+                            s.smtpPort &&
+                            s.smtpUser &&
+                            s.smtpFromAddress &&
+                            s.hasSmtpPass
                         );
                         setSettingsHints({
                             smtpConfigured: configured,
-                            smtpVerifiedRecently: Boolean(
-                                s.smtpLastVerifiedAt
-                            ),
+                            smtpVerifiedRecently: Boolean(s.smtpLastVerifiedAt),
                         });
                     } else {
                         setSettingsHints({
@@ -244,7 +240,14 @@ const DashboardView: React.FC = () => {
                 setLoading(false);
             }
         },
-        [authedFetch, effectiveStatus, filters.intent, filters.q, filters.from, filters.to]
+        [
+            authedFetch,
+            effectiveStatus,
+            filters.intent,
+            filters.q,
+            filters.from,
+            filters.to,
+        ]
     );
 
     useEffect(() => {
@@ -310,7 +313,20 @@ const DashboardView: React.FC = () => {
                 </Banner>
             )}
 
-            {subscription && <BillingBanner status={subscription.status as "PENDING" | "ACTIVE" | "CANCELLED" | "DECLINED" | "EXPIRED" | "FROZEN" | null} />}
+            {subscription && (
+                <BillingBanner
+                    status={
+                        subscription.status as
+                            | "PENDING"
+                            | "ACTIVE"
+                            | "CANCELLED"
+                            | "DECLINED"
+                            | "EXPIRED"
+                            | "FROZEN"
+                            | null
+                    }
+                />
+            )}
 
             {!onboardingAllDone && (
                 <OnboardingCard
@@ -354,10 +370,7 @@ const DashboardView: React.FC = () => {
             </InlineGrid>
 
             <InlineGrid columns={{ xs: 2, md: 4 }} gap="400">
-                <StatCard
-                    label="Total processed"
-                    value={stats?.total ?? 0}
-                />
+                <StatCard label="Total processed" value={stats?.total ?? 0} />
                 <StatCard label="WISMO detected" value={stats?.wismo ?? 0} />
                 <StatCard
                     label="Auto-replies sent"
@@ -441,7 +454,10 @@ const DashboardView: React.FC = () => {
                                     >
                                         <td style={td}>
                                             <BlockStack gap="050">
-                                                <Text as="span" variant="bodyMd">
+                                                <Text
+                                                    as="span"
+                                                    variant="bodyMd"
+                                                >
                                                     {row.senderEmail || "—"}
                                                 </Text>
                                                 <Text

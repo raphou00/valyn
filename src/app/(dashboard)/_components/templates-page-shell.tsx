@@ -33,13 +33,17 @@ const TemplatesPageShell: React.FC<{ shop: string }> = ({ shop }) => {
             subtitle={shop}
             backAction={{ url: "/dashboard" }}
         >
-            {canEdit === null ? (
-                <div style={{ display: "flex", justifyContent: "center", padding: 40 }}>
+            {canEdit === null ?
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        padding: 40,
+                    }}
+                >
                     <Spinner accessibilityLabel="Loading" />
                 </div>
-            ) : (
-                <TemplatesEditor canEdit={canEdit} />
-            )}
+            :   <TemplatesEditor canEdit={canEdit} />}
         </Page>
     );
 };

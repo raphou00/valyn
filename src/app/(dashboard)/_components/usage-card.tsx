@@ -1,6 +1,12 @@
 "use client";
 
-import { BlockStack, Card, InlineStack, ProgressBar, Text } from "@shopify/polaris";
+import {
+    BlockStack,
+    Card,
+    InlineStack,
+    ProgressBar,
+    Text,
+} from "@shopify/polaris";
 
 type UsageProps = {
     used: number;
@@ -32,20 +38,22 @@ const UsageCard: React.FC<UsageProps> = ({
                         variant="bodySm"
                         tone={
                             overQuota ? "critical"
-                            : nearLimit ? "caution"
-                            : "subdued"
+                            : nearLimit ?
+                                "caution"
+                            :   "subdued"
                         }
                     >
-                        {used.toLocaleString()} /{" "}
-                        {quota.toLocaleString()} emails
+                        {used.toLocaleString()} / {quota.toLocaleString()}{" "}
+                        emails
                     </Text>
                 </InlineStack>
                 <ProgressBar
                     progress={pct}
                     tone={
                         overQuota ? "critical"
-                        : nearLimit ? "highlight"
-                        : "primary"
+                        : nearLimit ?
+                            "highlight"
+                        :   "primary"
                     }
                 />
                 <InlineStack align="space-between">

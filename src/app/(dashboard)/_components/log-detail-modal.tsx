@@ -139,7 +139,11 @@ const LogDetailModal: React.FC<{
                                     <Badge>{`Lang: ${log.detectedLanguage.toUpperCase()}`}</Badge>
                                 )}
                                 {log.confidence !== null && (
-                                    <Text as="span" variant="bodySm" tone="subdued">
+                                    <Text
+                                        as="span"
+                                        variant="bodySm"
+                                        tone="subdued"
+                                    >
                                         Confidence{" "}
                                         {(log.confidence * 100).toFixed(0)}%
                                     </Text>
@@ -190,14 +194,8 @@ const LogDetailModal: React.FC<{
                                 Customer email
                             </Text>
                             <Box paddingBlockStart="200">
-                                <Text
-                                    as="p"
-                                    variant="bodyMd"
-                                    breakWord
-                                >
-                                    <span
-                                        style={{ whiteSpace: "pre-wrap" }}
-                                    >
+                                <Text as="p" variant="bodyMd" breakWord>
+                                    <span style={{ whiteSpace: "pre-wrap" }}>
                                         {log.body || "(empty body)"}
                                     </span>
                                 </Text>
@@ -215,7 +213,9 @@ const LogDetailModal: React.FC<{
                                 </Text>
                                 <Box paddingBlockStart="200">
                                     <Text as="p" variant="bodyMd" breakWord>
-                                        <span style={{ whiteSpace: "pre-wrap" }}>
+                                        <span
+                                            style={{ whiteSpace: "pre-wrap" }}
+                                        >
                                             {log.replyPreview}
                                         </span>
                                     </Text>
@@ -271,12 +271,11 @@ const LogDetailModal: React.FC<{
                             )}
                         </InlineStack>
                     </BlockStack>
-                :   error ?
+                : error ?
                     <Banner tone="critical" title="Failed to load">
                         <p>{error}</p>
                     </Banner>
-                :   null
-                }
+                :   null}
             </Modal.Section>
         </Modal>
     );

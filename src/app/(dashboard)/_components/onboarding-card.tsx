@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    BlockStack,
-    Card,
-    InlineStack,
-    Link,
-    Text,
-} from "@shopify/polaris";
+import { BlockStack, Card, InlineStack, Link, Text } from "@shopify/polaris";
 
 type Step = {
     label: string;
@@ -55,7 +49,11 @@ const OnboardingCard: React.FC<{ steps: Step[]; allDone: boolean }> = ({
                 </InlineStack>
                 <BlockStack gap="150">
                     {steps.map((s) => (
-                        <InlineStack key={s.label} gap="200" blockAlign="center">
+                        <InlineStack
+                            key={s.label}
+                            gap="200"
+                            blockAlign="center"
+                        >
                             <Dot done={s.done} />
                             {s.href && !s.done ?
                                 <Link url={s.href}>{s.label}</Link>

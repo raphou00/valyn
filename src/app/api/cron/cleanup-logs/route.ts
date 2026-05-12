@@ -11,10 +11,7 @@ const isAuthorized = (req: NextRequest): boolean => {
     if (req.headers.get("x-vercel-cron") === "1") return true;
     if (req.headers.has("x-vercel-cron-signature")) return true;
     const secret = process.env.CRON_SECRET;
-    if (
-        secret &&
-        req.headers.get("authorization") === `Bearer ${secret}`
-    )
+    if (secret && req.headers.get("authorization") === `Bearer ${secret}`)
         return true;
     return false;
 };
@@ -31,9 +28,7 @@ export async function GET(req: NextRequest) {
     });
     for (const shop of shops) {
         const caps = capabilitiesFor(shop.planKey);
-        const cutoff = new Date(
-            Date.now() - caps.logRetentionDays * 86400_000
-        );
+        const cutoff = new Date(Date.now() - caps.logRetentionDays * 86400_000);
         const { count } = await db.emailLog.deleteMany({
             where: { shopId: shop.id, receivedAt: { lt: cutoff } },
         });

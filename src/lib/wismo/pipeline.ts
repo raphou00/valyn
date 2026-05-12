@@ -97,7 +97,11 @@ const chooseTemplateType = (
     return "PROCESSING";
 };
 
-type TemplateRow = { type: WismoTemplateType; body: string; isDefault: boolean };
+type TemplateRow = {
+    type: WismoTemplateType;
+    body: string;
+    isDefault: boolean;
+};
 
 const interpolate = (
     template: string,
@@ -120,8 +124,7 @@ const buildReplyBody = (
     const vars: Record<string, string | undefined> = {
         orderName: order?.name,
         carrier: order?.tracking?.company ?? undefined,
-        tracking:
-            order?.tracking?.url ?? order?.tracking?.number ?? undefined,
+        tracking: order?.tracking?.url ?? order?.tracking?.number ?? undefined,
         eta: undefined,
     };
 
@@ -176,9 +179,7 @@ export type SendOutcome =
 
 // Send the reply for an existing EmailLog row. Used both at intake time and
 // for manual retries / review-queue approvals.
-export const sendReplyForLog = async (
-    logId: string
-): Promise<SendOutcome> => {
+export const sendReplyForLog = async (logId: string): Promise<SendOutcome> => {
     const log = await db.emailLog.findUnique({
         where: { id: logId },
         include: { shop: { include: { settings: true } } },
@@ -195,9 +196,8 @@ export const sendReplyForLog = async (
 
     const language: Language =
         isSupportedLanguage(log.detectedLanguage) ? log.detectedLanguage
-        : isSupportedLanguage(shop.settings.language) ?
-            shop.settings.language
-        :   "en";
+        : isSupportedLanguage(shop.settings.language) ? shop.settings.language
+        : "en";
 
     // Re-identify the order in case state changed since first attempt.
     const subject = log.subject ?? "";
@@ -207,16 +207,28 @@ export const sendReplyForLog = async (
         identified = await identifyOrder(
             shop.shopDomain,
             shop.accessToken,
-            { subject, text: bodyText, from: { value: [{ address: log.senderEmail }], html: "", text: "" } } as unknown as ParsedMail,
+            {
+                subject,
+                text: bodyText,
+                from: {
+                    value: [{ address: log.senderEmail }],
+                    html: "",
+                    text: "",
+                },
+            } as unknown as ParsedMail,
             bodyText
         );
     } catch (err) {
         return { status: "FAILED", error: `lookup: ${(err as Error).message}` };
     }
 
-    const type = chooseTemplateType(identified.order, identified.multipleRecent);
+    const type = chooseTemplateType(
+        identified.order,
+        identified.multipleRecent
+    );
     const caps = capabilitiesFor(shop.planKey);
-    const template = caps.multipleTemplates ? await findTemplate(shop.id, type) : null;
+    const template =
+        caps.multipleTemplates ? await findTemplate(shop.id, type) : null;
 
     const { subject: replySubject, body } = buildReplyBody(
         language,
@@ -225,9 +237,10 @@ export const sendReplyForLog = async (
         template
     );
 
-    const tone = (
-        caps.toneControl ? shop.settings.tone : "NEUTRAL"
-    ) as "NEUTRAL" | "FRIENDLY" | "FORMAL";
+    const tone = (caps.toneControl ? shop.settings.tone : "NEUTRAL") as
+        | "NEUTRAL"
+        | "FRIENDLY"
+        | "FORMAL";
     const toneBody = applyTone(tone, language, body);
 
     const greeting = shop.settings.greeting;
@@ -331,7 +344,10 @@ export const processInboundEmail = async (
     // Non-WISMO: log and stop. Pause / strictness rules still apply for
     // WISMO-positive emails below.
     if (detection.intent === "OTHER") {
-        await updateLog(log.id, { status: "IGNORED", errorMessage: "non-WISMO" });
+        await updateLog(log.id, {
+            status: "IGNORED",
+            errorMessage: "non-WISMO",
+        });
         return;
     }
 
@@ -433,7 +449,10 @@ export const processInboundEmail = async (
             shop.settings.language
         :   "en");
 
-    const type = chooseTemplateType(identified.order, identified.multipleRecent);
+    const type = chooseTemplateType(
+        identified.order,
+        identified.multipleRecent
+    );
     const template =
         caps.multipleTemplates ? await findTemplate(shop.id, type) : null;
     const { subject: replySubject, body } = buildReplyBody(
@@ -443,9 +462,10 @@ export const processInboundEmail = async (
         template
     );
 
-    const tone = (
-        caps.toneControl ? shop.settings.tone : "NEUTRAL"
-    ) as "NEUTRAL" | "FRIENDLY" | "FORMAL";
+    const tone = (caps.toneControl ? shop.settings.tone : "NEUTRAL") as
+        | "NEUTRAL"
+        | "FRIENDLY"
+        | "FORMAL";
     const toneBody = applyTone(tone, language, body);
 
     const greeting = shop.settings.greeting;

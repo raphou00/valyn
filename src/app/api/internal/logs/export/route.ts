@@ -36,7 +36,9 @@ export async function GET(req: NextRequest) {
         const header = CSV_COLUMNS.join(",");
         const body = rows
             .map((r) =>
-                CSV_COLUMNS.map((c) => escape((r as Record<string, unknown>)[c])).join(",")
+                CSV_COLUMNS.map((c) =>
+                    escape((r as Record<string, unknown>)[c])
+                ).join(",")
             )
             .join("\n");
         const csv = `${header}\n${body}\n`;

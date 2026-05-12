@@ -39,13 +39,21 @@ const TONE_TEXT: Record<Tone, ToneStrings> = {
     FORMAL: {
         openings: {
             en: ["We are writing to provide an update regarding your order:"],
-            fr: ["Nous vous écrivons pour vous informer de l'état de votre commande :"],
+            fr: [
+                "Nous vous écrivons pour vous informer de l'état de votre commande :",
+            ],
             de: ["Wir möchten Ihnen ein Update zu Ihrer Bestellung mitteilen:"],
         },
         closings: {
-            en: ["Please reply to this message should you require further assistance."],
-            fr: ["N'hésitez pas à nous répondre si vous avez besoin d'une assistance supplémentaire."],
-            de: ["Bei weiteren Fragen antworten Sie bitte direkt auf diese Nachricht."],
+            en: [
+                "Please reply to this message should you require further assistance.",
+            ],
+            fr: [
+                "N'hésitez pas à nous répondre si vous avez besoin d'une assistance supplémentaire.",
+            ],
+            de: [
+                "Bei weiteren Fragen antworten Sie bitte direkt auf diese Nachricht.",
+            ],
         },
     },
 };

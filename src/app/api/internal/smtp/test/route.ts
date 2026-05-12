@@ -42,7 +42,10 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ ok: true });
         } catch (err) {
             const message = (err as Error).message;
-            logger.warn("smtp verify failed", { shopId: shop.id, error: message });
+            logger.warn("smtp verify failed", {
+                shopId: shop.id,
+                error: message,
+            });
             await db.settings.update({
                 where: { shopId: shop.id },
                 data: { smtpLastError: message },
