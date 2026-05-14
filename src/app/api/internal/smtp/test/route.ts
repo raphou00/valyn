@@ -4,6 +4,7 @@ import { decrypt } from "@/lib/crypto";
 import { verifySmtpConnection } from "@/lib/email";
 import logger from "@/lib/logger";
 import { withShop } from "@/lib/api-auth";
+import { humanizeSmtpError } from "@/lib/smtp-errors";
 
 // Smoke-tests the SMTP credentials saved in Settings without sending an email.
 // nodemailer.verify() opens the connection + authenticates, then closes.
@@ -20,7 +21,10 @@ export async function POST(req: NextRequest) {
             !s.smtpFromAddress
         ) {
             return NextResponse.json(
-                { ok: false, message: "SMTP not fully configured" },
+                {
+                    ok: false,
+                    message: humanizeSmtpError("smtp not configured"),
+                },
                 { status: 400 }
             );
         }
@@ -41,11 +45,9 @@ export async function POST(req: NextRequest) {
             });
             return NextResponse.json({ ok: true });
         } catch (err) {
-            const message = (err as Error).message;
-            logger.warn("smtp verify failed", {
-                shopId: shop.id,
-                error: message,
-            });
+            const raw = (err as Error).message;
+            const message = humanizeSmtpError(raw);
+            logger.warn("smtp verify failed", { shopId: shop.id, error: raw });
             await db.settings.update({
                 where: { shopId: shop.id },
                 data: { smtpLastError: message },

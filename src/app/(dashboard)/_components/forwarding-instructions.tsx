@@ -109,7 +109,7 @@ const ForwardingInstructions: React.FC<Props> = ({ inboundAddress }) => {
     return (
         <Card>
             <BlockStack gap="300">
-                <Text as="h3" variant="headingSm">
+                <Text as="h3" variant="headingSm" id="forwarding">
                     Forwarding address
                 </Text>
                 <InlineStack

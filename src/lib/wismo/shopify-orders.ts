@@ -102,6 +102,24 @@ export const findOrderByName = async (
     return node ? normalize(node) : null;
 };
 
+export const findMostRecentOrder = async (
+    shopDomain: string,
+    accessToken: string
+): Promise<WismoOrder | null> => {
+    const data = await adminGql<{ orders: { nodes: RawOrder[] } }>(
+        shopDomain,
+        accessToken,
+        `query MostRecent {
+            orders(first: 1, sortKey: PROCESSED_AT, reverse: true) {
+                nodes { ${ORDER_FIELDS} }
+            }
+        }`,
+        {}
+    );
+    const node = data.orders.nodes[0];
+    return node ? normalize(node) : null;
+};
+
 export const findRecentOrdersByEmail = async (
     shopDomain: string,
     accessToken: string,

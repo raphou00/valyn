@@ -1,11 +1,23 @@
 "use client";
 
-import { BlockStack, Card, InlineStack, Link, Text } from "@shopify/polaris";
+import {
+    BlockStack,
+    Button,
+    Card,
+    InlineStack,
+    Text,
+} from "@shopify/polaris";
 
-type Step = {
+export type OnboardingAction = {
+    label: string;
+    href?: string;
+    onClick?: () => void;
+};
+
+export type OnboardingStep = {
     label: string;
     done: boolean;
-    href?: string;
+    action?: OnboardingAction;
 };
 
 const Dot: React.FC<{ done: boolean }> = ({ done }) => (
@@ -30,10 +42,10 @@ const Dot: React.FC<{ done: boolean }> = ({ done }) => (
     </span>
 );
 
-const OnboardingCard: React.FC<{ steps: Step[]; allDone: boolean }> = ({
-    steps,
-    allDone,
-}) => {
+const OnboardingCard: React.FC<{
+    steps: OnboardingStep[];
+    allDone: boolean;
+}> = ({ steps, allDone }) => {
     if (allDone) return null;
     const remaining = steps.filter((s) => !s.done).length;
     return (
@@ -51,13 +63,14 @@ const OnboardingCard: React.FC<{ steps: Step[]; allDone: boolean }> = ({
                     {steps.map((s) => (
                         <InlineStack
                             key={s.label}
-                            gap="200"
+                            gap="300"
+                            align="space-between"
                             blockAlign="center"
+                            wrap={false}
                         >
-                            <Dot done={s.done} />
-                            {s.href && !s.done ?
-                                <Link url={s.href}>{s.label}</Link>
-                            :   <Text
+                            <InlineStack gap="200" blockAlign="center">
+                                <Dot done={s.done} />
+                                <Text
                                     as="span"
                                     variant="bodyMd"
                                     tone={s.done ? "subdued" : undefined}
@@ -67,7 +80,16 @@ const OnboardingCard: React.FC<{ steps: Step[]; allDone: boolean }> = ({
                                 >
                                     {s.label}
                                 </Text>
-                            }
+                            </InlineStack>
+                            {!s.done && s.action && (
+                                <Button
+                                    variant="plain"
+                                    url={s.action.href}
+                                    onClick={s.action.onClick}
+                                >
+                                    {s.action.label}
+                                </Button>
+                            )}
                         </InlineStack>
                     ))}
                 </BlockStack>

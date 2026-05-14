@@ -9,8 +9,10 @@ import { isSubscriptionActive } from "@/lib/billing";
 import logger from "@/lib/logger";
 import { capabilitiesFor } from "@/lib/plan-features";
 import { getUsage } from "@/lib/usage";
+import { humanizeSmtpError } from "@/lib/smtp-errors";
 import { detect, extractOrderName, isSupportedLanguage } from "./detect";
 import {
+    findMostRecentOrder,
     findOrderByName,
     findRecentOrdersByEmail,
     type WismoOrder,
@@ -279,13 +281,14 @@ export const sendReplyForLog = async (logId: string): Promise<SendOutcome> => {
         });
         return { status: "REPLIED" };
     } catch (err) {
+        const raw = (err as Error).message;
         await updateLog(log.id, {
             status: "FAILED",
-            errorMessage: `send: ${(err as Error).message}`,
+            errorMessage: humanizeSmtpError(raw),
             orderId: identified.order?.id ?? null,
             orderName: identified.order?.name ?? null,
         });
-        return { status: "FAILED", error: (err as Error).message };
+        return { status: "FAILED", error: raw };
     }
 };
 
@@ -403,7 +406,7 @@ export const processInboundEmail = async (
     if (!smtp) {
         await updateLog(log.id, {
             status: "FAILED",
-            errorMessage: "smtp not configured",
+            errorMessage: humanizeSmtpError("smtp not configured"),
         });
         return;
     }
@@ -511,9 +514,63 @@ export const processInboundEmail = async (
     } catch (err) {
         await updateLog(log.id, {
             status: "FAILED",
-            errorMessage: `send: ${(err as Error).message}`,
+            errorMessage: humanizeSmtpError((err as Error).message),
             orderId: identified.order?.id ?? null,
             orderName: identified.order?.name ?? null,
         });
     }
+};
+
+export type ReplyPreview = {
+    subject: string;
+    body: string;
+    orderName: string | null;
+    carrier: string | null;
+    tracking: string | null;
+    language: Language;
+    type: WismoTemplateType;
+};
+
+// Composes the reply Valyn would send for a synthetic "where is my order?"
+// against the merchant's most recent order. Read-only — does not send mail
+// or write EmailLog. Used by the dashboard's "Send a test email" feature.
+export const previewReply = async (
+    shopId: string
+): Promise<ReplyPreview | { error: string }> => {
+    const shop = await db.shop.findUnique({
+        where: { id: shopId },
+        include: { settings: true },
+    });
+    if (!shop || !shop.settings) return { error: "no settings" };
+
+    const order = await findMostRecentOrder(shop.shopDomain, shop.accessToken);
+    const language: Language =
+        isSupportedLanguage(shop.settings.language) ? shop.settings.language
+        :   "en";
+
+    const caps = capabilitiesFor(shop.planKey);
+    const type = chooseTemplateType(order, false);
+    const template =
+        caps.multipleTemplates ? await findTemplate(shop.id, type) : null;
+    const { subject, body } = buildReplyBody(language, order, false, template);
+
+    const tone = (caps.toneControl ? shop.settings.tone : "NEUTRAL") as
+        | "NEUTRAL"
+        | "FRIENDLY"
+        | "FORMAL";
+    const toneBody = applyTone(tone, language, body);
+
+    const greeting = shop.settings.greeting;
+    const signature = shop.settings.signature;
+    const fullText = `${greeting}\n\n${toneBody}\n\n${signature}`;
+
+    return {
+        subject,
+        body: fullText,
+        orderName: order?.name ?? null,
+        carrier: order?.tracking?.company ?? null,
+        tracking: order?.tracking?.url ?? order?.tracking?.number ?? null,
+        language,
+        type,
+    };
 };

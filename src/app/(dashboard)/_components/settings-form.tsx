@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-    Badge,
     Banner,
     BlockStack,
     Button,
@@ -13,11 +12,17 @@ import {
     Layout,
     Select,
     Spinner,
-    Text,
     TextField,
 } from "@shopify/polaris";
 import { useAuthedFetch } from "../_lib/use-authed-fetch";
 import ForwardingInstructions from "./forwarding-instructions";
+import SmtpSection from "./smtp-section";
+import OnboardingWizard from "./onboarding-wizard";
+import {
+    SMTP_PROVIDERS,
+    detectSmtpProvider,
+    type SmtpProviderKey,
+} from "@/lib/smtp-providers";
 
 type SettingsDTO = {
     autoReplyEnabled: boolean;
@@ -90,6 +95,9 @@ const SettingsForm: React.FC = () => {
         message?: string;
     } | null>(null);
     const [smtpTesting, setSmtpTesting] = useState(false);
+    const [provider, setProvider] = useState<SmtpProviderKey>("other");
+    const [showAppPwHelp, setShowAppPwHelp] = useState(false);
+    const [wizardDismissed, setWizardDismissed] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
@@ -104,6 +112,7 @@ const SettingsForm: React.FC = () => {
                 if (!cancelled) {
                     setS(data.settings);
                     setPlan(data.plan);
+                    setProvider(detectSmtpProvider(data.settings.smtpHost));
                 }
             } catch (e) {
                 if (!cancelled) setError((e as Error).message);
@@ -124,10 +133,47 @@ const SettingsForm: React.FC = () => {
         setSaved(false);
     };
 
-    const onTestSmtp = async () => {
+    const onProviderChange = (next: SmtpProviderKey) => {
+        setProvider(next);
+        setSaved(false);
+        if (next === "other") return;
+        const p = SMTP_PROVIDERS[next];
+        setS((prev) =>
+            prev ?
+                {
+                    ...prev,
+                    smtpHost: p.host,
+                    smtpPort: p.port,
+                    smtpSecure: p.secure,
+                    smtpUser: prev.smtpFromAddress ?? prev.smtpUser,
+                }
+            :   prev
+        );
+    };
+
+    const onSaveSmtp = async () => {
+        if (!s) return;
         setSmtpTesting(true);
         setSmtpTest(null);
         try {
+            const body: Record<string, unknown> = {
+                smtpHost: s.smtpHost || null,
+                smtpPort: s.smtpPort,
+                smtpSecure: s.smtpSecure,
+                smtpUser: s.smtpUser || null,
+                smtpFromName: s.smtpFromName || null,
+                smtpFromAddress: s.smtpFromAddress || null,
+            };
+            if (smtpPass) body.smtpPass = smtpPass;
+            const saveRes = await authedFetch("/api/internal/settings", {
+                method: "PATCH",
+                body: JSON.stringify(body),
+            });
+            if (!saveRes.ok) {
+                const data = (await saveRes.json()) as { message?: string };
+                throw new Error(data.message ?? `save ${saveRes.status}`);
+            }
+            setSmtpPass("");
             const res = await authedFetch("/api/internal/smtp/test", {
                 method: "POST",
             });
@@ -136,7 +182,6 @@ const SettingsForm: React.FC = () => {
                 message?: string;
             };
             setSmtpTest(data);
-            // Reload to pick up new smtpLastVerifiedAt.
             const sr = await authedFetch("/api/internal/settings");
             if (sr.ok) {
                 const sd = (await sr.json()) as { settings: SettingsDTO };
@@ -164,14 +209,7 @@ const SettingsForm: React.FC = () => {
                 greeting: s.greeting,
                 signature: s.signature,
                 supportEmail: s.supportEmail || null,
-                smtpHost: s.smtpHost || null,
-                smtpPort: s.smtpPort,
-                smtpSecure: s.smtpSecure,
-                smtpUser: s.smtpUser || null,
-                smtpFromName: s.smtpFromName || null,
-                smtpFromAddress: s.smtpFromAddress || null,
             };
-            if (smtpPass) body.smtpPass = smtpPass;
 
             const res = await authedFetch("/api/internal/settings", {
                 method: "PATCH",
@@ -182,7 +220,6 @@ const SettingsForm: React.FC = () => {
                 throw new Error(data.message ?? `save ${res.status}`);
             }
             setSaved(true);
-            setSmtpPass("");
         } catch (e) {
             setError((e as Error).message);
         } finally {
@@ -203,6 +240,18 @@ const SettingsForm: React.FC = () => {
             <Banner tone="critical" title="Settings unavailable">
                 <p>{error ?? "No settings found for this shop."}</p>
             </Banner>
+        );
+    }
+
+    const smtpConfigured = Boolean(
+        s.smtpHost && s.smtpUser && s.smtpFromAddress && s.hasSmtpPass
+    );
+    if (!smtpConfigured && !wizardDismissed) {
+        return (
+            <OnboardingWizard
+                settings={s}
+                onDone={() => setWizardDismissed(true)}
+            />
         );
     }
 
@@ -348,118 +397,28 @@ const SettingsForm: React.FC = () => {
                 </Layout.AnnotatedSection>
 
                 <Layout.AnnotatedSection
-                    title="Outgoing email (SMTP)"
+                    title="Outgoing email"
                     description="Replies are sent through your own mail provider so customers see your store's address."
                 >
-                    <Card>
-                        <FormLayout>
-                            <InlineStack
-                                align="space-between"
-                                blockAlign="center"
-                            >
-                                <Text as="h3" variant="headingSm">
-                                    Connection health
-                                </Text>
-                                {s.smtpLastVerifiedAt && !s.smtpLastError ?
-                                    <Badge tone="success">
-                                        {`Verified ${new Date(s.smtpLastVerifiedAt).toLocaleDateString()}`}
-                                    </Badge>
-                                : s.smtpLastError ?
-                                    <Badge tone="critical">
-                                        Last test failed
-                                    </Badge>
-                                :   <Badge>Not tested</Badge>}
-                            </InlineStack>
-                            {s.smtpLastError && (
-                                <Text as="p" tone="critical" variant="bodySm">
-                                    {s.smtpLastError}
-                                </Text>
-                            )}
-                            <FormLayout.Group>
-                                <TextField
-                                    label="SMTP host"
-                                    value={s.smtpHost ?? ""}
-                                    onChange={(v) => update("smtpHost", v)}
-                                    autoComplete="off"
-                                />
-                                <TextField
-                                    label="Port"
-                                    type="number"
-                                    value={s.smtpPort?.toString() ?? ""}
-                                    onChange={(v) =>
-                                        update(
-                                            "smtpPort",
-                                            v ? parseInt(v, 10) : null
-                                        )
-                                    }
-                                    autoComplete="off"
-                                />
-                            </FormLayout.Group>
-                            <Checkbox
-                                label="Use TLS (recommended)"
-                                checked={s.smtpSecure}
-                                onChange={(v) => update("smtpSecure", v)}
-                            />
-                            <TextField
-                                label="Username"
-                                value={s.smtpUser ?? ""}
-                                onChange={(v) => update("smtpUser", v)}
-                                autoComplete="off"
-                            />
-                            <TextField
-                                label={
-                                    s.hasSmtpPass ?
-                                        "Password (saved — leave blank to keep)"
-                                    :   "Password"
-                                }
-                                type="password"
-                                value={smtpPass}
-                                onChange={setSmtpPass}
-                                autoComplete="new-password"
-                            />
-                            <FormLayout.Group>
-                                <TextField
-                                    label="From name"
-                                    value={s.smtpFromName ?? ""}
-                                    onChange={(v) => update("smtpFromName", v)}
-                                    autoComplete="off"
-                                />
-                                <TextField
-                                    label="From address"
-                                    type="email"
-                                    value={s.smtpFromAddress ?? ""}
-                                    onChange={(v) =>
-                                        update("smtpFromAddress", v)
-                                    }
-                                    autoComplete="email"
-                                />
-                            </FormLayout.Group>
-                            <InlineStack align="end" gap="200">
-                                <Button
-                                    onClick={onTestSmtp}
-                                    loading={smtpTesting}
-                                    disabled={!s.hasSmtpPass && !smtpPass}
-                                >
-                                    Send test connection
-                                </Button>
-                            </InlineStack>
-                            {smtpTest && (
-                                <Banner
-                                    tone={smtpTest.ok ? "success" : "critical"}
-                                    title={
-                                        smtpTest.ok ?
-                                            "SMTP connection succeeded"
-                                        :   "SMTP connection failed"
-                                    }
-                                    onDismiss={() => setSmtpTest(null)}
-                                >
-                                    {smtpTest.message && (
-                                        <p>{smtpTest.message}</p>
-                                    )}
-                                </Banner>
-                            )}
-                        </FormLayout>
-                    </Card>
+                    <SmtpSection
+                        values={s}
+                        smtpPass={smtpPass}
+                        setSmtpPass={setSmtpPass}
+                        provider={provider}
+                        onProviderChange={onProviderChange}
+                        showHelp={showAppPwHelp}
+                        onToggleHelp={() => setShowAppPwHelp((v) => !v)}
+                        updateField={(k, v) =>
+                            update(
+                                k as keyof SettingsDTO,
+                                v as SettingsDTO[keyof SettingsDTO]
+                            )
+                        }
+                        onTestAndSave={onSaveSmtp}
+                        testing={smtpTesting}
+                        test={smtpTest}
+                        dismissTest={() => setSmtpTest(null)}
+                    />
                 </Layout.AnnotatedSection>
             </Layout>
 

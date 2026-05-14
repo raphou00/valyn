@@ -24,6 +24,7 @@ import PlanCard from "./plan-card";
 import OnboardingCard from "./onboarding-card";
 import LogsFilters, { EMPTY_FILTERS, type LogFilters } from "./logs-filters";
 import LogDetailModal from "./log-detail-modal";
+import TestEmailModal from "./test-email-modal";
 
 type Stats = {
     total: number;
@@ -151,6 +152,7 @@ const DashboardView: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [openLog, setOpenLog] = useState<string | null>(null);
+    const [testEmailOpen, setTestEmailOpen] = useState(false);
 
     // Tabs are filter shortcuts. Custom filters apply on top of the tab status.
     const tabs = useMemo(
@@ -282,23 +284,28 @@ const DashboardView: React.FC = () => {
         () => [
             { label: "Choose a plan", done: subscriptionActive },
             {
-                label: "Configure SMTP credentials",
-                done: Boolean(settingsHints?.smtpConfigured),
-                href: "/settings",
+                label: "Set up outgoing email",
+                done: Boolean(
+                    settingsHints?.smtpConfigured &&
+                        settingsHints?.smtpVerifiedRecently
+                ),
+                action: { label: "Set up email →", href: "/settings" },
             },
             {
-                label: "Test SMTP connection",
-                done: Boolean(settingsHints?.smtpVerifiedRecently),
-                href: "/settings",
-            },
-            {
-                label: "Copy forwarding address into your support inbox",
-                done: false,
-                href: "/settings",
+                label: "Forward your support inbox",
+                done: (stats?.total ?? 0) > 0,
+                action: {
+                    label: "Get forwarding address →",
+                    href: "/settings#forwarding",
+                },
             },
             {
                 label: "Receive your first processed email",
                 done: (stats?.total ?? 0) > 0,
+                action: {
+                    label: "Send a test email →",
+                    onClick: () => setTestEmailOpen(true),
+                },
             },
         ],
         [subscriptionActive, settingsHints, stats]
@@ -544,6 +551,10 @@ const DashboardView: React.FC = () => {
                 }}
                 onClose={() => setOpenLog(null)}
                 onChanged={() => void load(page)}
+            />
+            <TestEmailModal
+                open={testEmailOpen}
+                onClose={() => setTestEmailOpen(false)}
             />
         </BlockStack>
     );
