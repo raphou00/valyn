@@ -1,14 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import db from "@/lib/db";
 import { decrypt } from "@/lib/crypto";
-import { verifySmtpConnection } from "@/lib/email";
+import { sendSmtpTestEmail } from "@/lib/email";
 import logger from "@/lib/logger";
 import { withShop } from "@/lib/api-auth";
 import { humanizeSmtpError } from "@/lib/smtp-errors";
 
-// Smoke-tests the SMTP credentials saved in Settings without sending an email.
-// nodemailer.verify() opens the connection + authenticates, then closes.
-// Persist the outcome (timestamp + error) so the dashboard can show health.
+// Sends a real test email from the merchant to themselves so they can
+// confirm delivery, not just authentication. Persists the outcome so the
+// dashboard can show health.
 export async function POST(req: NextRequest) {
     return withShop(req, async (shop) => {
         const s = shop.settings;
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         }
 
         try {
-            await verifySmtpConnection({
+            await sendSmtpTestEmail({
                 host: s.smtpHost,
                 port: s.smtpPort,
                 secure: s.smtpSecure,
@@ -43,11 +43,17 @@ export async function POST(req: NextRequest) {
                 where: { shopId: shop.id },
                 data: { smtpLastVerifiedAt: new Date(), smtpLastError: null },
             });
-            return NextResponse.json({ ok: true });
+            return NextResponse.json({
+                ok: true,
+                sentTo: s.smtpFromAddress,
+            });
         } catch (err) {
             const raw = (err as Error).message;
             const message = humanizeSmtpError(raw);
-            logger.warn("smtp verify failed", { shopId: shop.id, error: raw });
+            logger.warn("smtp test send failed", {
+                shopId: shop.id,
+                error: raw,
+            });
             await db.settings.update({
                 where: { shopId: shop.id },
                 data: { smtpLastError: message },

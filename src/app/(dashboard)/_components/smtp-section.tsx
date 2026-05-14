@@ -32,7 +32,12 @@ export type SmtpSectionValues = {
     smtpLastError: string | null;
 };
 
-type TestState = { ok: boolean; message?: string } | null;
+type TestState = {
+    ok: boolean;
+    message?: string;
+    sentTo?: string;
+} | null;
+export type SmtpTestState = TestState;
 
 type Props = {
     values: SmtpSectionValues;
@@ -330,13 +335,23 @@ const SmtpSection: React.FC<Props> = ({
                     <Banner
                         tone={test.ok ? "success" : "critical"}
                         title={
-                            test.ok ?
-                                "Outgoing email is working"
-                            :   "We couldn't send through this account"
+                            test.ok ? "Test email sent" : (
+                                "We couldn't send through this account"
+                            )
                         }
                         onDismiss={dismissTest}
                     >
-                        {test.message && <p>{test.message}</p>}
+                        {test.ok ?
+                            <p>
+                                Check the inbox of{" "}
+                                <strong>{test.sentTo ?? "your address"}</strong>{" "}
+                                — the test message should arrive within a
+                                minute. If it doesn&apos;t, check your spam
+                                folder.
+                            </p>
+                        : test.message ?
+                            <p>{test.message}</p>
+                        :   null}
                     </Banner>
                 )}
             </BlockStack>

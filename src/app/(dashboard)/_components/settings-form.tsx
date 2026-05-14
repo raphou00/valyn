@@ -93,6 +93,7 @@ const SettingsForm: React.FC = () => {
     const [smtpTest, setSmtpTest] = useState<{
         ok: boolean;
         message?: string;
+        sentTo?: string;
     } | null>(null);
     const [smtpTesting, setSmtpTesting] = useState(false);
     const [provider, setProvider] = useState<SmtpProviderKey>("other");
@@ -180,6 +181,7 @@ const SettingsForm: React.FC = () => {
             const data = (await res.json()) as {
                 ok: boolean;
                 message?: string;
+                sentTo?: string;
             };
             setSmtpTest(data);
             const sr = await authedFetch("/api/internal/settings");

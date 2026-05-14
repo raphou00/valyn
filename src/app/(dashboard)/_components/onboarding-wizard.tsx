@@ -66,6 +66,7 @@ const OnboardingWizard: React.FC<Props> = ({ settings, onDone }) => {
     const [test, setTest] = useState<{
         ok: boolean;
         message?: string;
+        sentTo?: string;
     } | null>(null);
 
     const applyProvider = (next: SmtpProviderKey) => {
@@ -118,6 +119,7 @@ const OnboardingWizard: React.FC<Props> = ({ settings, onDone }) => {
             const data = (await res.json()) as {
                 ok: boolean;
                 message?: string;
+                sentTo?: string;
             };
             setTest(data);
             if (data.ok) {
