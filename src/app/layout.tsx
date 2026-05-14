@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import env from "@/lib/env";
 import RootProviders from "./providers";
 import "@/styles/globals.css";
 
-// Note: App Bridge script + meta tag are loaded site-wide (not just under
-// /dashboard). On public marketing pages App Bridge stays inert because
-// there's no embedded admin context. Next's `strategy="beforeInteractive"`
-// only works in the root layout, so we accept the small bandwidth cost in
-// exchange for correctness when the embedded admin loads.
+// App Bridge demands a synchronous <script> tag with no async/defer/module
+// attributes, loaded before any other script. next/script injects `async`
+// regardless of strategy, so use a raw <script> element here.
 
 export const metadata: Metadata = {
     metadataBase: new URL("https://getvalyn.com"),
@@ -23,10 +20,8 @@ const Root: React.FC<React.PropsWithChildren> = ({ children }) => {
         <html lang="en" suppressHydrationWarning>
             <head>
                 <meta name="shopify-api-key" content={env.SHOPIFY_API_KEY} />
-                <Script
-                    src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
-                    strategy="beforeInteractive"
-                />
+                {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+                <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js" />
             </head>
             <body>
                 <RootProviders>{children}</RootProviders>
