@@ -49,17 +49,17 @@ pulumi up                                 # review the plan, type "yes"
 
 What gets created:
 
-| Resource | Purpose |
-|---|---|
-| `valyn-rate-limits-table-dev` (DynamoDB) | Per-IP rate limiter |
-| `valyn-inbound-emails-dev` (S3) | Raw MIME storage, 30-day lifecycle |
-| `valyn-inbound-dev` (SNS topic) | Notifies the app on new mail |
-| SES receipt rule set → S3 + SNS | Routes inbound mail into the pipeline |
-| Route 53 MX `inbound.getvalyn.com` → `inbound-smtp.us-east-1.amazonaws.com` | DNS for SES inbound |
-| Route 53 TXT `_amazonses.inbound.getvalyn.com` | Domain verification |
-| SES domain identity verification | Confirms SES can receive |
-| IAM user with minimum policy | App's runtime credentials |
-| `local.Command` → Vercel API | Mirrors `.env` into Vercel env vars |
+| Resource                                                                    | Purpose                               |
+| --------------------------------------------------------------------------- | ------------------------------------- |
+| `valyn-rate-limits-table-dev` (DynamoDB)                                    | Per-IP rate limiter                   |
+| `valyn-inbound-emails-dev` (S3)                                             | Raw MIME storage, 30-day lifecycle    |
+| `valyn-inbound-dev` (SNS topic)                                             | Notifies the app on new mail          |
+| SES receipt rule set → S3 + SNS                                             | Routes inbound mail into the pipeline |
+| Route 53 MX `inbound.getvalyn.com` → `inbound-smtp.us-east-1.amazonaws.com` | DNS for SES inbound                   |
+| Route 53 TXT `_amazonses.inbound.getvalyn.com`                              | Domain verification                   |
+| SES domain identity verification                                            | Confirms SES can receive              |
+| IAM user with minimum policy                                                | App's runtime credentials             |
+| `local.Command` → Vercel API                                                | Mirrors `.env` into Vercel env vars   |
 
 When Pulumi finishes, sanity check:
 
@@ -78,11 +78,11 @@ addresses you've verified. You can't onboard real merchants until you exit.
 2. **Request production access**
 3. Use case description (paste this, adjust contact):
 
-   > Valyn is a Shopify app that receives forwarded customer support emails
-   > and replies automatically using Shopify order data. Inbound volume per
-   > merchant is bounded by the plan (500/mo Starter, 3,000/mo Pro).
-   > Outbound email is sent by each merchant's own SMTP — we do not send
-   > from SES. Bounce/complaint handling: not applicable to inbound.
+    > Valyn is a Shopify app that receives forwarded customer support emails
+    > and replies automatically using Shopify order data. Inbound volume per
+    > merchant is bounded by the plan (500/mo Starter, 3,000/mo Pro).
+    > Outbound email is sent by each merchant's own SMTP — we do not send
+    > from SES. Bounce/complaint handling: not applicable to inbound.
 
 4. Submit. Approval is usually 24h, sometimes 48h.
 
@@ -173,8 +173,8 @@ curl -sI -H "Authorization: Bearer $CRON_SECRET" \
 
 Vercel → Project → **Settings → Crons** should show:
 
-| Path | Schedule | Status |
-|---|---|---|
+| Path                     | Schedule    | Status    |
+| ------------------------ | ----------- | --------- |
 | `/api/cron/cleanup-logs` | `0 3 * * *` | Scheduled |
 
 Wait until 03:00 UTC and check the **Logs** tab for a `"retention cleanup"`
@@ -188,12 +188,12 @@ Shopify Partners → **Apps** → your app → **Configuration**.
 
 ### 4.1 URLs
 
-| Field | Value |
-|---|---|
-| **App URL** | `https://getvalyn.com/` |
-| **Allowed redirection URLs** | `https://getvalyn.com/api/auth/callback` |
-| **Embedded in Shopify admin** | ✅ ON |
-| **App proxy** | Leave empty |
+| Field                         | Value                                    |
+| ----------------------------- | ---------------------------------------- |
+| **App URL**                   | `https://getvalyn.com/`                  |
+| **Allowed redirection URLs**  | `https://getvalyn.com/api/auth/callback` |
+| **Embedded in Shopify admin** | ✅ ON                                    |
+| **App proxy**                 | Leave empty                              |
 
 ### 4.2 API access (scopes)
 
@@ -222,11 +222,11 @@ of the three. Each should return 200 within a few seconds.
 
 ### 4.5 Legal pages + support
 
-| Field | Value |
-|---|---|
-| **Privacy policy URL** | `https://getvalyn.com/legal/privacy` |
-| **Terms of service URL** | `https://getvalyn.com/legal/terms` |
-| **Support email** | `support@getvalyn.com` (set up an inbox / forward) |
+| Field                    | Value                                              |
+| ------------------------ | -------------------------------------------------- |
+| **Privacy policy URL**   | `https://getvalyn.com/legal/privacy`               |
+| **Terms of service URL** | `https://getvalyn.com/legal/terms`                 |
+| **Support email**        | `support@getvalyn.com` (set up an inbox / forward) |
 
 ---
 
@@ -243,36 +243,36 @@ Partners → **Stores → Add store → Development store**. Then visit:
 https://getvalyn.com/api/auth?shop=<your-dev-store>.myshopify.com
 ```
 
-| Expected | If it fails, check |
-|---|---|
-| Shopify OAuth grant screen | `SHOPIFY_API_KEY`, `Allowed redirection URLs` |
-| Redirect back lands in embedded admin | `App URL`, `Embedded` toggle |
-| Page renders inside Shopify admin iframe (not a "refused to connect") | proxy.ts CSP headers |
-| `BillingBanner` shows Starter + Pro cards | usage endpoint, subscription state |
+| Expected                                                              | If it fails, check                            |
+| --------------------------------------------------------------------- | --------------------------------------------- |
+| Shopify OAuth grant screen                                            | `SHOPIFY_API_KEY`, `Allowed redirection URLs` |
+| Redirect back lands in embedded admin                                 | `App URL`, `Embedded` toggle                  |
+| Page renders inside Shopify admin iframe (not a "refused to connect") | proxy.ts CSP headers                          |
+| `BillingBanner` shows Starter + Pro cards                             | usage endpoint, subscription state            |
 
 ### 5.2 Subscribe
 
-| Step | Expected |
-|---|---|
-| Click **Start Pro** | Top-frame redirect to Shopify charge page |
-| Approve test charge (no real money in dev) | Lands back in embedded admin |
-| `BillingBanner` is gone | `subscriptionStatus = ACTIVE` |
-| `Subscription` card shows "Pro" + trial-ends date | `planKey = 'pro'` persisted |
+| Step                                              | Expected                                  |
+| ------------------------------------------------- | ----------------------------------------- |
+| Click **Start Pro**                               | Top-frame redirect to Shopify charge page |
+| Approve test charge (no real money in dev)        | Lands back in embedded admin              |
+| `BillingBanner` is gone                           | `subscriptionStatus = ACTIVE`             |
+| `Subscription` card shows "Pro" + trial-ends date | `planKey = 'pro'` persisted               |
 
 ### 5.3 Configure SMTP
 
 Use Gmail with an **app password** (Settings → Security → 2FA → App passwords).
 Free, fast, reliable. In Valyn's Settings → SMTP:
 
-| Field | Value |
-|---|---|
-| Host | `smtp.gmail.com` |
-| Port | `465` |
-| Use TLS | ✅ |
-| Username | your-gmail-address |
-| Password | the 16-char app password |
-| From name | (your store name) |
-| From address | same as username |
+| Field        | Value                    |
+| ------------ | ------------------------ |
+| Host         | `smtp.gmail.com`         |
+| Port         | `465`                    |
+| Use TLS      | ✅                       |
+| Username     | your-gmail-address       |
+| Password     | the 16-char app password |
+| From name    | (your store name)        |
+| From address | same as username         |
 
 Click **Send test connection** → green Banner + "Verified today" badge.
 
@@ -280,9 +280,9 @@ Click **Send test connection** → green Banner + "Verified today" badge.
 
 1. **Pre-fill an order** in the dev store admin (create order #1001 with a tracking number, mark it fulfilled).
 2. **Forward a test email** from an external account (not from the SMTP user — Gmail dedupes self-replies):
-   - To: `wismo+<shopId>@inbound.getvalyn.com` (copy exact value from your Settings page)
-   - Subject: `Where is my order?`
-   - Body: `Hi, my order #1001 hasn't arrived. Can you check?`
+    - To: `wismo+<shopId>@inbound.getvalyn.com` (copy exact value from your Settings page)
+    - Subject: `Where is my order?`
+    - Body: `Hi, my order #1001 hasn't arrived. Can you check?`
 3. Within ~5s the original sender should receive the auto-reply.
 4. Refresh Valyn dashboard → row appears: `Replied`, intent `WISMO`, language `EN`.
 5. Click the row → Modal shows full body, reply preview, confidence ~0.7+.
@@ -291,24 +291,24 @@ Click **Send test connection** → green Banner + "Verified today" badge.
 
 Run through each scenario in one sitting. Each row of the table is a failure mode you don't want to discover in production.
 
-| Scenario | How to trigger | Expected status |
-|---|---|---|
-| WISMO with order # | Forward "where is order #1001" | `Replied` |
-| WISMO no order # | Forward "where is my order" from a customer with prior orders | `Replied` (most-recent order) |
-| WISMO unknown sender | Forward from never-seen address, no order # | `Replied` with fallback OR `Needs review` per setting |
-| Non-WISMO | "What's your return policy" | `Ignored` |
-| Auto-replies OFF | Toggle in Settings, forward WISMO | `Needs review` (logged, not silent) |
-| Strictness REVIEW_QUEUE | Set in Settings, forward WISMO | `Needs review` → click **Approve & send** → `Replied` |
-| Fallback SKIP | Set + forward "where is my order" with no match | `Ignored` |
-| SMTP wrong password | Change password in Settings, forward WISMO | `Failed`, error visible in row |
-| Quota exceeded | (Hard to test; skip or seed `EmailLog` rows manually if you want) | `Over quota` |
-| Manual retry | On a `Failed` row, click **Retry send** | Goes to `Replied` if fixed |
-| Mark misclassified | On any `Replied`, click **Mark misclassified** | Status `Misclassified` |
-| CSV export | Click **Export CSV** | Downloads file with all columns |
-| Templates | `/templates` → add a custom IN_TRANSIT, mark default → forward WISMO | Reply uses your template body |
-| Pause + log review | Pause automation, forward 2 emails, resume | Both logged as `Needs review`, accessible from tab |
-| GDPR webhook | Partners → Webhooks → Send test for `customers/redact` | 200 response, EmailLog rows for that email deleted |
-| Uninstall | Shopify admin → Apps → Valyn → Uninstall | `Shop.uninstalledAt` set, `subscriptionStatus = CANCELLED` |
+| Scenario                | How to trigger                                                       | Expected status                                            |
+| ----------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------- |
+| WISMO with order #      | Forward "where is order #1001"                                       | `Replied`                                                  |
+| WISMO no order #        | Forward "where is my order" from a customer with prior orders        | `Replied` (most-recent order)                              |
+| WISMO unknown sender    | Forward from never-seen address, no order #                          | `Replied` with fallback OR `Needs review` per setting      |
+| Non-WISMO               | "What's your return policy"                                          | `Ignored`                                                  |
+| Auto-replies OFF        | Toggle in Settings, forward WISMO                                    | `Needs review` (logged, not silent)                        |
+| Strictness REVIEW_QUEUE | Set in Settings, forward WISMO                                       | `Needs review` → click **Approve & send** → `Replied`      |
+| Fallback SKIP           | Set + forward "where is my order" with no match                      | `Ignored`                                                  |
+| SMTP wrong password     | Change password in Settings, forward WISMO                           | `Failed`, error visible in row                             |
+| Quota exceeded          | (Hard to test; skip or seed `EmailLog` rows manually if you want)    | `Over quota`                                               |
+| Manual retry            | On a `Failed` row, click **Retry send**                              | Goes to `Replied` if fixed                                 |
+| Mark misclassified      | On any `Replied`, click **Mark misclassified**                       | Status `Misclassified`                                     |
+| CSV export              | Click **Export CSV**                                                 | Downloads file with all columns                            |
+| Templates               | `/templates` → add a custom IN_TRANSIT, mark default → forward WISMO | Reply uses your template body                              |
+| Pause + log review      | Pause automation, forward 2 emails, resume                           | Both logged as `Needs review`, accessible from tab         |
+| GDPR webhook            | Partners → Webhooks → Send test for `customers/redact`               | 200 response, EmailLog rows for that email deleted         |
+| Uninstall               | Shopify admin → Apps → Valyn → Uninstall                             | `Shop.uninstalledAt` set, `subscriptionStatus = CANCELLED` |
 
 If anything in this table fails, **stop and fix before continuing**.
 
@@ -348,13 +348,13 @@ Preview / Photos.
 
 ### 6.4 Copy
 
-| Field | Limit | Example direction |
-|---|---|---|
-| App name | 30 chars | `Valyn — WISMO replies` |
-| Tagline | 100 chars | `Auto-reply to "where is my order?" emails using real Shopify order data.` |
-| Description | 500 chars | Lead with the problem (60% of support inbox is WISMO), the solution (auto-detects, looks up the order, sends the tracking reply from your own domain), and what's intentionally out of scope (no full helpdesk). Mirror the homepage tone. |
-| Categories | n/a | `Customer service` (primary), `Productivity` (secondary) |
-| Search terms | n/a | `wismo`, `order tracking`, `auto-reply`, `customer support`, `order status` |
+| Field        | Limit     | Example direction                                                                                                                                                                                                                          |
+| ------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| App name     | 30 chars  | `Valyn — WISMO replies`                                                                                                                                                                                                                    |
+| Tagline      | 100 chars | `Auto-reply to "where is my order?" emails using real Shopify order data.`                                                                                                                                                                 |
+| Description  | 500 chars | Lead with the problem (60% of support inbox is WISMO), the solution (auto-detects, looks up the order, sends the tracking reply from your own domain), and what's intentionally out of scope (no full helpdesk). Mirror the homepage tone. |
+| Categories   | n/a       | `Customer service` (primary), `Productivity` (secondary)                                                                                                                                                                                   |
+| Search terms | n/a       | `wismo`, `order tracking`, `auto-reply`, `customer support`, `order status`                                                                                                                                                                |
 
 ### 6.5 Pricing setup
 
@@ -506,14 +506,14 @@ Check after week 1:
 These are documented limitations. None block App Store approval; none lie to
 merchants in the marketing copy after the recent cleanup.
 
-| Gap | Impact | Fix path |
-|---|---|---|
-| Response delays >60s cap in-process | Merchants can configure 60s; longer values silently clamp | Vercel Queues or SQS-backed job runner |
-| Test-send-sample-WISMO from Settings | Today merchants can only verify SMTP connectivity | Add a button that sends a canned reply to the merchant's own address |
-| Self-serve data export for merchants | GDPR webhooks handle the legal floor; no in-app UX | Add `GET /api/internal/data-export.zip` |
-| Detection-confidence threshold slider | Confidence is stored, not yet exposed for tuning | Add to Settings → Auto-replies |
-| Audit history table | EmailLog carries per-row history (retryCount, reviewedAt, manuallyMarked) | Defer until merchants ask |
-| Multi-store routing rules (was Scale-tier marketing) | Removed from marketing | Defer indefinitely |
+| Gap                                                  | Impact                                                                    | Fix path                                                             |
+| ---------------------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Response delays >60s cap in-process                  | Merchants can configure 60s; longer values silently clamp                 | Vercel Queues or SQS-backed job runner                               |
+| Test-send-sample-WISMO from Settings                 | Today merchants can only verify SMTP connectivity                         | Add a button that sends a canned reply to the merchant's own address |
+| Self-serve data export for merchants                 | GDPR webhooks handle the legal floor; no in-app UX                        | Add `GET /api/internal/data-export.zip`                              |
+| Detection-confidence threshold slider                | Confidence is stored, not yet exposed for tuning                          | Add to Settings → Auto-replies                                       |
+| Audit history table                                  | EmailLog carries per-row history (retryCount, reviewedAt, manuallyMarked) | Defer until merchants ask                                            |
+| Multi-store routing rules (was Scale-tier marketing) | Removed from marketing                                                    | Defer indefinitely                                                   |
 
 ---
 
@@ -552,13 +552,13 @@ next install, so this is a temporary mitigation.
 
 ## Emergency contacts
 
-| Service | Where to log in | Where to file urgent issue |
-|---|---|---|
-| Vercel | vercel.com | Dashboard → Support |
-| AWS | console.aws.amazon.com | Health Dashboard → Open case |
-| Shopify Partners | partners.shopify.com | Partners → Help & support |
-| Postgres provider | Neon / Supabase / etc. | provider's status page |
-| Domain (Route 53) | console.aws.amazon.com → Route 53 | AWS support |
+| Service           | Where to log in                   | Where to file urgent issue   |
+| ----------------- | --------------------------------- | ---------------------------- |
+| Vercel            | vercel.com                        | Dashboard → Support          |
+| AWS               | console.aws.amazon.com            | Health Dashboard → Open case |
+| Shopify Partners  | partners.shopify.com              | Partners → Help & support    |
+| Postgres provider | Neon / Supabase / etc.            | provider's status page       |
+| Domain (Route 53) | console.aws.amazon.com → Route 53 | AWS support                  |
 
 Bookmark all five before you go live.
 

@@ -10,11 +10,11 @@ SMTP. Two plans (Starter $19/mo, Pro $49/mo), 7-day free trial.
 
 ## Documentation
 
-| File | When to read it |
-|---|---|
-| [`app.md`](./app.md) | What Valyn does and how it works — architecture, data model, decision flow, security posture |
+| File                       | When to read it                                                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| [`app.md`](./app.md)       | What Valyn does and how it works — architecture, data model, decision flow, security posture                                       |
 | [`LAUNCH.md`](./LAUNCH.md) | Step-by-step playbook to ship the first public version — AWS, Vercel, Shopify Partners, dev-store smoke test, App Store submission |
-| [`task.md`](./task.md) | Post-launch backlog — what's deferred and why |
+| [`task.md`](./task.md)     | Post-launch backlog — what's deferred and why                                                                                      |
 
 ---
 
