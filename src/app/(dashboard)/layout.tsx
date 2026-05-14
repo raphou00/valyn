@@ -16,7 +16,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <Link href="/templates">Templates</Link>
                 <Link href="/settings">Settings</Link>
             </NavMenu>
-            {children}
+            <div style={{ backgroundColor: "#F1F1F1" }}>{children}</div>
         </AppProvider>
     );
 };

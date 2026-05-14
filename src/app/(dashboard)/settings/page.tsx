@@ -7,9 +7,7 @@ type Props = {
 
 const SettingsPage: React.FC<Props> = async ({ searchParams }) => {
     const { shop } = await searchParams;
-    return (
-        <SettingsPageShell shop={isValidShop(shop) ? shop : undefined} />
-    );
+    return <SettingsPageShell shop={isValidShop(shop) ? shop : undefined} />;
 };
 
 export default SettingsPage;

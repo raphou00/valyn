@@ -7,9 +7,7 @@ type Props = {
 
 const TemplatesPage: React.FC<Props> = async ({ searchParams }) => {
     const { shop } = await searchParams;
-    return (
-        <TemplatesPageShell shop={isValidShop(shop) ? shop : undefined} />
-    );
+    return <TemplatesPageShell shop={isValidShop(shop) ? shop : undefined} />;
 };
 
 export default TemplatesPage;

@@ -7,9 +7,7 @@ type Props = {
 
 const Dashboard: React.FC<Props> = async ({ searchParams }) => {
     const { shop } = await searchParams;
-    return (
-        <DashboardPageShell shop={isValidShop(shop) ? shop : undefined} />
-    );
+    return <DashboardPageShell shop={isValidShop(shop) ? shop : undefined} />;
 };
 
 export default Dashboard;
