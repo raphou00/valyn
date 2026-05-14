@@ -51,9 +51,7 @@ const TestEmailModal: React.FC<Props> = ({ open, onClose }) => {
                 };
                 if (cancelled) return;
                 if (!data.ok || !data.preview) {
-                    setError(
-                        data.message ?? "Couldn't generate a test reply."
-                    );
+                    setError(data.message ?? "Couldn't generate a test reply.");
                 } else {
                     setPreview(data.preview);
                 }
@@ -111,11 +109,19 @@ const TestEmailModal: React.FC<Props> = ({ open, onClose }) => {
                                 <Text as="p" variant="bodySm" tone="subdued">
                                     Subject
                                 </Text>
-                                <Text as="p" variant="bodyMd" fontWeight="medium">
+                                <Text
+                                    as="p"
+                                    variant="bodyMd"
+                                    fontWeight="medium"
+                                >
                                     {preview.subject}
                                 </Text>
                                 <Box paddingBlockStart="200">
-                                    <Text as="p" variant="bodySm" tone="subdued">
+                                    <Text
+                                        as="p"
+                                        variant="bodySm"
+                                        tone="subdued"
+                                    >
                                         Body
                                     </Text>
                                 </Box>

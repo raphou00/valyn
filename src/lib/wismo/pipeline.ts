@@ -545,7 +545,8 @@ export const previewReply = async (
 
     const order = await findMostRecentOrder(shop.shopDomain, shop.accessToken);
     const language: Language =
-        isSupportedLanguage(shop.settings.language) ? shop.settings.language
+        isSupportedLanguage(shop.settings.language) ?
+            shop.settings.language
         :   "en";
 
     const caps = capabilitiesFor(shop.planKey);

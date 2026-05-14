@@ -287,7 +287,7 @@ const DashboardView: React.FC = () => {
                 label: "Set up outgoing email",
                 done: Boolean(
                     settingsHints?.smtpConfigured &&
-                        settingsHints?.smtpVerifiedRecently
+                    settingsHints?.smtpVerifiedRecently
                 ),
                 action: { label: "Set up email →", href: "/settings" },
             },

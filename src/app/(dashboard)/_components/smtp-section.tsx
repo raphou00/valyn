@@ -18,10 +18,7 @@ import {
     Text,
     TextField,
 } from "@shopify/polaris";
-import {
-    SMTP_PROVIDERS,
-    type SmtpProviderKey,
-} from "@/lib/smtp-providers";
+import { SMTP_PROVIDERS, type SmtpProviderKey } from "@/lib/smtp-providers";
 
 export type SmtpSectionValues = {
     smtpHost: string | null;
@@ -170,11 +167,10 @@ const SmtpSection: React.FC<Props> = ({
                                     <Box paddingBlockEnd="200">
                                         <BlockStack gap="200">
                                             <Text as="p" tone="subdued">
-                                                Gmail and Outlook don&apos;t
-                                                let apps use your regular
-                                                password. You need to create a
-                                                one-time app password — about
-                                                30 seconds.
+                                                Gmail and Outlook don&apos;t let
+                                                apps use your regular password.
+                                                You need to create a one-time
+                                                app password — about 30 seconds.
                                             </Text>
                                             {provider === "gmail" ?
                                                 <List type="number">
@@ -230,8 +226,7 @@ const SmtpSection: React.FC<Props> = ({
                                                         .
                                                     </List.Item>
                                                     <List.Item>
-                                                        Copy and paste it
-                                                        above.
+                                                        Copy and paste it above.
                                                     </List.Item>
                                                 </List>
                                             }
@@ -261,7 +256,9 @@ const SmtpSection: React.FC<Props> = ({
                                     <TextField
                                         label="Port"
                                         type="number"
-                                        value={values.smtpPort?.toString() ?? ""}
+                                        value={
+                                            values.smtpPort?.toString() ?? ""
+                                        }
                                         onChange={(v) =>
                                             updateField(
                                                 "smtpPort",

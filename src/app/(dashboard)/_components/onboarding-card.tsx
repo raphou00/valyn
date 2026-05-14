@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    BlockStack,
-    Button,
-    Card,
-    InlineStack,
-    Text,
-} from "@shopify/polaris";
+import { BlockStack, Button, Card, InlineStack, Text } from "@shopify/polaris";
 
 export type OnboardingAction = {
     label: string;

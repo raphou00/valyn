@@ -123,7 +123,9 @@ const OnboardingWizard: React.FC<Props> = ({ settings, onDone }) => {
             if (data.ok) {
                 const sr = await authedFetch("/api/internal/settings");
                 if (sr.ok) {
-                    const sd = (await sr.json()) as { settings: WizardSettings };
+                    const sd = (await sr.json()) as {
+                        settings: WizardSettings;
+                    };
                     setS(sd.settings);
                 }
                 setStep(3);
@@ -158,7 +160,9 @@ const OnboardingWizard: React.FC<Props> = ({ settings, onDone }) => {
                                 variant="bodySm"
                                 tone={n === step ? undefined : "subdued"}
                             >
-                                {n === step ? <strong>Step {n}</strong> : `Step ${n}`}
+                                {n === step ?
+                                    <strong>Step {n}</strong>
+                                :   `Step ${n}`}
                                 {n < 3 && "  ·  "}
                             </Text>
                         ))}
@@ -234,7 +238,10 @@ const OnboardingWizard: React.FC<Props> = ({ settings, onDone }) => {
 
                 {step === 3 && (
                     <BlockStack gap="300">
-                        <Banner tone="success" title="Outgoing email is working">
+                        <Banner
+                            tone="success"
+                            title="Outgoing email is working"
+                        >
                             <p>
                                 One more step — forward your support inbox to
                                 the address below.
