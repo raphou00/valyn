@@ -493,51 +493,6 @@ export const FinalCta = ({
     </Section>
 );
 
-/* Install panel — anchor target for #install. Merchant pastes their
- * Shopify store domain, form posts to /api/auth which starts OAuth. */
-export const InstallPanel = () => (
-    <Section>
-        <Container>
-            <div
-                className="relative overflow-hidden rounded-xl bg-accent p-8 text-center text-accent-content sm:p-10 lg:p-16"
-                id="install"
-            >
-                <h2 className="mx-auto max-w-4xl text-4xl font-[330] leading-[1.05] text-accent-content sm:text-5xl lg:text-[70px]">
-                    Install Valyn on your Shopify store.
-                </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-accent-content/70">
-                    Enter your store domain to start the OAuth flow. Setup and
-                    SMTP configuration happen inside the app.
-                </p>
-                <form
-                    action="/api/auth"
-                    method="get"
-                    className="relative mt-7 flex flex-wrap justify-center gap-2.5"
-                >
-                    <input
-                        name="shop"
-                        required
-                        placeholder="your-store.myshopify.com"
-                        aria-label="Shopify store domain"
-                        pattern="[a-z0-9][a-z0-9\-]*\.myshopify\.com"
-                        className="input input-lg input-bordered w-full max-w-sm border-accent-content/20 bg-accent-content/10 text-accent-content placeholder:text-accent-content/50"
-                    />
-                    <button
-                        type="submit"
-                        className="btn btn-lg border border-accent-content bg-transparent text-accent-content hover:bg-accent-content hover:text-accent"
-                    >
-                        Install
-                    </button>
-                </form>
-                <p className="relative mt-3.5 text-sm text-accent-content/60">
-                    Or find Valyn on the Shopify App Store once we&apos;re
-                    listed.
-                </p>
-            </div>
-        </Container>
-    </Section>
-);
-
 /* ===== Featured visual: dashboard mockup ===== */
 
 const DASH_STATS: {

@@ -9,7 +9,6 @@ const json = (data: Record<string, unknown>) => JSON.stringify(data);
 export const OrganizationJsonLd: React.FC = () => (
     <script
         type="application/ld+json"
-         
         dangerouslySetInnerHTML={{
             __html: json({
                 "@context": "https://schema.org",
@@ -27,7 +26,6 @@ export const OrganizationJsonLd: React.FC = () => (
 export const WebSiteJsonLd: React.FC = () => (
     <script
         type="application/ld+json"
-         
         dangerouslySetInnerHTML={{
             __html: json({
                 "@context": "https://schema.org",
@@ -42,7 +40,6 @@ export const WebSiteJsonLd: React.FC = () => (
 export const SoftwareAppJsonLd: React.FC = () => (
     <script
         type="application/ld+json"
-         
         dangerouslySetInnerHTML={{
             __html: json({
                 "@context": "https://schema.org",
@@ -77,7 +74,6 @@ export const FaqJsonLd: React.FC<{
 }> = ({ items }) => (
     <script
         type="application/ld+json"
-         
         dangerouslySetInnerHTML={{
             __html: json({
                 "@context": "https://schema.org",
@@ -100,7 +96,6 @@ export const BreadcrumbJsonLd: React.FC<{
 }> = ({ items }) => (
     <script
         type="application/ld+json"
-         
         dangerouslySetInnerHTML={{
             __html: json({
                 "@context": "https://schema.org",

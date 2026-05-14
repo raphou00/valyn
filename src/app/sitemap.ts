@@ -11,6 +11,7 @@ const routes = [
     "/demo",
     "/faq",
     "/contact",
+    "/install",
     "/shopify-order-tracking-automation",
     "/reduce-wismo-tickets-shopify",
     "/shopify-customer-support-automation",

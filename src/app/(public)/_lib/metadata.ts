@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const SITE_URL = "https://getvalyn.com";
 export const SUPPORT_EMAIL = "support@getvalyn.com";
-export const INSTALL_HREF = "/#install";
+export const INSTALL_HREF = "/install";
 export const DEMO_HREF = "/demo";
 
 type MetadataInput = {
