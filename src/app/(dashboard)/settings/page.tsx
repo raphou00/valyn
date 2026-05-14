@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { isValidShop } from "@/lib/shopify-domain";
 import SettingsPageShell from "../_components/settings-page-shell";
 
@@ -8,9 +7,9 @@ type Props = {
 
 const SettingsPage: React.FC<Props> = async ({ searchParams }) => {
     const { shop } = await searchParams;
-    if (!isValidShop(shop)) redirect("/api/auth");
-
-    return <SettingsPageShell shop={shop} />;
+    return (
+        <SettingsPageShell shop={isValidShop(shop) ? shop : undefined} />
+    );
 };
 
 export default SettingsPage;

@@ -5,7 +5,7 @@ import { Page, Spinner } from "@shopify/polaris";
 import { useAuthedFetch } from "../_lib/use-authed-fetch";
 import TemplatesEditor from "./templates-editor";
 
-const TemplatesPageShell: React.FC<{ shop: string }> = ({ shop }) => {
+const TemplatesPageShell: React.FC<{ shop?: string }> = ({ shop }) => {
     const authedFetch = useAuthedFetch();
     const [canEdit, setCanEdit] = useState<boolean | null>(null);
 
