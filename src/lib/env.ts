@@ -29,13 +29,8 @@ export default createEnv({
         // WISMO LLM classifier (Bedrock). Optional — if model access isn't
         // enabled the pipeline silently falls back to the keyword classifier.
         BEDROCK_REGION: z.string().min(1).default("us-east-1"),
-        BEDROCK_MODEL_ID: z
-            .string()
-            .min(1)
-            .default("us.amazon.nova-lite-v1:0"),
-        WISMO_LLM_ENABLED: z
-            .enum(["true", "false"])
-            .default("true"),
+        BEDROCK_MODEL_ID: z.string().min(1).default("us.amazon.nova-lite-v1:0"),
+        WISMO_LLM_ENABLED: z.enum(["true", "false"]).default("true"),
     },
     runtimeEnv: {
         NODE_ENV: process.env.NODE_ENV,

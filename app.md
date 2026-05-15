@@ -91,22 +91,22 @@ Customer's inbox
 
 ## Architecture
 
-| Layer               | Tech                                  | Role                                                         |
-| ------------------- | ------------------------------------- | ------------------------------------------------------------ |
-| Frontend (public)   | Next.js App Router, Tailwind, DaisyUI | Marketing site at `getvalyn.com`                             |
-| Frontend (embedded) | Polaris + App Bridge v4               | `/dashboard`, `/settings`, `/templates` inside Shopify admin |
-| Auth (embedded)     | App Bridge session tokens (HS256 JWT) | Gates all `/api/internal/*` calls                            |
-| Auth (install)      | Manual Shopify OAuth                  | `/api/auth` + `/api/auth/callback`                           |
-| Database            | Prisma + PostgreSQL                   | Shop, Settings, EmailLog, ReplyTemplate                      |
-| Inbound email       | AWS SES → S3 → SNS → webhook          | One inbound address per shop                                 |
-| WISMO detection     | Keyword pre-filter → Amazon Bedrock LLM | AI intent classification, keyword fallback                 |
-| Outbound email      | nodemailer + per-shop SMTP            | Replies from merchant's domain                               |
-| Rate limit          | DynamoDB sliding-window               | Per-IP cap on `/api/internal/*`                              |
-| Cron                | Vercel Crons                          | Daily retention cleanup                                      |
-| Infra-as-code       | Pulumi                                | AWS resources + Vercel env-var sync                          |
-| Hosting             | Vercel                                | Next.js + Fluid Compute                                      |
-| Logs                | JSON-line to stdout                   | Vercel log search                                            |
-| Billing             | Shopify Billing API                   | `appSubscriptionCreate` + `app_subscriptions/update` webhook |
+| Layer               | Tech                                    | Role                                                         |
+| ------------------- | --------------------------------------- | ------------------------------------------------------------ |
+| Frontend (public)   | Next.js App Router, Tailwind, DaisyUI   | Marketing site at `getvalyn.com`                             |
+| Frontend (embedded) | Polaris + App Bridge v4                 | `/dashboard`, `/settings`, `/templates` inside Shopify admin |
+| Auth (embedded)     | App Bridge session tokens (HS256 JWT)   | Gates all `/api/internal/*` calls                            |
+| Auth (install)      | Manual Shopify OAuth                    | `/api/auth` + `/api/auth/callback`                           |
+| Database            | Prisma + PostgreSQL                     | Shop, Settings, EmailLog, ReplyTemplate                      |
+| Inbound email       | AWS SES → S3 → SNS → webhook            | One inbound address per shop                                 |
+| WISMO detection     | Keyword pre-filter → Amazon Bedrock LLM | AI intent classification, keyword fallback                   |
+| Outbound email      | nodemailer + per-shop SMTP              | Replies from merchant's domain                               |
+| Rate limit          | DynamoDB sliding-window                 | Per-IP cap on `/api/internal/*`                              |
+| Cron                | Vercel Crons                            | Daily retention cleanup                                      |
+| Infra-as-code       | Pulumi                                  | AWS resources + Vercel env-var sync                          |
+| Hosting             | Vercel                                  | Next.js + Fluid Compute                                      |
+| Logs                | JSON-line to stdout                     | Vercel log search                                            |
+| Billing             | Shopify Billing API                     | `appSubscriptionCreate` + `app_subscriptions/update` webhook |
 
 ---
 
@@ -369,18 +369,18 @@ The body is selected by:
 
 Required at runtime (synced from `.env` by Pulumi):
 
-| Var                                                                             | Purpose                                             |
-| ------------------------------------------------------------------------------- | --------------------------------------------------- |
-| `NODE_ENV`                                                                      | `production`                                        |
-| `APP_URL`                                                                       | `https://getvalyn.com`                              |
-| `SHOPIFY_API_KEY` / `SHOPIFY_API_SECRET` / `SHOPIFY_SCOPES` / `SHOPIFY_APP_URL` | Shopify app credentials                             |
-| `DATABASE_URL`                                                                  | Postgres connection string                          |
-| `AWS_REGION` / `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`                    | App's IAM credentials (created by Pulumi)           |
-| `RATE_LIMITS_TABLE_NAME`                                                        | DynamoDB table (Pulumi output)                      |
-| `INBOUND_EMAIL_BUCKET` / `INBOUND_EMAIL_DOMAIN` / `INBOUND_SNS_TOPIC_ARN`       | SES inbound (Pulumi outputs)                        |
-| `SMTP_CREDS_KEY`                                                                | 32-byte base64 — encrypts merchants' SMTP passwords |
-| `CRON_SECRET`                                                                   | Bearer token for manual cron invocation             |
-| `BEDROCK_REGION` / `BEDROCK_MODEL_ID` / `WISMO_LLM_ENABLED`                      | AI WISMO classifier (defaults: us-east-1 / `us.amazon.nova-lite-v1:0` / true). Optional — keyword-only if disabled or model access not enabled |
+| Var                                                                             | Purpose                                                                                                                                        |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NODE_ENV`                                                                      | `production`                                                                                                                                   |
+| `APP_URL`                                                                       | `https://getvalyn.com`                                                                                                                         |
+| `SHOPIFY_API_KEY` / `SHOPIFY_API_SECRET` / `SHOPIFY_SCOPES` / `SHOPIFY_APP_URL` | Shopify app credentials                                                                                                                        |
+| `DATABASE_URL`                                                                  | Postgres connection string                                                                                                                     |
+| `AWS_REGION` / `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`                    | App's IAM credentials (created by Pulumi)                                                                                                      |
+| `RATE_LIMITS_TABLE_NAME`                                                        | DynamoDB table (Pulumi output)                                                                                                                 |
+| `INBOUND_EMAIL_BUCKET` / `INBOUND_EMAIL_DOMAIN` / `INBOUND_SNS_TOPIC_ARN`       | SES inbound (Pulumi outputs)                                                                                                                   |
+| `SMTP_CREDS_KEY`                                                                | 32-byte base64 — encrypts merchants' SMTP passwords                                                                                            |
+| `CRON_SECRET`                                                                   | Bearer token for manual cron invocation                                                                                                        |
+| `BEDROCK_REGION` / `BEDROCK_MODEL_ID` / `WISMO_LLM_ENABLED`                     | AI WISMO classifier (defaults: us-east-1 / `us.amazon.nova-lite-v1:0` / true). Optional — keyword-only if disabled or model access not enabled |
 
 Local-dev-only (filtered out before push to Vercel):
 
@@ -410,18 +410,18 @@ everything for review.
 
 ## Where to look when something breaks
 
-| Symptom                                   | First place to look                                                               |
-| ----------------------------------------- | --------------------------------------------------------------------------------- |
-| Reply never sent                          | Vercel logs filter `wismo pipeline`, then `EmailLog.errorMessage` for the row     |
-| OAuth fails                               | `Allowed redirection URLs` in Partners + `SHOPIFY_API_KEY` env                    |
-| Embedded admin shows "refused to connect" | `proxy.ts` CSP frame-ancestors check                                              |
-| Cron didn't fire                          | Vercel → Crons tab                                                                |
-| SES inbound not arriving                  | `dig MX inbound.getvalyn.com`; SES domain identity verified?                      |
-| GDPR webhook 401                          | HMAC secret mismatch — confirm `SHOPIFY_API_SECRET` in Vercel                     |
-| `SMTP not configured` on every send       | Merchant didn't fill Settings → SMTP, or test never ran                           |
-| `LIMIT_EXCEEDED` rows                     | Merchant on Starter; nudge to Pro via dashboard                                   |
-| `MISCLASSIFIED` rate climbing             | Check `EmailLog.detectionReason` (`ai:` vs keyword); tune the Bedrock prompt in `classify-llm.ts` or adjust `WISMO_KEYWORDS` |
-| Bedrock errors in logs / `ai:` reasons absent | Model access not enabled for `BEDROCK_MODEL_ID` in that region — pipeline is silently keyword-only until fixed |
+| Symptom                                       | First place to look                                                                                                          |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Reply never sent                              | Vercel logs filter `wismo pipeline`, then `EmailLog.errorMessage` for the row                                                |
+| OAuth fails                                   | `Allowed redirection URLs` in Partners + `SHOPIFY_API_KEY` env                                                               |
+| Embedded admin shows "refused to connect"     | `proxy.ts` CSP frame-ancestors check                                                                                         |
+| Cron didn't fire                              | Vercel → Crons tab                                                                                                           |
+| SES inbound not arriving                      | `dig MX inbound.getvalyn.com`; SES domain identity verified?                                                                 |
+| GDPR webhook 401                              | HMAC secret mismatch — confirm `SHOPIFY_API_SECRET` in Vercel                                                                |
+| `SMTP not configured` on every send           | Merchant didn't fill Settings → SMTP, or test never ran                                                                      |
+| `LIMIT_EXCEEDED` rows                         | Merchant on Starter; nudge to Pro via dashboard                                                                              |
+| `MISCLASSIFIED` rate climbing                 | Check `EmailLog.detectionReason` (`ai:` vs keyword); tune the Bedrock prompt in `classify-llm.ts` or adjust `WISMO_KEYWORDS` |
+| Bedrock errors in logs / `ai:` reasons absent | Model access not enabled for `BEDROCK_MODEL_ID` in that region — pipeline is silently keyword-only until fixed               |
 
 For launch-time procedures, see [`LAUNCH.md`](./LAUNCH.md).
 For deferred / post-launch work, see [`task.md`](./task.md).

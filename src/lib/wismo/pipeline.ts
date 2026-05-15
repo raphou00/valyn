@@ -318,9 +318,9 @@ const classifyInbound = async (
     if (!llm) return kw; // disabled / error / timeout → keyword fallback
 
     const language =
-        llm.language && allowed.includes(llm.language) ? llm.language : (
-            kw.language
-        );
+        llm.language && allowed.includes(llm.language) ?
+            llm.language
+        :   kw.language;
     return {
         intent: llm.isWismo ? "WISMO" : "OTHER",
         confidence: llm.confidence,
@@ -364,11 +364,7 @@ export const processInboundEmail = async (
     }
 
     const caps = capabilitiesFor(shop.planKey);
-    const detection = await classifyInbound(
-        subject,
-        bodyText,
-        caps.languages
-    );
+    const detection = await classifyInbound(subject, bodyText, caps.languages);
 
     const log = await db.emailLog.create({
         data: {

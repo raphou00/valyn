@@ -353,10 +353,10 @@ const Page = () => (
                             detects intent, but never writes replies — those
                             come from your templates and real Shopify data. No
                             social DMs. No marketing emails. No abandoned-cart
-                            recovery. No multi-mailbox routing.
-                            If you need any of those, you need a different tool
-                            — and that&apos;s fine. We&apos;re focused on WISMO,
-                            end of story.
+                            recovery. No multi-mailbox routing. If you need any
+                            of those, you need a different tool — and
+                            that&apos;s fine. We&apos;re focused on WISMO, end
+                            of story.
                         </p>
                     </div>
                 </div>
