@@ -658,7 +658,7 @@ export const legalSections: Record<
                 bullets: [
                     "Shopify for app installation, billing, and order data.",
                     "Vercel for application hosting.",
-                    "Amazon Web Services for S3, SNS, SES, and DynamoDB infrastructure.",
+                    "Amazon Web Services for S3, SNS, SES, and DynamoDB infrastructure, and Amazon Bedrock for AI email-intent classification. Email content classified by Bedrock stays within the AWS region and is not used to train models or shared with any third-party AI vendor.",
                 ],
             },
             {
@@ -741,7 +741,7 @@ export const legalSections: Record<
             {
                 title: "Sub-processors",
                 paragraphs: [
-                    "Current infrastructure uses Shopify, Vercel, and Amazon Web Services. Material changes to sub-processors should be disclosed to merchants.",
+                    "Current infrastructure uses Shopify, Vercel, and Amazon Web Services (including Amazon Bedrock for AI email-intent classification, processed within the AWS region and not used for model training). Material changes to sub-processors should be disclosed to merchants.",
                 ],
             },
             {

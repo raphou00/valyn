@@ -75,7 +75,7 @@ const steps = [
     {
         n: 2,
         title: "Valyn detects intent",
-        body: "Keyword + sender match flags WISMO and ignores everything else.",
+        body: "AI intent detection flags genuine 'where is my order?' emails and ignores newsletters, returns, and everything else.",
     },
     {
         n: 3,
@@ -92,8 +92,8 @@ const steps = [
 const features = [
     {
         icon: <Inbox />,
-        title: "WISMO detection",
-        body: "Keyword-based classifier in English, French, and German. Configurable strictness, low false-positive rate.",
+        title: "AI WISMO detection",
+        body: "An AI classifier reads each email in English, French, and German — telling a real order question apart from marketing and noise. Low false-positive rate, configurable strictness.",
     },
     {
         icon: <Clipboard />,

@@ -35,7 +35,7 @@ const groups: { kicker: string; title: string; items: Faq[] }[] = [
             },
             {
                 q: "Is this an AI chatbot?",
-                a: "No. The first version uses deterministic keyword classification, not a generative model. Replies use templates you can edit. We may add ML classification later, but Valyn will never invent information about an order — it only reports what Shopify says is true.",
+                a: "Not a chatbot. Valyn uses an AI classifier to decide whether an email is a genuine 'where is my order?' question — that's what lets it tell a real customer apart from a newsletter or a return request, in English, French, and German. But the AI never writes the reply: replies come from templates you control, filled with real Shopify order data. Valyn never invents information about an order — it only reports what Shopify says is true. Classification runs on AWS Bedrock inside the same AWS region as your data; email content is never sent to a third-party AI vendor or used to train models.",
             },
             {
                 q: "Does it replace my helpdesk?",

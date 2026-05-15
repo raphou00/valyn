@@ -11,7 +11,8 @@ sent from the merchant's own SMTP so customers see the store's address.
 A merchant forwards their support inbox to a per-shop Valyn address.
 Whenever a customer writes asking about an order:
 
-1. **Detect** — Valyn classifies the email as WISMO (in EN, FR, DE) or skips it.
+1. **Detect** — an AI classifier (with a keyword pre-filter + fallback) decides
+   whether the email is WISMO (in EN, FR, DE) or skips it.
 2. **Look up the order** — by order number in the message, then by sender
    email, then by most-recent order.
 3. **Reply** — composes a templated response with order name, carrier,
@@ -73,7 +74,7 @@ POST /api/webhooks/inbound-email
    ▼
 src/lib/wismo/pipeline.ts → processInboundEmail()
    │  ├─ idempotency check (inboundMessageId @unique)
-   │  ├─ detect(): keyword classifier, EN/FR/DE allowed-list per plan
+   │  ├─ classifyInbound(): keyword pre-filter → Bedrock LLM, keyword fallback
    │  ├─ persist EmailLog row with confidence, language, reason
    │  ├─ gate: subscription status, pause, quota, strictness, fallback
    │  ├─ identifyOrder(): Shopify Admin GraphQL
@@ -98,6 +99,7 @@ Customer's inbox
 | Auth (install)      | Manual Shopify OAuth                  | `/api/auth` + `/api/auth/callback`                           |
 | Database            | Prisma + PostgreSQL                   | Shop, Settings, EmailLog, ReplyTemplate                      |
 | Inbound email       | AWS SES → S3 → SNS → webhook          | One inbound address per shop                                 |
+| WISMO detection     | Keyword pre-filter → Amazon Bedrock LLM | AI intent classification, keyword fallback                 |
 | Outbound email      | nodemailer + per-shop SMTP            | Replies from merchant's domain                               |
 | Rate limit          | DynamoDB sliding-window               | Per-IP cap on `/api/internal/*`                              |
 | Cron                | Vercel Crons                          | Daily retention cleanup                                      |
@@ -182,7 +184,8 @@ Merchant control happens at every step — nothing happens silently.
 | File                                 | Responsibility                                                                   |
 | ------------------------------------ | -------------------------------------------------------------------------------- |
 | `src/lib/wismo/pipeline.ts`          | The whole decision flow above; `processInboundEmail()` + `sendReplyForLog()`     |
-| `src/lib/wismo/detect.ts`            | Keyword classifier, returns `intent + confidence + language + matched`           |
+| `src/lib/wismo/detect.ts`            | Keyword classifier (pre-filter + LLM fallback), `intent + confidence + language` |
+| `src/lib/wismo/classify-llm.ts`      | Bedrock LLM intent classifier; returns null on any failure so caller falls back  |
 | `src/lib/wismo/shopify-orders.ts`    | Admin GraphQL for order lookup                                                   |
 | `src/lib/wismo/tone.ts`              | Tone wrappers around reply body                                                  |
 | `src/lib/translations.ts`            | Built-in reply templates per language                                            |
@@ -282,20 +285,31 @@ non-redirect routes; robots.txt disallows dashboard / settings / api.
 
 ## Detection logic
 
-`src/lib/wismo/detect.ts`:
+Hybrid, cost-optimized. `classifyInbound()` in `pipeline.ts`:
 
-```ts
-detect(subject, body, allowedLanguages) →
-  { intent, confidence, matched, language, reason }
+```
+1. detect() keyword pass (free, src/lib/wismo/detect.ts)
+2. zero-signal short-circuit: no keyword AND no order ref → OTHER,
+   no LLM call (keeps Bedrock spend tiny — newsletters never cost a call)
+3. otherwise classifyWithLlm() — Bedrock, cheap model (Nova Lite default)
+4. LLM null (disabled / throttled / timeout / bad output) → keyword verdict
 ```
 
-- Lowercases subject+body, scans for keywords in the allowed languages.
-- Keywords per language (`src/lib/translations.ts` → `WISMO_KEYWORDS`):
-    - EN: `where is my order`, `tracking`, `delivery`, `shipped`, `shipping`
-    - FR: `où est ma commande`, `suivi`, `colis`, `livraison`, `commande`
-    - DE: `wo ist meine bestellung`, `sendungsverfolgung`, `lieferung`, `versand`
-- Confidence: `0.6 + 0.1 × unique_matches`, capped at 0.99.
-- Language with the most matches wins; tie-break by allowed order.
+The LLM only classifies intent — it never writes the reply (templates +
+real Shopify data do that). Failure is never fatal: the keyword classifier
+is always the fallback, so a Bedrock outage degrades precision, not uptime.
+
+Keyword pre-filter (`src/lib/translations.ts` → `WISMO_KEYWORDS`):
+
+- EN: `where is my order`, `tracking`, `delivery`, `shipped`, `shipping`
+- FR: `où est ma commande`, `suivi`, `colis`, `livraison`, `commande`
+- DE: `wo ist meine bestellung`, `sendungsverfolgung`, `lieferung`, `versand`
+- Keyword confidence: `0.6 + 0.1 × unique_matches`, capped at 0.99. The LLM
+  returns its own 0–1 confidence when consulted.
+
+Bedrock config via `BEDROCK_MODEL_ID` / `BEDROCK_REGION` / `WISMO_LLM_ENABLED`
+env (see Environment variables). Set `WISMO_LLM_ENABLED=false` to run
+keyword-only. IAM: `bedrock:InvokeModel` granted to the app user in `aws/`.
 
 Order extraction (`extractOrderName`): regex matches `#1234`, `order 1234`,
 `commande 1234`. Minimum 3 digits to avoid matching prices.
@@ -366,6 +380,7 @@ Required at runtime (synced from `.env` by Pulumi):
 | `INBOUND_EMAIL_BUCKET` / `INBOUND_EMAIL_DOMAIN` / `INBOUND_SNS_TOPIC_ARN`       | SES inbound (Pulumi outputs)                        |
 | `SMTP_CREDS_KEY`                                                                | 32-byte base64 — encrypts merchants' SMTP passwords |
 | `CRON_SECRET`                                                                   | Bearer token for manual cron invocation             |
+| `BEDROCK_REGION` / `BEDROCK_MODEL_ID` / `WISMO_LLM_ENABLED`                      | AI WISMO classifier (defaults: us-east-1 / `us.amazon.nova-lite-v1:0` / true). Optional — keyword-only if disabled or model access not enabled |
 
 Local-dev-only (filtered out before push to Vercel):
 
@@ -383,7 +398,7 @@ Things Valyn is **not** trying to be:
 - A helpdesk / ticketing system
 - A live chat tool
 - A returns / refunds automation tool
-- An AI chatbot — detection is deterministic keyword matching
+- An AI chatbot — AI classifies intent only; replies are templated, never generated
 - An omnichannel inbox (no chat, SMS, social DMs)
 - A marketing email tool
 
@@ -405,7 +420,8 @@ everything for review.
 | GDPR webhook 401                          | HMAC secret mismatch — confirm `SHOPIFY_API_SECRET` in Vercel                     |
 | `SMTP not configured` on every send       | Merchant didn't fill Settings → SMTP, or test never ran                           |
 | `LIMIT_EXCEEDED` rows                     | Merchant on Starter; nudge to Pro via dashboard                                   |
-| `MISCLASSIFIED` rate climbing             | Detection tuning — add keywords to `WISMO_KEYWORDS` or lower confidence threshold |
+| `MISCLASSIFIED` rate climbing             | Check `EmailLog.detectionReason` (`ai:` vs keyword); tune the Bedrock prompt in `classify-llm.ts` or adjust `WISMO_KEYWORDS` |
+| Bedrock errors in logs / `ai:` reasons absent | Model access not enabled for `BEDROCK_MODEL_ID` in that region — pipeline is silently keyword-only until fixed |
 
 For launch-time procedures, see [`LAUNCH.md`](./LAUNCH.md).
 For deferred / post-launch work, see [`task.md`](./task.md).

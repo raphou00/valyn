@@ -24,6 +24,7 @@ SMTP. Two plans (Starter $19/mo, Pro $49/mo), 7-day free trial.
 - Prisma + Postgres
 - Shopify Admin GraphQL, Polaris + App Bridge v4
 - AWS SES inbound + S3 + SNS for email intake
+- Amazon Bedrock for AI WISMO intent detection (keyword fallback)
 - nodemailer + per-shop SMTP for outbound
 - DynamoDB rate-limiter
 - Pulumi → AWS, with `.env` auto-sync to Vercel
@@ -94,7 +95,7 @@ src/
 │  │  └─ webhooks/     — Shopify + SES SNS
 │  └─ layout.tsx, sitemap.ts, robots.ts, opengraph-image.tsx
 ├─ lib/
-│  ├─ wismo/           — detection, pipeline, Shopify Admin, tone
+│  ├─ wismo/           — detection (keyword + Bedrock LLM), pipeline, Shopify Admin, tone
 │  ├─ shopify-session.ts, shopify-domain.ts, billing.ts
 │  ├─ usage.ts, plan-features.ts
 │  ├─ email.ts, crypto.ts, inbound.ts

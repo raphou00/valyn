@@ -67,9 +67,9 @@ const Page = () => (
                         </div>
                         <h3>Detect &amp; identify</h3>
                         <p>
-                            Keyword classifier tags WISMO. Order lookup hits
-                            Shopify Admin GraphQL with order-number → email →
-                            recent-order priority.
+                            AI classifier tags WISMO and filters out noise.
+                            Order lookup hits Shopify Admin GraphQL with
+                            order-number → email → recent-order priority.
                         </p>
                     </div>
                     <div className={cardClass}>

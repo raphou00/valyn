@@ -30,7 +30,7 @@ export const metadata: Metadata = marketingMetadata({
 });
 
 const detectionPoints = [
-    'Phrase & intent matching for "where is", "tracking", "commande", "colis", "livraison", "Lieferung"',
+    "AI intent detection in English, French, and German — understands phrasing, not just keywords",
     "Strictness control — auto-reply, queue for review, or pass through",
     "False-positive rate logged and reviewable in your dashboard",
 ];
@@ -150,10 +150,11 @@ const Page = () => (
                             className="max-w-2xl text-lg leading-8 text-base-content/70 sm:text-xl"
                             style={{ marginTop: 18 }}
                         >
-                            Keyword + sender classification flags order-tracking
-                            emails in three languages. Everything else lands
-                            untouched in your inbox so real support still
-                            reaches you.
+                            An AI classifier reads each email and flags genuine
+                            order-tracking questions in three languages —
+                            telling them apart from newsletters, returns, and
+                            noise. Everything else lands untouched in your inbox
+                            so real support still reaches you.
                         </p>
                         <ul className="mt-6 grid gap-3">
                             {detectionPoints.map((p) => (
@@ -348,9 +349,11 @@ const Page = () => (
                                 color: "var(--color-base-content)",
                             }}
                         >
-                            No returns automation. No refunds. No live chat. No
-                            AI chatbot. No social DMs. No marketing emails. No
-                            abandoned-cart recovery. No multi-mailbox routing.
+                            No returns automation. No refunds. No live chat. AI
+                            detects intent, but never writes replies — those
+                            come from your templates and real Shopify data. No
+                            social DMs. No marketing emails. No abandoned-cart
+                            recovery. No multi-mailbox routing.
                             If you need any of those, you need a different tool
                             — and that&apos;s fine. We&apos;re focused on WISMO,
                             end of story.

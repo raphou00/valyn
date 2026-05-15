@@ -78,14 +78,11 @@ const PanelDetect = () => (
         <div className={panelBodyClass}>
             <div className=" text-[13px] leading-7 text-base-content">
                 <div>
-                    scan_keywords([
-                    <span className="text-base-content">
-                        &quot;where is&quot;
-                    </span>
-                    , &quot;tracking&quot;, &quot;commande&quot;])
+                    classify_intent(
+                    <span className="text-base-content">subject + body</span>)
                 </div>
                 <div className="text-base-content/60">
-                    → matched: &quot;where is&quot;, &quot;order #&quot;
+                    → AI: genuine order-status question
                 </div>
                 <div>
                     language: <span>EN</span>
