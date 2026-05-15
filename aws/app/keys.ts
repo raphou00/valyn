@@ -29,6 +29,16 @@ const provision = () => {
                     Action: ["s3:GetObject"],
                     Resource: "*",
                 },
+                {
+                    // WISMO intent classification. InvokeModel only — no
+                    // training, no model management. Resource "*" because the
+                    // model id is configurable via BEDROCK_MODEL_ID and may
+                    // be a cross-region inference profile ARN.
+                    Sid: "BedrockClassify",
+                    Effect: "Allow",
+                    Action: ["bedrock:InvokeModel"],
+                    Resource: "*",
+                },
             ],
         }),
     });

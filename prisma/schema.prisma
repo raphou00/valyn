@@ -90,7 +90,10 @@ model Settings {
     supportEmail         String?
 
     strictness       Strictness       @default(AUTO_REPLY)
-    fallbackBehavior FallbackBehavior @default(SEND_FALLBACK)
+    // Safe default: when no order matches, queue for review rather than
+    // auto-sending a fallback into a mixed inbox. Merchants can opt into
+    // SEND_FALLBACK explicitly.
+    fallbackBehavior FallbackBehavior @default(QUEUE_REVIEW)
 
     smtpHost           String?
     smtpPort           Int?

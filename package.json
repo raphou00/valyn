@@ -23,6 +23,7 @@
         "clean": "rm -rf .next/ .open-next/ node_modules/ bun.lockb tsconfig.tsbuildinfo next-env.d.ts"
     },
     "dependencies": {
+        "@aws-sdk/client-bedrock-runtime": "^3.1047.0",
         "@aws-sdk/client-dynamodb": "^3.994.0",
         "@aws-sdk/client-s3": "^3.1037.0",
         "@aws-sdk/lib-dynamodb": "^3.994.0",

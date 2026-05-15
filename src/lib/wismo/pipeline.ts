@@ -10,7 +10,13 @@ import logger from "@/lib/logger";
 import { capabilitiesFor } from "@/lib/plan-features";
 import { getUsage } from "@/lib/usage";
 import { humanizeSmtpError } from "@/lib/smtp-errors";
-import { detect, extractOrderName, isSupportedLanguage } from "./detect";
+import {
+    detect,
+    extractOrderName,
+    isSupportedLanguage,
+    type DetectionResult,
+} from "./detect";
+import { classifyWithLlm } from "./classify-llm";
 import {
     findMostRecentOrder,
     findOrderByName,
@@ -292,6 +298,38 @@ export const sendReplyForLog = async (logId: string): Promise<SendOutcome> => {
     }
 };
 
+// Hybrid classification. Keyword pass is free and runs first; the LLM is
+// only consulted when there's at least one signal (a keyword hit or an order
+// reference), so obvious newsletter/junk never costs a Bedrock call. LLM
+// failure falls back to the keyword verdict — the LLM is never required.
+const classifyInbound = async (
+    subject: string,
+    bodyText: string,
+    allowed: readonly Language[]
+): Promise<DetectionResult> => {
+    const kw = detect(subject, bodyText, allowed);
+    const hasOrderRef = extractOrderName(subject, bodyText) !== null;
+
+    // Zero-signal mail: no keyword, no order number. Almost certainly not
+    // WISMO — decide deterministically, skip the LLM entirely (cost saver).
+    if (kw.intent === "OTHER" && !hasOrderRef) return kw;
+
+    const llm = await classifyWithLlm(subject, bodyText);
+    if (!llm) return kw; // disabled / error / timeout → keyword fallback
+
+    const language =
+        llm.language && allowed.includes(llm.language) ? llm.language : (
+            kw.language
+        );
+    return {
+        intent: llm.isWismo ? "WISMO" : "OTHER",
+        confidence: llm.confidence,
+        matched: kw.matched,
+        language,
+        reason: `ai: ${llm.reason}`,
+    };
+};
+
 export const processInboundEmail = async (
     shopId: string,
     parsed: ParsedMail
@@ -326,7 +364,11 @@ export const processInboundEmail = async (
     }
 
     const caps = capabilitiesFor(shop.planKey);
-    const detection = detect(subject, bodyText, caps.languages);
+    const detection = await classifyInbound(
+        subject,
+        bodyText,
+        caps.languages
+    );
 
     const log = await db.emailLog.create({
         data: {

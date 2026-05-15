@@ -25,6 +25,17 @@ export default createEnv({
         INBOUND_SNS_TOPIC_ARN: z.string().min(1),
 
         SMTP_CREDS_KEY: z.string().min(1),
+
+        // WISMO LLM classifier (Bedrock). Optional — if model access isn't
+        // enabled the pipeline silently falls back to the keyword classifier.
+        BEDROCK_REGION: z.string().min(1).default("us-east-1"),
+        BEDROCK_MODEL_ID: z
+            .string()
+            .min(1)
+            .default("us.amazon.nova-lite-v1:0"),
+        WISMO_LLM_ENABLED: z
+            .enum(["true", "false"])
+            .default("true"),
     },
     runtimeEnv: {
         NODE_ENV: process.env.NODE_ENV,
@@ -48,5 +59,9 @@ export default createEnv({
         INBOUND_SNS_TOPIC_ARN: process.env.INBOUND_SNS_TOPIC_ARN,
 
         SMTP_CREDS_KEY: process.env.SMTP_CREDS_KEY,
+
+        BEDROCK_REGION: process.env.BEDROCK_REGION,
+        BEDROCK_MODEL_ID: process.env.BEDROCK_MODEL_ID,
+        WISMO_LLM_ENABLED: process.env.WISMO_LLM_ENABLED,
     },
 });
