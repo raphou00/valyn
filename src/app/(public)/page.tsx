@@ -229,10 +229,11 @@ const Page = () => (
             <div className="mt-10 lg:mt-16">
                 <div className="relative h-[280px] overflow-hidden sm:h-[440px] lg:h-[560px]">
                     <Image
-                        src="https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?auto=format&fit=crop&w=2200&q=82"
+                        src="/hero-workspace.jpg"
                         alt="Merchant preparing ecommerce orders in a studio workspace"
                         fill
                         priority
+                        fetchPriority="high"
                         sizes="100vw"
                         className="object-cover"
                     />
