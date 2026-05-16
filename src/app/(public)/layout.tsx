@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import RootProviders from "../providers";
 import { OrganizationJsonLd, WebSiteJsonLd } from "./_components/jsonld";
+import { baseMetadata } from "./_lib/metadata";
 import "@/styles/globals.css";
 
 // Root layout for the public marketing site. Deliberately ships NO App
@@ -11,11 +11,7 @@ import "@/styles/globals.css";
 // third-party script from the FCP/SEO-critical surface. Multiple root
 // layouts: this owns its own <html>/<body> (there is no shared app/layout).
 
-export const metadata: Metadata = {
-    metadataBase: new URL("https://getvalyn.com"),
-    title: "Valyn",
-    description: "Automated WISMO replies for Shopify stores.",
-};
+export const metadata = baseMetadata;
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => (
     <html lang="en" suppressHydrationWarning>
