@@ -39,6 +39,7 @@ export async function PATCH(
                 where: {
                     shopId: shop.id,
                     type: existing.type,
+                    language: existing.language,
                     isDefault: true,
                     NOT: { id },
                 },

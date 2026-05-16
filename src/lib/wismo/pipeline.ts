@@ -167,12 +167,16 @@ const buildReplyBody = (
     return { subject: `Re: ${order!.name}`, body: inTransit + notice, type };
 };
 
+// Prefer the default template written in the email's detected language. If
+// the merchant hasn't authored one for that language, return null so the
+// caller falls back to the built-in language pack (already localized).
 const findTemplate = async (
     shopId: string,
-    type: WismoTemplateType
+    type: WismoTemplateType,
+    language: Language
 ): Promise<TemplateRow | null> => {
     const tpl = await db.replyTemplate.findFirst({
-        where: { shopId, type, isDefault: true },
+        where: { shopId, type, language, isDefault: true },
         select: { type: true, body: true, isDefault: true },
     });
     return tpl as TemplateRow | null;
@@ -236,7 +240,9 @@ export const sendReplyForLog = async (logId: string): Promise<SendOutcome> => {
     );
     const caps = capabilitiesFor(shop.planKey);
     const template =
-        caps.multipleTemplates ? await findTemplate(shop.id, type) : null;
+        caps.multipleTemplates ?
+            await findTemplate(shop.id, type, language)
+        :   null;
 
     const { subject: replySubject, body } = buildReplyBody(
         language,
@@ -516,7 +522,9 @@ export const processInboundEmail = async (
         identified.multipleRecent
     );
     const template =
-        caps.multipleTemplates ? await findTemplate(shop.id, type) : null;
+        caps.multipleTemplates ?
+            await findTemplate(shop.id, type, language)
+        :   null;
     const { subject: replySubject, body } = buildReplyBody(
         language,
         identified.order,
@@ -611,7 +619,9 @@ export const previewReply = async (
     const caps = capabilitiesFor(shop.planKey);
     const type = chooseTemplateType(order, false);
     const template =
-        caps.multipleTemplates ? await findTemplate(shop.id, type) : null;
+        caps.multipleTemplates ?
+            await findTemplate(shop.id, type, language)
+        :   null;
     const { subject, body } = buildReplyBody(language, order, false, template);
 
     const tone = (caps.toneControl ? shop.settings.tone : "NEUTRAL") as

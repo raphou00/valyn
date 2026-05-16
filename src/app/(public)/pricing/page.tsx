@@ -64,7 +64,7 @@ const plans: Plan[] = [
         feats: [
             { emphasis: "Up to 3,000", text: "processed emails/month" },
             { text: "WISMO detection in EN, FR, DE" },
-            { text: "Multiple reply templates" },
+            { text: "Multiple reply templates, per language (EN/FR/DE)" },
             { text: "Reply tone control (friendly / neutral / formal)" },
             { text: "Custom signatures" },
             { text: "Email processing logs (90 days retention)" },
@@ -81,7 +81,7 @@ const comparisonRows: [string, string, string][] = [
     ["WISMO detection", "✓", "✓"],
     ["Shopify order lookup", "✓", "✓"],
     ["Languages", "EN", "EN, FR, DE"],
-    ["Reply templates", "1", "Multiple"],
+    ["Reply templates", "1", "Multiple, per language"],
     ["Reply tone control", "—", "✓"],
     ["Custom signature", "Basic", "Custom"],
     ["Log retention", "7 days", "90 days"],

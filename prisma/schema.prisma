@@ -116,6 +116,10 @@ model ReplyTemplate {
     id        String       @id @default(uuid())
     shopId    String
     type      TemplateType
+    // ISO language this template is written in (en/fr/de). The pipeline picks
+    // the template matching the email's detected language; falls back to the
+    // built-in language pack when no template exists for that language.
+    language  String       @default("en")
     name      String
     body      String
     isDefault Boolean      @default(false)
@@ -123,8 +127,8 @@ model ReplyTemplate {
     updatedAt DateTime     @updatedAt
     shop      Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
-    @@unique([shopId, type, name])
-    @@index([shopId, type])
+    @@unique([shopId, type, language, name])
+    @@index([shopId, type, language])
 }
 
 model EmailLog {

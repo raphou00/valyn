@@ -23,9 +23,16 @@ type TemplateType = "IN_TRANSIT" | "PROCESSING" | "NO_ORDER" | "MULTIPLE";
 type ReplyTemplate = {
     id: string;
     type: TemplateType;
+    language: string;
     name: string;
     body: string;
     isDefault: boolean;
+};
+
+const LANG_LABEL: Record<string, string> = {
+    en: "English",
+    fr: "Français",
+    de: "Deutsch",
 };
 
 const TYPE_LABEL: Record<TemplateType, string> = {
@@ -52,16 +59,23 @@ const TYPE_OPTIONS: { label: string; value: TemplateType }[] = (
 
 const TemplatesEditor: React.FC<{
     canEdit: boolean;
-}> = ({ canEdit }) => {
+    languages: string[];
+}> = ({ canEdit, languages }) => {
     const authedFetch = useAuthedFetch();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [templates, setTemplates] = useState<ReplyTemplate[]>([]);
     const [draft, setDraft] = useState<{
         type: TemplateType;
+        language: string;
         name: string;
         body: string;
-    }>({ type: "IN_TRANSIT", name: "", body: DEFAULT_BODY.IN_TRANSIT });
+    }>({
+        type: "IN_TRANSIT",
+        language: languages[0] ?? "en",
+        name: "",
+        body: DEFAULT_BODY.IN_TRANSIT,
+    });
     const [saving, setSaving] = useState(false);
 
     const load = useCallback(async () => {
@@ -108,6 +122,7 @@ const TemplatesEditor: React.FC<{
             }
             setDraft({
                 type: draft.type,
+                language: draft.language,
                 name: "",
                 body: DEFAULT_BODY[draft.type],
             });
@@ -197,6 +212,19 @@ const TemplatesEditor: React.FC<{
                                     }))
                                 }
                             />
+                            <Select
+                                label="Language"
+                                helpText="Used when the customer's email is detected in this language. Other languages fall back to the built-in defaults."
+                                options={languages.map((l) => ({
+                                    label: LANG_LABEL[l] ?? l,
+                                    value: l,
+                                }))}
+                                value={draft.language}
+                                disabled={languages.length < 2}
+                                onChange={(v) =>
+                                    setDraft((d) => ({ ...d, language: v }))
+                                }
+                            />
                             <TextField
                                 label="Name"
                                 value={draft.name}
@@ -272,6 +300,12 @@ const TemplatesEditor: React.FC<{
                                                             >
                                                                 {tpl.name}
                                                             </Text>
+                                                            <Badge>
+                                                                {LANG_LABEL[
+                                                                    tpl.language
+                                                                ] ??
+                                                                    tpl.language}
+                                                            </Badge>
                                                             {tpl.isDefault && (
                                                                 <Badge tone="success">
                                                                     Default

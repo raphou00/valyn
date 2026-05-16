@@ -8,6 +8,7 @@ import TemplatesEditor from "./templates-editor";
 const TemplatesPageShell: React.FC<{ shop?: string }> = ({ shop }) => {
     const authedFetch = useAuthedFetch();
     const [canEdit, setCanEdit] = useState<boolean | null>(null);
+    const [languages, setLanguages] = useState<string[]>(["en"]);
 
     useEffect(() => {
         let cancelled = false;
@@ -18,9 +19,13 @@ const TemplatesPageShell: React.FC<{ shop?: string }> = ({ shop }) => {
                 return;
             }
             const data = (await res.json()) as {
-                plan: { multipleTemplates: boolean };
+                plan: { multipleTemplates: boolean; languages?: string[] };
             };
-            if (!cancelled) setCanEdit(Boolean(data.plan.multipleTemplates));
+            if (!cancelled) {
+                setCanEdit(Boolean(data.plan.multipleTemplates));
+                if (data.plan.languages?.length)
+                    setLanguages(data.plan.languages);
+            }
         })();
         return () => {
             cancelled = true;
@@ -32,6 +37,7 @@ const TemplatesPageShell: React.FC<{ shop?: string }> = ({ shop }) => {
             title="Reply templates"
             subtitle={shop}
             backAction={{ url: "/dashboard" }}
+            fullWidth
         >
             {canEdit === null ?
                 <div
@@ -43,7 +49,7 @@ const TemplatesPageShell: React.FC<{ shop?: string }> = ({ shop }) => {
                 >
                     <Spinner accessibilityLabel="Loading" />
                 </div>
-            :   <TemplatesEditor canEdit={canEdit} />}
+            :   <TemplatesEditor canEdit={canEdit} languages={languages} />}
         </Page>
     );
 };

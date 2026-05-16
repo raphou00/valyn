@@ -35,7 +35,7 @@ Two tiers, both with a **7-day free trial**, billed through Shopify Billing.
 | Price              | **$19/mo**        | **$49/mo**                   |
 | Email quota        | 500 / month       | 3,000 / month                |
 | Languages          | English only      | EN, FR, DE                   |
-| Reply templates    | Built-in defaults | Multiple custom per scenario |
+| Reply templates    | Built-in defaults | Multiple custom per scenario, per language (EN/FR/DE) |
 | Reply tone control | —                 | Neutral / Friendly / Formal  |
 | Manual review mode | —                 | ✓                            |
 | One-click retry    | —                 | ✓                            |
@@ -135,7 +135,10 @@ Merchant-controlled knobs:
 ### `ReplyTemplate` (Pro)
 
 Per-shop, per-`TemplateType` (`IN_TRANSIT` / `PROCESSING` / `NO_ORDER` /
-`MULTIPLE`). One default per type; placeholders `{{orderName}}`,
+`MULTIPLE`), per `language` (en/fr/de). One default per type **per
+language**; the pipeline picks the default matching the email's detected
+language and falls back to the built-in language pack when the merchant
+hasn't authored one for that language. Placeholders `{{orderName}}`,
 `{{carrier}}`, `{{tracking}}` are interpolated at send time.
 
 ### `EmailLog`

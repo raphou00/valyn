@@ -187,7 +187,7 @@ const plans = [
         feats: [
             "Up to 3,000 emails/month",
             "Detection in EN, FR, DE",
-            "Multiple templates & reply tone",
+            "Multiple templates per language & reply tone",
             "Advanced logs & retry (90 days)",
             "Manual review mode",
             "Priority email support",
