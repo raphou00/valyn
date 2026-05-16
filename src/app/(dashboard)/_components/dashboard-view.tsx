@@ -167,7 +167,68 @@ const DashboardView: React.FC = () => {
 
     const effectiveStatus = filters.status || tabs[tabIndex].filter;
 
-    const load = useCallback(
+    // Debounce the free-text search so typing doesn't fire a query per
+    // keystroke. The select/date filters are discrete so they apply at once.
+    const [debouncedQ, setDebouncedQ] = useState("");
+    useEffect(() => {
+        const t = setTimeout(() => setDebouncedQ(filters.q), 350);
+        return () => clearTimeout(t);
+    }, [filters.q]);
+
+    // Stats / usage / plan / settings don't change with the log filters, so
+    // they load once (and after a row action) — not on every filter change.
+    const loadMeta = useCallback(async () => {
+        try {
+            const [statsRes, usageRes, settingsRes] = await Promise.all([
+                authedFetch("/api/internal/stats"),
+                authedFetch("/api/internal/usage"),
+                authedFetch("/api/internal/settings"),
+            ]);
+            if (!statsRes.ok) throw new Error(`stats ${statsRes.status}`);
+            if (!usageRes.ok) throw new Error(`usage ${usageRes.status}`);
+            const statsData = (await statsRes.json()) as {
+                stats: Stats;
+                subscription: SubscriptionState;
+            };
+            const usageData = (await usageRes.json()) as {
+                usage: Usage;
+                plan: Plan;
+            };
+            setStats(statsData.stats);
+            setSubscription(statsData.subscription);
+            setUsage(usageData.usage);
+            setPlan(usageData.plan);
+
+            if (settingsRes.ok) {
+                const sd = (await settingsRes.json()) as {
+                    settings: {
+                        smtpHost: string | null;
+                        smtpPort: number | null;
+                        smtpUser: string | null;
+                        smtpFromAddress: string | null;
+                        hasSmtpPass: boolean;
+                        smtpLastVerifiedAt: string | null;
+                    } | null;
+                };
+                const s = sd.settings;
+                setSettingsHints({
+                    smtpConfigured: Boolean(
+                        s?.smtpHost &&
+                        s.smtpPort &&
+                        s.smtpUser &&
+                        s.smtpFromAddress &&
+                        s.hasSmtpPass
+                    ),
+                    smtpVerifiedRecently: Boolean(s?.smtpLastVerifiedAt),
+                });
+            }
+        } catch (e) {
+            setError((e as Error).message);
+        }
+    }, [authedFetch]);
+
+    // Only the log list reacts to filters/tab/page.
+    const loadLogs = useCallback(
         async (p: number) => {
             setLoading(true);
             setError(null);
@@ -176,66 +237,15 @@ const DashboardView: React.FC = () => {
                 params.set("page", String(p));
                 if (effectiveStatus) params.set("status", effectiveStatus);
                 if (filters.intent) params.set("intent", filters.intent);
-                if (filters.q) params.set("q", filters.q);
+                if (debouncedQ) params.set("q", debouncedQ);
                 if (filters.from) params.set("from", filters.from);
                 if (filters.to) params.set("to", filters.to);
 
-                const [statsRes, logsRes, usageRes, settingsRes] =
-                    await Promise.all([
-                        authedFetch("/api/internal/stats"),
-                        authedFetch(`/api/internal/logs?${params.toString()}`),
-                        authedFetch("/api/internal/usage"),
-                        authedFetch("/api/internal/settings"),
-                    ]);
-                if (!statsRes.ok) throw new Error(`stats ${statsRes.status}`);
-                if (!logsRes.ok) throw new Error(`logs ${logsRes.status}`);
-                if (!usageRes.ok) throw new Error(`usage ${usageRes.status}`);
-                const statsData = (await statsRes.json()) as {
-                    stats: Stats;
-                    subscription: SubscriptionState;
-                };
-                const logsData = (await logsRes.json()) as LogsResponse;
-                const usageData = (await usageRes.json()) as {
-                    usage: Usage;
-                    plan: Plan;
-                };
-                setStats(statsData.stats);
-                setSubscription(statsData.subscription);
-                setUsage(usageData.usage);
-                setPlan(usageData.plan);
-                setLogs(logsData);
-
-                if (settingsRes.ok) {
-                    const sd = (await settingsRes.json()) as {
-                        settings: {
-                            smtpHost: string | null;
-                            smtpPort: number | null;
-                            smtpUser: string | null;
-                            smtpFromAddress: string | null;
-                            hasSmtpPass: boolean;
-                            smtpLastVerifiedAt: string | null;
-                        } | null;
-                    };
-                    if (sd.settings) {
-                        const s = sd.settings;
-                        const configured = Boolean(
-                            s.smtpHost &&
-                            s.smtpPort &&
-                            s.smtpUser &&
-                            s.smtpFromAddress &&
-                            s.hasSmtpPass
-                        );
-                        setSettingsHints({
-                            smtpConfigured: configured,
-                            smtpVerifiedRecently: Boolean(s.smtpLastVerifiedAt),
-                        });
-                    } else {
-                        setSettingsHints({
-                            smtpConfigured: false,
-                            smtpVerifiedRecently: false,
-                        });
-                    }
-                }
+                const res = await authedFetch(
+                    `/api/internal/logs?${params.toString()}`
+                );
+                if (!res.ok) throw new Error(`logs ${res.status}`);
+                setLogs((await res.json()) as LogsResponse);
             } catch (e) {
                 setError((e as Error).message);
             } finally {
@@ -246,20 +256,29 @@ const DashboardView: React.FC = () => {
             authedFetch,
             effectiveStatus,
             filters.intent,
-            filters.q,
+            debouncedQ,
             filters.from,
             filters.to,
         ]
     );
 
     useEffect(() => {
-        void load(page);
-    }, [load, page]);
+        void loadMeta();
+    }, [loadMeta]);
+
+    useEffect(() => {
+        void loadLogs(page);
+    }, [loadLogs, page]);
 
     // Reset to page 0 when filter/tab inputs change.
     useEffect(() => {
         setPage(0);
-    }, [effectiveStatus, filters.intent, filters.q, filters.from, filters.to]);
+    }, [effectiveStatus, filters.intent, debouncedQ, filters.from, filters.to]);
+
+    const refreshAfterRowAction = useCallback(() => {
+        void loadLogs(page);
+        void loadMeta();
+    }, [loadLogs, loadMeta, page]);
 
     const exportCsv = () => {
         // Window navigation here triggers the streaming CSV download; the
@@ -441,6 +460,9 @@ const DashboardView: React.FC = () => {
                                 width: "100%",
                                 borderCollapse: "collapse",
                                 fontSize: 14,
+                                opacity: loading ? 0.5 : 1,
+                                transition: "opacity 120ms ease",
+                                pointerEvents: loading ? "none" : "auto",
                             }}
                         >
                             <thead>
@@ -550,7 +572,7 @@ const DashboardView: React.FC = () => {
                     manualReviewMode: plan?.manualReviewMode ?? false,
                 }}
                 onClose={() => setOpenLog(null)}
-                onChanged={() => void load(page)}
+                onChanged={refreshAfterRowAction}
             />
             <TestEmailModal
                 open={testEmailOpen}
