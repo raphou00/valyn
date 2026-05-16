@@ -11,7 +11,7 @@ sent from the merchant's own SMTP so customers see the store's address.
 A merchant forwards their support inbox to a per-shop Valyn address.
 Whenever a customer writes asking about an order:
 
-1. **Detect** — an AI classifier (with a keyword pre-filter + fallback) decides
+1. **Detect** — an AI classifier (keyword classifier as fallback) decides
    whether the email is WISMO (in EN, FR, DE) or skips it.
 2. **Look up the order** — by order number in the message, then by sender
    email, then by most-recent order.
@@ -73,9 +73,9 @@ POST /api/webhooks/inbound-email
    │  └─ parses with mailparser
    ▼
 src/lib/wismo/pipeline.ts → processInboundEmail()
-   │  ├─ idempotency check (inboundMessageId @unique)
-   │  ├─ classifyInbound(): keyword pre-filter → Bedrock LLM, keyword fallback
-   │  ├─ persist EmailLog row with confidence, language, reason
+   │  ├─ claim EmailLog row (inboundMessageId @unique) — idempotency
+   │  ├─ classifyInbound(): Bedrock LLM every email, keyword fallback
+   │  ├─ update row with intent, confidence, language, reason
    │  ├─ gate: subscription status, pause, quota, strictness, fallback
    │  ├─ identifyOrder(): Shopify Admin GraphQL
    │  │      order# → customer email → most recent
@@ -99,7 +99,7 @@ Customer's inbox
 | Auth (install)      | Manual Shopify OAuth                    | `/api/auth` + `/api/auth/callback`                           |
 | Database            | Prisma + PostgreSQL                     | Shop, Settings, EmailLog, ReplyTemplate                      |
 | Inbound email       | AWS SES → S3 → SNS → webhook            | One inbound address per shop                                 |
-| WISMO detection     | Keyword pre-filter → Amazon Bedrock LLM | AI intent classification, keyword fallback                   |
+| WISMO detection     | Amazon Bedrock LLM (keyword fallback)   | AI intent classification on every email                      |
 | Outbound email      | nodemailer + per-shop SMTP              | Replies from merchant's domain                               |
 | Rate limit          | DynamoDB sliding-window                 | Per-IP cap on `/api/internal/*`                              |
 | Cron                | Vercel Crons                            | Daily retention cleanup                                      |
@@ -184,7 +184,7 @@ Merchant control happens at every step — nothing happens silently.
 | File                                 | Responsibility                                                                   |
 | ------------------------------------ | -------------------------------------------------------------------------------- |
 | `src/lib/wismo/pipeline.ts`          | The whole decision flow above; `processInboundEmail()` + `sendReplyForLog()`     |
-| `src/lib/wismo/detect.ts`            | Keyword classifier (pre-filter + LLM fallback), `intent + confidence + language` |
+| `src/lib/wismo/detect.ts`            | Keyword classifier (LLM fallback), `intent + confidence + language + matched`    |
 | `src/lib/wismo/classify-llm.ts`      | Bedrock LLM intent classifier; returns null on any failure so caller falls back  |
 | `src/lib/wismo/shopify-orders.ts`    | Admin GraphQL for order lookup                                                   |
 | `src/lib/wismo/tone.ts`              | Tone wrappers around reply body                                                  |
@@ -296,7 +296,7 @@ non-redirect routes; robots.txt disallows dashboard / settings / api.
 ```
 
 The LLM runs exactly once per message: the `EmailLog` row is written as an
-idempotency claim (via `inboundMessageId @unique`) *before* classification,
+idempotency claim (via `inboundMessageId @unique`) _before_ classification,
 so an SNS redelivery can't re-trigger the call. SDK-internal retries are
 capped at `maxAttempts: 2`.
 

@@ -6,10 +6,9 @@ import env from "@/lib/env";
 import logger from "@/lib/logger";
 import type { Language } from "@/lib/translations";
 
-// LLM intent classification for WISMO. Used only for emails the cheap keyword
-// pre-filter couldn't decide confidently — keeps Bedrock spend tiny. Any
-// failure returns null so the caller falls back to the keyword classifier;
-// the LLM is never a hard dependency.
+// LLM intent classification for WISMO. Runs on every inbound email (cost is
+// trivial — see app.md). Any failure returns null so the caller falls back
+// to the keyword classifier; the LLM is never a hard dependency.
 
 export type LlmClassification = {
     isWismo: boolean;
