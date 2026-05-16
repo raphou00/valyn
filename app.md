@@ -156,8 +156,8 @@ queries cheap.
 ## Decision flow (pipeline order)
 
 ```
-1. messageId already processed?  → skip (idempotency)
-2. detect(): WISMO or OTHER?
+1. messageId already processed?  → skip (idempotency claim)
+2. classifyInbound(): LLM (keyword fallback) → WISMO or OTHER?
 3. OTHER                          → IGNORED
 4. Subscription not ACTIVE?       → IGNORED ("no active subscription")
 5. autoReplyEnabled === false?    → REVIEW   ("automation paused")
@@ -285,21 +285,26 @@ non-redirect routes; robots.txt disallows dashboard / settings / api.
 
 ## Detection logic
 
-Hybrid, cost-optimized. `classifyInbound()` in `pipeline.ts`:
+`classifyInbound()` in `pipeline.ts`:
 
 ```
-1. detect() keyword pass (free, src/lib/wismo/detect.ts)
-2. zero-signal short-circuit: no keyword AND no order ref → OTHER,
-   no LLM call (keeps Bedrock spend tiny — newsletters never cost a call)
-3. otherwise classifyWithLlm() — Bedrock, cheap model (Nova Lite default)
-4. LLM null (disabled / throttled / timeout / bad output) → keyword verdict
+1. detect() keyword pass always computed (src/lib/wismo/detect.ts)
+2. classifyWithLlm() runs on EVERY email — Bedrock, cheap model
+   (Nova Lite default). Cost is trivial (<$0.30/mo at the Pro quota
+   ceiling), so accuracy beats the old cost short-circuit.
+3. LLM null (disabled / throttled / timeout / bad output) → keyword verdict
 ```
+
+The LLM runs exactly once per message: the `EmailLog` row is written as an
+idempotency claim (via `inboundMessageId @unique`) *before* classification,
+so an SNS redelivery can't re-trigger the call. SDK-internal retries are
+capped at `maxAttempts: 2`.
 
 The LLM only classifies intent — it never writes the reply (templates +
 real Shopify data do that). Failure is never fatal: the keyword classifier
 is always the fallback, so a Bedrock outage degrades precision, not uptime.
 
-Keyword pre-filter (`src/lib/translations.ts` → `WISMO_KEYWORDS`):
+Keyword classifier / fallback (`src/lib/translations.ts` → `WISMO_KEYWORDS`):
 
 - EN: `where is my order`, `tracking`, `delivery`, `shipped`, `shipping`
 - FR: `où est ma commande`, `suivi`, `colis`, `livraison`, `commande`

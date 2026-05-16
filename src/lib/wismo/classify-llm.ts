@@ -28,6 +28,10 @@ const client = new BedrockRuntimeClient({
         accessKeyId: env.AWS_ACCESS_KEY_ID,
         secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
     },
+    // Cap SDK-internal retries so one logical classification can't quietly
+    // become 3 billed InvokeModel calls on transient errors. Failure here
+    // just falls back to the keyword classifier.
+    maxAttempts: 2,
 });
 
 const SYSTEM = `You classify inbound e-commerce support emails.

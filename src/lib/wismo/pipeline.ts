@@ -298,21 +298,18 @@ export const sendReplyForLog = async (logId: string): Promise<SendOutcome> => {
     }
 };
 
-// Hybrid classification. Keyword pass is free and runs first; the LLM is
-// only consulted when there's at least one signal (a keyword hit or an order
-// reference), so obvious newsletter/junk never costs a Bedrock call. LLM
-// failure falls back to the keyword verdict — the LLM is never required.
-const classifyInbound = async (
+// The LLM classifies every email — that's the whole point of having it, and
+// the cost is trivial (<$0.30/mo even at the Pro quota ceiling). The keyword
+// classifier is computed too and used strictly as the fallback when the LLM
+// is disabled / down / throttled / times out — so a Bedrock outage degrades
+// precision, never uptime. Called exactly once per email (the EmailLog row
+// is claimed before this runs, so SNS retries can't re-trigger it).
+export const classifyInbound = async (
     subject: string,
     bodyText: string,
     allowed: readonly Language[]
 ): Promise<DetectionResult> => {
     const kw = detect(subject, bodyText, allowed);
-    const hasOrderRef = extractOrderName(subject, bodyText) !== null;
-
-    // Zero-signal mail: no keyword, no order number. Almost certainly not
-    // WISMO — decide deterministically, skip the LLM entirely (cost saver).
-    if (kw.intent === "OTHER" && !hasOrderRef) return kw;
 
     const llm = await classifyWithLlm(subject, bodyText);
     if (!llm) return kw; // disabled / error / timeout → keyword fallback
@@ -349,6 +346,7 @@ export const processInboundEmail = async (
     const sender = senderAddress(parsed);
     const inboundMessageId = parsed.messageId ?? null;
 
+    // Cheap fast-path for the common sequential SNS retry (row already done).
     if (inboundMessageId) {
         const existing = await db.emailLog.findUnique({
             where: { inboundMessageId },
@@ -363,23 +361,46 @@ export const processInboundEmail = async (
         }
     }
 
+    // Claim the message by writing the EmailLog row BEFORE classification.
+    // The inboundMessageId @unique index is the lock: if a near-simultaneous
+    // SNS redelivery races past the fast-path check above, the second create
+    // throws P2002 and we bail here — so the LLM (and the reply) runs exactly
+    // once per message even under retry storms.
+    let log;
+    try {
+        log = await db.emailLog.create({
+            data: {
+                shopId: shop.id,
+                inboundMessageId,
+                senderEmail: sender,
+                subject,
+                body: bodyText,
+                intent: "OTHER",
+                confidence: 0,
+                detectionReason: "pending",
+                detectedLanguage: null,
+                status: "PENDING",
+                receivedAt: parsed.date ?? new Date(),
+            },
+        });
+    } catch (err) {
+        if ((err as { code?: string }).code === "P2002") {
+            logger.info("inbound: duplicate skipped (race)", {
+                shopId,
+                inboundMessageId,
+            });
+            return;
+        }
+        throw err;
+    }
+
     const caps = capabilitiesFor(shop.planKey);
     const detection = await classifyInbound(subject, bodyText, caps.languages);
-
-    const log = await db.emailLog.create({
-        data: {
-            shopId: shop.id,
-            inboundMessageId,
-            senderEmail: sender,
-            subject,
-            body: bodyText,
-            intent: detection.intent,
-            confidence: detection.confidence,
-            detectionReason: detection.reason,
-            detectedLanguage: detection.language ?? null,
-            status: "PENDING",
-            receivedAt: parsed.date ?? new Date(),
-        },
+    await updateLog(log.id, {
+        intent: detection.intent,
+        confidence: detection.confidence,
+        detectionReason: detection.reason,
+        detectedLanguage: detection.language ?? null,
     });
 
     // Non-WISMO: log and stop. Pause / strictness rules still apply for
