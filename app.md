@@ -91,22 +91,22 @@ Customer's inbox
 
 ## Architecture
 
-| Layer               | Tech                                    | Role                                                         |
-| ------------------- | --------------------------------------- | ------------------------------------------------------------ |
-| Frontend (public)   | Next.js App Router, Tailwind, DaisyUI   | Marketing site at `getvalyn.com`                             |
-| Frontend (embedded) | Polaris + App Bridge v4                 | `/dashboard`, `/settings`, `/templates` inside Shopify admin |
-| Auth (embedded)     | App Bridge session tokens (HS256 JWT)   | Gates all `/api/internal/*` calls                            |
-| Auth (install)      | Manual Shopify OAuth                    | `/api/auth` + `/api/auth/callback`                           |
-| Database            | Prisma + PostgreSQL                     | Shop, Settings, EmailLog, ReplyTemplate                      |
-| Inbound email       | AWS SES → S3 → SNS → webhook            | One inbound address per shop                                 |
-| WISMO detection     | Amazon Bedrock LLM (keyword fallback)   | AI intent classification on every email                      |
-| Outbound email      | nodemailer + per-shop SMTP              | Replies from merchant's domain                               |
-| Rate limit          | DynamoDB sliding-window                 | Per-IP cap on `/api/internal/*`                              |
-| Cron                | Vercel Crons                            | Daily retention cleanup                                      |
-| Infra-as-code       | Pulumi                                  | AWS resources + Vercel env-var sync                          |
-| Hosting             | Vercel                                  | Next.js + Fluid Compute                                      |
-| Logs                | JSON-line to stdout                     | Vercel log search                                            |
-| Billing             | Shopify Billing API                     | `appSubscriptionCreate` + `app_subscriptions/update` webhook |
+| Layer               | Tech                                  | Role                                                         |
+| ------------------- | ------------------------------------- | ------------------------------------------------------------ |
+| Frontend (public)   | Next.js App Router, Tailwind, DaisyUI | Marketing site at `getvalyn.com`                             |
+| Frontend (embedded) | Polaris + App Bridge v4               | `/dashboard`, `/settings`, `/templates` inside Shopify admin |
+| Auth (embedded)     | App Bridge session tokens (HS256 JWT) | Gates all `/api/internal/*` calls                            |
+| Auth (install)      | Manual Shopify OAuth                  | `/api/auth` + `/api/auth/callback`                           |
+| Database            | Prisma + PostgreSQL                   | Shop, Settings, EmailLog, ReplyTemplate                      |
+| Inbound email       | AWS SES → S3 → SNS → webhook          | One inbound address per shop                                 |
+| WISMO detection     | Amazon Bedrock LLM (keyword fallback) | AI intent classification on every email                      |
+| Outbound email      | nodemailer + per-shop SMTP            | Replies from merchant's domain                               |
+| Rate limit          | DynamoDB sliding-window               | Per-IP cap on `/api/internal/*`                              |
+| Cron                | Vercel Crons                          | Daily retention cleanup                                      |
+| Infra-as-code       | Pulumi                                | AWS resources + Vercel env-var sync                          |
+| Hosting             | Vercel                                | Next.js + Fluid Compute                                      |
+| Logs                | JSON-line to stdout                   | Vercel log search                                            |
+| Billing             | Shopify Billing API                   | `appSubscriptionCreate` + `app_subscriptions/update` webhook |
 
 ---
 

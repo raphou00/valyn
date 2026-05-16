@@ -34,11 +34,7 @@ describe("classifyInbound", () => {
 
     it("falls back to the keyword verdict when the LLM is unavailable", async () => {
         llmMock.mockResolvedValue(null);
-        const wismo = await classifyInbound(
-            "where is my order #1001",
-            "",
-            ALL
-        );
+        const wismo = await classifyInbound("where is my order #1001", "", ALL);
         expect(wismo.intent).toBe("WISMO");
         const junk = await classifyInbound(
             "50% off everything this weekend",
